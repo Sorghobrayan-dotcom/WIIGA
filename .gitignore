@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+
+# Les modèles entraînés sont versionnés : sans eux, personne ne peut rejouer les
+# chiffres sans passer une heure à entraîner. 180 Ko chacun, c'est le prix de la
+# reproductibilité.
+#
+# Le cache des villes l'est aussi, et pour la même raison : la démo doit
+# fonctionner sans réseau.
+
+# ce qui ne sert qu'à moi
+*.pdf
+WIIIGA.py
+WIIGA (2).py
+wiiga_ai_scripts.json
+wiiga_agent_avant_bidons.zip
+wiiga_agent_graine0.zip
+wiiga_agent_saisons_sans_alerte.zip
+peterson.py
