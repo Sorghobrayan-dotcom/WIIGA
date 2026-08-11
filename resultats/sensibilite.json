@@ -1,0 +1,93 @@
+{
+  "genere_le": "2026-08-11T20:09:03+00:00",
+  "journees": 120,
+  "seed": 1000,
+  "modele": "agents/graine_0",
+  "balayages": {
+    "CARBURANT_JOUR": [
+      {
+        "valeur": 80.0,
+        "retenue": false,
+        "agent_heures_a_sec": 0.8666666666666667,
+        "regle_heures_a_sec": 1.3166666666666667,
+        "ecart_pct": 34.177215189873415,
+        "agent_gagne": true
+      },
+      {
+        "valeur": 160.0,
+        "retenue": false,
+        "agent_heures_a_sec": 0.5666666666666667,
+        "regle_heures_a_sec": 1.1583333333333334,
+        "ecart_pct": 51.07913669064749,
+        "agent_gagne": true
+      },
+      {
+        "valeur": 320.0,
+        "retenue": true,
+        "agent_heures_a_sec": 0.26666666666666666,
+        "regle_heures_a_sec": 0.8166666666666667,
+        "ecart_pct": 67.34693877551021,
+        "agent_gagne": true
+      },
+      {
+        "valeur": 640.0,
+        "retenue": false,
+        "agent_heures_a_sec": 0.25,
+        "regle_heures_a_sec": 0.275,
+        "ecart_pct": 9.090909090909099,
+        "agent_gagne": true
+      },
+      {
+        "valeur": 1280.0,
+        "retenue": false,
+        "agent_heures_a_sec": 0.25,
+        "regle_heures_a_sec": 0.0,
+        "ecart_pct": 0.0,
+        "agent_gagne": false
+      }
+    ],
+    "MARGE_POMPE": [
+      {
+        "valeur": 1.5,
+        "retenue": false,
+        "agent_heures_a_sec": 0.6333333333333333,
+        "regle_heures_a_sec": 0.85,
+        "ecart_pct": 25.490196078431378,
+        "agent_gagne": true
+      },
+      {
+        "valeur": 2.0,
+        "retenue": false,
+        "agent_heures_a_sec": 0.30833333333333335,
+        "regle_heures_a_sec": 0.7,
+        "ecart_pct": 55.95238095238094,
+        "agent_gagne": true
+      },
+      {
+        "valeur": 2.5,
+        "retenue": true,
+        "agent_heures_a_sec": 0.26666666666666666,
+        "regle_heures_a_sec": 0.8166666666666667,
+        "ecart_pct": 67.34693877551021,
+        "agent_gagne": true
+      },
+      {
+        "valeur": 3.0,
+        "retenue": false,
+        "agent_heures_a_sec": 0.23333333333333334,
+        "regle_heures_a_sec": 0.9083333333333333,
+        "ecart_pct": 74.3119266055046,
+        "agent_gagne": true
+      },
+      {
+        "valeur": 4.0,
+        "retenue": false,
+        "agent_heures_a_sec": 0.18333333333333332,
+        "regle_heures_a_sec": 0.9833333333333333,
+        "ecart_pct": 81.35593220338983,
+        "agent_gagne": true
+      }
+    ]
+  },
+  "conclusion_robuste": false
+}
