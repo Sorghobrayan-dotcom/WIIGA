@@ -79,6 +79,26 @@ SOURCES = ("solaire", "reseau", "diesel")
 #: bascule sur le groupe dès que le réseau tombe ne laissait jamais un quartier à
 #: sec. Une régie a une cuve de gasoil, elle est petite, et la remplir dépend
 #: d'un camion.
+#:
+#: **D'où vient 320 plutôt qu'autre chose.** Ce n'est pas un relevé de terrain —
+#: aucune régie ne publie sa consommation — mais ce n'est pas non plus un nombre
+#: sorti d'un chapeau. Ce que 320 kWh représente, mesuré et pas supposé :
+#:
+#:   91 litres de gasoil par jour, à 3,5 kWh/L
+#:   14 % de l'énergie qu'il faut pour pomper une journée moyenne (2 257 kWh)
+#:   un fût de 200 litres qui tient 2,2 jours
+#:   de quoi couvrir 1,8 heure de demande de pointe
+#:
+#: C'est l'ordre de grandeur d'une station de quartier ravitaillée par camion
+#: deux fois par semaine, et c'est la seule justification qu'on avance.
+#:
+#: **Et surtout, la conclusion ne tient pas à cette valeur** — voir
+#: `sensibilite.py`, qui balaie de 23 à 366 litres par jour. L'agent bat la règle
+#: écrite de 34 % à 67 % sur toute la plage plausible, et ne perd qu'à 366 L/j,
+#: où le groupe couvre plus de la moitié de l'énergie de la ville. À ce
+#: régime-là, il n'y a plus d'arbitrage à faire : on brûle du gasoil, et une
+#: règle de vingt lignes suffit. Que l'avantage disparaisse quand la contrainte
+#: disparaît est exactement ce qu'on attend d'un résultat honnête.
 CARBURANT_JOUR = 320.0
 
 #: Le remplissage sous lequel une régie n'accepte pas de descendre. Ce n'est pas
