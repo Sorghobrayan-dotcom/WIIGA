@@ -14,12 +14,27 @@ from pathlib import Path
 
 import numpy as np
 from stable_baselines3 import PPO
+from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import SubprocVecEnv
 
 from .baselines import POLITIQUES, evaluer
 from .env import GAMMA, WiigaEnv
 
 MODELE = Path(__file__).parent.parent / "wiiga_agent"
+
+
+#: Combien d'environnements tournent en parallèle.
+#:
+#: C'est le seul levier de vitesse qui compte ici, et il n'a rien à voir avec le
+#: GPU. Le réseau de politique fait deux couches de 64 sur 27 entrées : quelques
+#: microsecondes, dominées par le coût de lancement d'un noyau CUDA. Ce qui prend
+#: le temps, c'est **l'environnement**, une boucle Python à environ 5 000 pas par
+#: seconde sur un cœur. Un GPU n'accélère pas une boucle Python ; des cœurs, si.
+#:
+#: Huit plutôt que quatorze : au-delà, la collecte de trajectoires ne domine plus
+#: et la phase de mise à jour, elle, reste séquentielle.
+ENVIRONNEMENTS = 8
 
 
 def entrainer(
@@ -28,17 +43,32 @@ def entrainer(
     verbose: int = 0,
     sortie: Path | None = None,
     equite: bool = True,
+    n_envs: int = ENVIRONNEMENTS,
 ) -> PPO:
     # `confiance_tiree` uniquement ici : à l'entraînement l'agent doit rencontrer
     # toute la gamme de crédibilité, sans quoi il détruit le canal d'alerte dans
     # ses vingt premières journées et n'apprend jamais à s'en servir. À la
     # mesure, la confiance persiste — c'est le vrai déploiement.
-    env = Monitor(WiigaEnv(seed=seed, confiance_tiree=True, equite=equite))
+    reglages = dict(confiance_tiree=True, equite=equite)
+    if n_envs > 1:
+        env = make_vec_env(
+            WiigaEnv,
+            n_envs=n_envs,
+            seed=seed,
+            env_kwargs=reglages,
+            vec_env_cls=SubprocVecEnv,
+        )
+    else:
+        env = Monitor(WiigaEnv(seed=seed, **reglages))
+
     agent = PPO(
         "MlpPolicy",
         env,
         learning_rate=3e-4,
-        n_steps=2048,
+        # par environnement : huit fois 256 refont les 2 048 pas de rollout
+        # d'origine, pour que le nombre de mises à jour ne dépende pas du nombre
+        # de cœurs de la machine qui entraîne
+        n_steps=max(64, 2048 // n_envs),
         batch_size=64,
         # une journée fait 24 pas : inutile d'escompter sur mille. Importé plutôt
         # que réécrit, l'environnement s'en servant aussi pour raisonner sur son
@@ -46,6 +76,9 @@ def entrainer(
         gamma=GAMMA,
         verbose=verbose,
         seed=seed,
+        # explicite : sur ce réseau, le CPU bat le GPU, et un choix silencieux
+        # serait un choix qu'on ne peut pas discuter
+        device="cpu",
     )
     debut = time.time()
     agent.learn(total_timesteps=pas)
@@ -103,10 +136,11 @@ if __name__ == "__main__":
     p.add_argument("--journees", type=int, default=200)
     p.add_argument("--graine", type=int, default=0)
     p.add_argument("--sortie", default=None)
+    p.add_argument("--envs", type=int, default=ENVIRONNEMENTS)
     args = p.parse_args()
 
     sortie = Path(args.sortie) if args.sortie else None
     comparer(
-        entrainer(args.pas, seed=args.graine, sortie=sortie),
+        entrainer(args.pas, seed=args.graine, sortie=sortie, n_envs=args.envs),
         journees=args.journees,
     )

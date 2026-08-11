@@ -89,19 +89,30 @@ RESERVE_MINIMALE = 0.35
 #: m³ pompés par kWh. Ordre de grandeur d'une station de quartier.
 RENDEMENT_POMPE = 0.55
 
-#: Escompte de l'agent.
+#: Escompte de l'agent. Une journée fait vingt-quatre pas ; à 0,98 l'horizon
+#: utile est d'une cinquantaine de pas, soit deux jours.
 #:
-#: 0,995 et non 0,98, et la différence est structurelle. Une journée fait vingt-
-#: quatre pas ; à 0,98 l'horizon utile est d'une cinquantaine de pas, soit deux
-#: jours. C'est assez pour piloter des cuves, qui repartent pleines chaque matin,
-#: et bien trop court pour une réputation, qui met une dizaine de journées à se
-#: construire ou à s'effondrer. À 0,995 l'horizon couvre environ huit jours :
-#: l'agent peut enfin voir que se taire aujourd'hui vaut de l'eau la semaine
-#: prochaine.
+#: **Une version à 0,995 a été essayée et mesurée, puis abandonnée.** L'intention
+#: était bonne : porter l'horizon à huit jours pour que l'agent voie sa
+#: réputation se construire, une réputation vivant sur des semaines. Le résultat
+#: ne l'était pas — les trois graines sont passées sous la règle écrite à la
+#: main, à 0,82 heure à sec par jour contre 0,33.
+#:
+#: La raison est que **les deux sous-problèmes n'ont pas le même horizon
+#: naturel**. Le pompage est intra-journalier : les cuves repartent pleines
+#: chaque matin, et rien de ce qui se décide aujourd'hui ne porte à huit jours.
+#: Forcer la fonction de valeur à prédire aussi loin à travers un tirage de jour
+#: de l'année et un délestage aléatoire ne lui apprend rien de plus — ça ne fait
+#: qu'ajouter du bruit à l'estimation d'avantage sur la seule partie du problème
+#: qui rapporte de l'eau.
+#:
+#: Ce qu'on voulait obtenir par l'horizon, le verrou de diffusion l'obtient par
+#: construction : on ne peut plus se répéter, donc la parcimonie n'a plus besoin
+#: d'être apprise sur huit jours.
 #:
 #: Importé par `train.py` plutôt que réécrit là-bas : deux valeurs qui
 #: divergeraient seraient invisibles et fausseraient le prix du crédit.
-GAMMA = 0.995
+GAMMA = 0.98
 
 #: Part des journées d'entraînement où la crédibilité est retirée au hasard.
 #: Voir `reset` — c'est ce qui empêche l'agent de rester coincé au plancher.
@@ -265,6 +276,10 @@ class WiigaEnv(gym.Env):
         #: Alertes qui n'ont presque rien déplacé parce que les bidons étaient
         #: déjà pleins. Compté séparément pour pouvoir le dire.
         self.alertes_sans_effet = 0
+        #: Alertes que le diffuseur a refusé d'émettre, une annonce précédente
+        #: attendant encore son jugement. Compté pour pouvoir dire combien de
+        #: fois l'agent a *voulu* se répéter.
+        self.alertes_etouffees = 0
 
         self.rng = np.random.default_rng(seed)
         self.reseau = Reseau(self.regime, self.rng)
@@ -431,6 +446,28 @@ class WiigaEnv(gym.Env):
         # nouvelle : on ne s'accorde pas de crédit sur une promesse en cours
         confiance_avant = self.credit.confiance
         self.credit.verifier(heure, self.coupures)
+
+        # Le diffuseur ne réémet pas tant que l'annonce précédente est en cours.
+        #
+        # Ce n'est pas une facilité, c'est ce que fait tout système d'alerte
+        # réel : on ne renvoie pas le même message toutes les heures, on attend
+        # de savoir. Et c'est ce qui rend le problème **apprenable**.
+        #
+        # Sans ce verrou, deux entraînements sur la même récompense trouvaient
+        # deux optima dégénérés opposés. L'un apprenait à ne jamais parler —
+        # zéro alerte, confiance figée à sa valeur de départ. L'autre bavardait
+        # à près de sept alertes par jour et voyait sa crédibilité tomber au
+        # plancher au quatorzième jour *malgré 87 % de justesse*, parce que
+        # presque toutes ses annonces tombaient pendant qu'une autre attendait
+        # d'être jugée : elles ne rapportaient rien et les erreurs coûtaient
+        # plein tarif. Aucun des deux n'a appris à parler peu et bien.
+        #
+        # En interdisant la redite, il ne reste plus qu'une décision — *quand*
+        # dépenser une annonce — et l'économie de confiance porte enfin sur des
+        # avertissements réellement distincts.
+        if alerte and self.credit.en_attente:
+            alerte = False
+            self.alertes_etouffees += 1
 
         if alerte:
             # une annonce ne remplit que les récipients encore vides. Crier une
@@ -648,6 +685,8 @@ class WiigaEnv(gym.Env):
             "confiance": self.credit.confiance,
             #: les annonces tombées dans le vide, bidons déjà pleins
             "alertes_sans_effet": self.alertes_sans_effet,
+            #: et celles que le diffuseur a retenues, une annonce étant en cours
+            "alertes_etouffees": self.alertes_etouffees,
             #: l'énergie par source, en kWh — l'unité qui se lit partout, et la
             #: seule dont on puisse tirer un coût dans n'importe quelle monnaie
             "kwh": dict(self.kwh),
