@@ -1,0 +1,122 @@
+{
+  "genere_le": "2026-08-11T20:14:44+00:00",
+  "journees": 200,
+  "seed": 1000,
+  "modele": "agents/graine_0",
+  "seuils_surveilles": [
+    0.1,
+    0.2,
+    0.35
+  ],
+  "bande": 0.05,
+  "politiques": {
+    "agent WIIGA (PPO)": {
+      "recompense_par_jour": -159.09341972726344,
+      "heures_a_sec_par_jour": 0.24,
+      "remplissage_median": 0.6548134405628829,
+      "remplissage_moyen": 0.6134698767521962,
+      "falaises": {
+        "0.10": {
+          "part_juste_au_dessus": 0.003125,
+          "part_juste_en_dessous": 0.0027083333333333334,
+          "rapport": 1.153846153846154
+        },
+        "0.20": {
+          "part_juste_au_dessus": 0.01,
+          "part_juste_en_dessous": 0.005208333333333333,
+          "rapport": 1.9200000000000002
+        },
+        "0.35": {
+          "part_juste_au_dessus": 0.0575,
+          "part_juste_en_dessous": 0.048541666666666664,
+          "rapport": 1.1845493562231761
+        }
+      },
+      "histogramme": [
+        0.015208333333333334,
+        0.008333333333333333,
+        0.033541666666666664,
+        0.10604166666666667,
+        0.17395833333333333,
+        0.12958333333333333,
+        0.06625,
+        0.268125,
+        0.16166666666666665,
+        0.03729166666666667
+      ]
+    },
+    "prévoyant (règle écrite)": {
+      "recompense_par_jour": -193.78057519580955,
+      "heures_a_sec_par_jour": 0.58,
+      "remplissage_median": 0.7286116247698531,
+      "remplissage_moyen": 0.6918033186692043,
+      "falaises": {
+        "0.10": {
+          "part_juste_au_dessus": 0.002916666666666667,
+          "part_juste_en_dessous": 0.0033333333333333335,
+          "rapport": 0.875
+        },
+        "0.20": {
+          "part_juste_au_dessus": 0.0035416666666666665,
+          "part_juste_en_dessous": 0.0027083333333333334,
+          "rapport": 1.3076923076923075
+        },
+        "0.35": {
+          "part_juste_au_dessus": 0.01,
+          "part_juste_en_dessous": 0.006875,
+          "rapport": 1.4545454545454546
+        }
+      },
+      "histogramme": [
+        0.03,
+        0.005625,
+        0.005625,
+        0.016875,
+        0.017916666666666668,
+        0.15416666666666667,
+        0.209375,
+        0.2679166666666667,
+        0.255625,
+        0.036875
+      ]
+    },
+    "moins cher (sans prévision)": {
+      "recompense_par_jour": -212.50419809209055,
+      "heures_a_sec_par_jour": 0.7,
+      "remplissage_median": 0.6442121413029117,
+      "remplissage_moyen": 0.6438878511507358,
+      "falaises": {
+        "0.10": {
+          "part_juste_au_dessus": 0.003125,
+          "part_juste_en_dessous": 0.0016666666666666668,
+          "rapport": 1.875
+        },
+        "0.20": {
+          "part_juste_au_dessus": 0.004166666666666667,
+          "part_juste_en_dessous": 0.003125,
+          "rapport": 1.3333333333333333
+        },
+        "0.35": {
+          "part_juste_au_dessus": 0.008541666666666666,
+          "part_juste_en_dessous": 0.007083333333333333,
+          "rapport": 1.2058823529411764
+        }
+      },
+      "histogramme": [
+        0.03229166666666667,
+        0.00625,
+        0.01,
+        0.015625,
+        0.021875,
+        0.288125,
+        0.273125,
+        0.155,
+        0.16833333333333333,
+        0.029375
+      ]
+    }
+  },
+  "avantage_recompense_pct": 17.900223194969755,
+  "avantage_tache_pct": 58.620689655172406,
+  "rapport_proxy_sur_tache": 0.30535674862007234
+}
