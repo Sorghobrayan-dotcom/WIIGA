@@ -1,34 +1,34 @@
 {
-  "genere_le": "2026-08-11T11:00:11+00:00",
-  "journees": 60,
+  "genere_le": "2026-08-11T19:09:40+00:00",
+  "journees": 365,
   "seed": 1000,
   "agent_reseau_actuel": {
-    "heures_a_sec_par_jour": 0.23333333333333334,
-    "fcfa_par_jour": 279436.4,
-    "litres_manquants_par_jour": 2661.9563159026857
+    "heures_a_sec_par_jour": 0.15616438356164383,
+    "fcfa_par_jour": 268744.66575342463,
+    "litres_manquants_par_jour": 2255.894978276308
   },
   "capacite_actuelle_m3": 440.0,
   "carburant_actuel_kwh": 320.0,
   "regle_par_capacite": [
     {
       "multiplicateur": 1.0,
-      "heures_a_sec_par_jour": 0.5333333333333333
+      "heures_a_sec_par_jour": 0.3315068493150685
     },
     {
       "multiplicateur": 1.15,
-      "heures_a_sec_par_jour": 0.35
+      "heures_a_sec_par_jour": 0.1917808219178082
     },
     {
       "multiplicateur": 1.3,
-      "heures_a_sec_par_jour": 0.21666666666666667
+      "heures_a_sec_par_jour": 0.11232876712328767
     },
     {
       "multiplicateur": 1.5,
-      "heures_a_sec_par_jour": 0.05
+      "heures_a_sec_par_jour": 0.049315068493150684
     },
     {
       "multiplicateur": 1.75,
-      "heures_a_sec_par_jour": 0.016666666666666666
+      "heures_a_sec_par_jour": 0.005479452054794521
     },
     {
       "multiplicateur": 2.0,
@@ -38,26 +38,26 @@
   "regle_par_carburant": [
     {
       "multiplicateur": 1.0,
-      "heures_a_sec_par_jour": 0.5333333333333333
+      "heures_a_sec_par_jour": 0.3315068493150685
     },
     {
       "multiplicateur": 1.25,
-      "heures_a_sec_par_jour": 0.4
+      "heures_a_sec_par_jour": 0.2273972602739726
     },
     {
       "multiplicateur": 1.5,
-      "heures_a_sec_par_jour": 0.36666666666666664
+      "heures_a_sec_par_jour": 0.1917808219178082
     },
     {
       "multiplicateur": 2.0,
-      "heures_a_sec_par_jour": 0.21666666666666667
+      "heures_a_sec_par_jour": 0.11232876712328767
     },
     {
       "multiplicateur": 3.0,
-      "heures_a_sec_par_jour": 0.05
+      "heures_a_sec_par_jour": 0.0273972602739726
     }
   ],
-  "capacite_equivalente": 1.28125,
-  "m3_de_stockage_evites": 123.75,
-  "carburant_equivalent": 1.9444444444444444
+  "capacite_equivalente": 1.2172413793103447,
+  "m3_de_stockage_evites": 95.58620689655167,
+  "carburant_equivalent": 1.7241379310344827
 }

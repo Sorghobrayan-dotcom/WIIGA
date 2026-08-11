@@ -88,6 +88,10 @@ def jouer(politique, climat, tarif, jour: int) -> dict:
 def construire() -> dict:
     from stable_baselines3 import PPO
 
+    # la graine médiane des trois, pas la meilleure. Choisir la meilleure pour
+    # les illustrations et publier la moyenne pour les chiffres serait une façon
+    # discrète de mentir : `graines.json` donne les trois, et c'est celle du
+    # milieu qu'on rejoue ici.
     modele = PPO.load(RACINE / "agents" / "graine_0")
 
     def agent(obs, env):

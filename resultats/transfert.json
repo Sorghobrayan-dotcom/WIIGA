@@ -1,0 +1,158 @@
+{
+  "genere_le": "2026-08-11T19:08:53+00:00",
+  "journees": 365,
+  "seed": 1000,
+  "entraine_sur": "Ouagadougou",
+  "villes": {
+    "Ouagadougou": {
+      "agent": {
+        "heures_a_sec_par_jour": 0.15616438356164383,
+        "fcfa_par_jour": 268744.66575342463,
+        "creux_moyen": 0.2604481286131861,
+        "alertes_par_jour": 0.7013698630136986,
+        "justesse_alertes": 0.96484375,
+        "confiance_finale": 1.0
+      },
+      "regle_ecrite": {
+        "heures_a_sec_par_jour": 0.3315068493150685,
+        "fcfa_par_jour": 321557.3178082192,
+        "creux_moyen": 0.42912608373793376,
+        "alertes_par_jour": 0.0,
+        "justesse_alertes": 0.0,
+        "confiance_finale": 0.55
+      },
+      "saisons": {
+        "sèche tempérée": 149,
+        "sèche chaude": 100,
+        "pluies": 116
+      },
+      "seuils": {
+        "pluie_mm": 2.3171090670170824,
+        "soleil": 0.9225838308562194,
+        "chaleur_c": 36.729224704336396
+      },
+      "ecart_heures_a_sec_pct": 52.892561983471076,
+      "agent_bat_la_regle": true
+    },
+    "Chennai": {
+      "agent": {
+        "heures_a_sec_par_jour": 0.06027397260273973,
+        "fcfa_par_jour": 247370.60821917807,
+        "creux_moyen": 0.286679974102696,
+        "alertes_par_jour": 0.6356164383561644,
+        "justesse_alertes": 0.9482758620689655,
+        "confiance_finale": 0.89
+      },
+      "regle_ecrite": {
+        "heures_a_sec_par_jour": 0.18356164383561643,
+        "fcfa_par_jour": 309030.3863013699,
+        "creux_moyen": 0.4653618536744475,
+        "alertes_par_jour": 0.0,
+        "justesse_alertes": 0.0,
+        "confiance_finale": 0.55
+      },
+      "saisons": {
+        "sèche tempérée": 160,
+        "sèche chaude": 107,
+        "pluies": 98
+      },
+      "seuils": {
+        "pluie_mm": 5.67864461808254,
+        "soleil": 0.8056538756266228,
+        "chaleur_c": 34.082932078617546
+      },
+      "ecart_heures_a_sec_pct": 67.16417910447761,
+      "agent_bat_la_regle": true
+    },
+    "Nairobi": {
+      "agent": {
+        "heures_a_sec_par_jour": 0.10136986301369863,
+        "fcfa_par_jour": 219444.66301369862,
+        "creux_moyen": 0.2755107981956185,
+        "alertes_par_jour": 0.6438356164383562,
+        "justesse_alertes": 0.9617021276595744,
+        "confiance_finale": 0.89
+      },
+      "regle_ecrite": {
+        "heures_a_sec_par_jour": 0.11232876712328767,
+        "fcfa_par_jour": 304391.60547945206,
+        "creux_moyen": 0.503588532191752,
+        "alertes_par_jour": 0.0,
+        "justesse_alertes": 0.0,
+        "confiance_finale": 0.55
+      },
+      "saisons": {
+        "sèche tempérée": 181,
+        "sèche chaude": 121,
+        "pluies": 63
+      },
+      "seuils": {
+        "pluie_mm": 2.3476996249354345,
+        "soleil": 0.8182548605982268,
+        "chaleur_c": 26.254497332122064
+      },
+      "ecart_heures_a_sec_pct": 9.756097560975608,
+      "agent_bat_la_regle": true
+    },
+    "Sydney": {
+      "agent": {
+        "heures_a_sec_par_jour": 0.09315068493150686,
+        "fcfa_par_jour": 225212.04657534248,
+        "creux_moyen": 0.2783608138337362,
+        "alertes_par_jour": 0.5753424657534246,
+        "justesse_alertes": 0.9809523809523809,
+        "confiance_finale": 1.0
+      },
+      "regle_ecrite": {
+        "heures_a_sec_par_jour": 0.08767123287671233,
+        "fcfa_par_jour": 305307.66575342463,
+        "creux_moyen": 0.5045038947169691,
+        "alertes_par_jour": 0.0,
+        "justesse_alertes": 0.0,
+        "confiance_finale": 0.55
+      },
+      "saisons": {
+        "sèche chaude": 119,
+        "sèche tempérée": 178,
+        "pluies": 68
+      },
+      "seuils": {
+        "pluie_mm": 3.2370743079988133,
+        "soleil": 0.6750556891854427,
+        "chaleur_c": 25.191338806230245
+      },
+      "ecart_heures_a_sec_pct": -6.250000000000005,
+      "agent_bat_la_regle": false
+    },
+    "Lima": {
+      "agent": {
+        "heures_a_sec_par_jour": 0.13150684931506848,
+        "fcfa_par_jour": 215132.46575342465,
+        "creux_moyen": 0.2787820629183442,
+        "alertes_par_jour": 0.7616438356164383,
+        "justesse_alertes": 0.9640287769784173,
+        "confiance_finale": 1.0
+      },
+      "regle_ecrite": {
+        "heures_a_sec_par_jour": 0.12054794520547946,
+        "fcfa_par_jour": 306990.20273972605,
+        "creux_moyen": 0.48219704294155025,
+        "alertes_par_jour": 0.0,
+        "justesse_alertes": 0.0,
+        "confiance_finale": 0.55
+      },
+      "saisons": {
+        "sèche chaude": 146,
+        "sèche tempérée": 219
+      },
+      "seuils": {
+        "pluie_mm": 0.5,
+        "soleil": 0.8586196688497979,
+        "chaleur_c": 22.300277657675473
+      },
+      "ecart_heures_a_sec_pct": -9.090909090909076,
+      "agent_bat_la_regle": false
+    }
+  },
+  "tient_partout": false
+}

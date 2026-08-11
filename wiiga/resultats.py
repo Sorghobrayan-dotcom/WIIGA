@@ -255,6 +255,10 @@ def main() -> None:
                 "genere_le": datetime.now(UTC).isoformat(timespec="seconds"),
                 "journees": args.journees,
                 "seed": args.seed,
+                # quel modèle a produit les tableaux détaillés. Les trois graines
+                # vivent dans `graines.json` ; ici il en faut une seule, et on
+                # dit laquelle plutôt que de laisser le lecteur le deviner.
+                "modele": str(args.modele),
                 "mesures": mesures,
                 "resume": resume,
             },

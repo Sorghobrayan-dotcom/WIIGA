@@ -26,7 +26,10 @@ sys.path.insert(0, str(RACINE))
 sys.path.insert(0, str(ICI))
 
 RESULTATS = RACINE / "resultats"
-SORTIE = ICI / "index.html"
+#: GitHub Pages ne sait servir que la racine du dépôt ou `/docs`, jamais un
+#: dossier arbitraire. La page se construit donc directement là où elle sera
+#: publiée, plutôt que d'être recopiée à la main la veille du dépôt.
+SORTIE = RACINE / "docs" / "index.html"
 
 def rassembler() -> dict:
     """Tout ce que la page dessine, en un seul objet.
@@ -63,6 +66,7 @@ def main() -> None:
     if marque not in gabarit:
         raise SystemExit(f"marque {marque} absente de gabarit.html")
 
+    SORTIE.parent.mkdir(parents=True, exist_ok=True)
     SORTIE.write_text(gabarit.replace(marque, f"const DONNEES={charge};"), encoding="utf-8")
     poids = SORTIE.stat().st_size / 1024
     print(f"page écrite : {SORTIE}  ({poids:.0f} Ko, autonome)")
