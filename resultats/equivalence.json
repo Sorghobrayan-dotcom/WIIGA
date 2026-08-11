@@ -1,0 +1,63 @@
+{
+  "genere_le": "2026-08-11T11:00:11+00:00",
+  "journees": 60,
+  "seed": 1000,
+  "agent_reseau_actuel": {
+    "heures_a_sec_par_jour": 0.23333333333333334,
+    "fcfa_par_jour": 279436.4,
+    "litres_manquants_par_jour": 2661.9563159026857
+  },
+  "capacite_actuelle_m3": 440.0,
+  "carburant_actuel_kwh": 320.0,
+  "regle_par_capacite": [
+    {
+      "multiplicateur": 1.0,
+      "heures_a_sec_par_jour": 0.5333333333333333
+    },
+    {
+      "multiplicateur": 1.15,
+      "heures_a_sec_par_jour": 0.35
+    },
+    {
+      "multiplicateur": 1.3,
+      "heures_a_sec_par_jour": 0.21666666666666667
+    },
+    {
+      "multiplicateur": 1.5,
+      "heures_a_sec_par_jour": 0.05
+    },
+    {
+      "multiplicateur": 1.75,
+      "heures_a_sec_par_jour": 0.016666666666666666
+    },
+    {
+      "multiplicateur": 2.0,
+      "heures_a_sec_par_jour": 0.0
+    }
+  ],
+  "regle_par_carburant": [
+    {
+      "multiplicateur": 1.0,
+      "heures_a_sec_par_jour": 0.5333333333333333
+    },
+    {
+      "multiplicateur": 1.25,
+      "heures_a_sec_par_jour": 0.4
+    },
+    {
+      "multiplicateur": 1.5,
+      "heures_a_sec_par_jour": 0.36666666666666664
+    },
+    {
+      "multiplicateur": 2.0,
+      "heures_a_sec_par_jour": 0.21666666666666667
+    },
+    {
+      "multiplicateur": 3.0,
+      "heures_a_sec_par_jour": 0.05
+    }
+  ],
+  "capacite_equivalente": 1.28125,
+  "m3_de_stockage_evites": 123.75,
+  "carburant_equivalent": 1.9444444444444444
+}

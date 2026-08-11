@@ -1,0 +1,157 @@
+# WIIGA
+
+**A reinforcement-learning operator for city water pumps in a place where the
+electricity grid goes down every evening.**
+
+Ouagadougou, Burkina Faso. Three district pumps, three storage tanks, one shared
+diesel reserve, and a grid that is load-shed on a schedule nobody publishes. The
+question a utility operator actually faces at 4 p.m. is not *"what is the
+cheapest kilowatt-hour"*. It is *"will there be power at seven, and if not, is
+there enough water already in the tank for the evening"*.
+
+WIIGA is a PPO agent that answers that question every hour, and one more that no
+published pump controller asks: **should I tell the city?**
+
+---
+
+## The three things that make this different
+
+### 1. The tank is the battery
+
+Solar power is free at 1 p.m. and gone by 7 p.m., which is exactly when the
+residential district gets thirsty. Storing that energy would mean lithium —
+expensive, and due for replacement in eight years.
+
+But the storage is already on site. It is the **tank**. Pumping at midday, on
+free sunlight, into a district that consumes nothing at midday is not waste: it
+is storage. You are not storing electricity, you are storing work already done.
+
+This is also what makes learning necessary rather than decorative. To decide
+whether to fill *now*, the agent must hold four things together that do not
+arrive at the same time: the district's peak six hours out, the sun's arc, the
+risk of a grid cut this evening, and the diesel that is left. A hand-written
+rule does not arbitrate four horizons — and we measured that, against a rule
+that reads the same forecast the agent does.
+
+### 2. The reward reads the worst-served district, not the average
+
+`min`, not `mean`. One line, and it carries the whole project.
+
+With an average, draining one district to keep two full is an excellent policy.
+It is also unacceptable. Every number in the results table below comes from an
+agent that was optimised for the district doing worst — which is why it is more
+expensive than it could be, and why that is the point.
+
+### 3. The agent can talk to the city
+
+The agent has one action that touches no pump: **warn the city to fill their
+jerrycans before the cut.** SMS, neighbourhood radio, the market crier — the
+channel does not matter, the mechanism does.
+
+This action does not exist in the pump-scheduling literature, for a reason that
+is not technical: **in Europe nobody stores water at home.** Published demand
+response shifts industrial load through pricing. Here every household has
+jerrycans, and one sentence at 5 p.m. moves more water than an hour of diesel.
+
+Three properties make it a genuine learning problem rather than a button:
+
+- **Warning moves demand forward, it does not remove it.** Households draw now
+  what they would have drunk later. The tank is therefore under *more* strain in
+  the following hour and less during the cut. Total volume is conserved exactly.
+- **The cost of the action is the future effectiveness of that same action.** A
+  false alarm costs no fuel and no money. It costs being listened to.
+- **Credibility is lost far faster than it is earned.** A correct warning buys
+  +0.04 of trust; a false one costs −0.15. That asymmetry alone fixes a
+  break-even accuracy of **78.9 %**, and the agent has to learn to stay above it.
+
+There is no penalty term forbidding the agent to chatter. Talking too often is
+simply a losing bet, and it has to work that out.
+
+---
+
+## Running it
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+python -m wiiga.resultats --journees 365
+```
+
+That reproduces every number in this file and writes
+`resultats/comparaison.json`. Training from scratch takes about fifteen minutes
+on a laptop CPU:
+
+```bash
+python -m wiiga.train --pas 600000
+```
+
+Point the model at any city on earth — no API key, no account:
+
+```bash
+python -m wiiga.ville Chennai
+```
+
+Geocoding and three years of daily ERA5 records come from Open-Meteo and are
+cached to `villes/` so the demo runs offline afterwards.
+
+---
+
+## Results
+
+<!-- chiffres:début -->
+
+*(run `python -m wiiga.resultats --journees 365` then `python -m wiiga.rapport`)*
+
+<!-- chiffres:fin -->
+
+---
+
+## What this is not
+
+Stated plainly, because a result you have to defend later is worth less than a
+limitation you declared yourself.
+
+- **PPO for pump scheduling is established work.** So is solar-diesel hybrid
+  dispatch. What is new here is the *objective* (worst-served district) and the
+  *communication action*, not the algorithm.
+- **The hydraulics are a mass balance per tank, not an EPANET simulation.** No
+  head loss, no pipe network, no pressure. For scheduling decisions at hourly
+  resolution this is the right level of detail; for anything touching a real
+  valve it is not.
+- **The load-shedding model is calibrated by hand**, not fitted to SONABEL
+  outage records — those are not published. The three regimes are plausible, and
+  the agent's advantage is measured against rules operating under the *same*
+  model, so the comparison is fair even where the model is wrong.
+- **The demand elasticity to heat (2.5 % per °C above 30 °C) is the weakest
+  assumption in the project.** It is written in `calendrier.py` next to the
+  constant rather than buried in it. The literature spans 1–4 % for hot climates.
+- **Transfer to another city is climatic only.** District profiles, tank sizes
+  and the load-shedding regime stay those of Ouagadougou. We change what the
+  model knows about geography — twelve temperatures, twelve solar sums, twelve
+  rainfall figures — and nothing else.
+- **Household jerrycan behaviour is a model, not a measurement.** 45 % maximum
+  response, six-hour drawdown. The order of magnitude is what carries the
+  argument; the exact figure would need a field survey.
+
+---
+
+## Repository
+
+| Path | What lives there |
+|---|---|
+| `wiiga/env.py` | the Gymnasium environment: tanks, pumps, sources, reward |
+| `wiiga/grid.py` | load shedding — three seasonal regimes, forecast vs truth |
+| `wiiga/alerte.py` | the warning channel and the city's trust in the utility |
+| `wiiga/calendrier.py` | heat, sun, rain, Ramadan and Tabaski across the year |
+| `wiiga/ville.py` | plug any city on earth in via Open-Meteo |
+| `wiiga/baselines.py` | what the agent has to beat, including a rule that reads the same forecast |
+| `wiiga/resultats.py` | the measurement harness — the only place numbers are produced |
+| `wiiga/transfert.py` | the same weights, replayed on climates never seen in training |
+| `wiiga/rapport.py` | turns the JSON into the tables above, so no number is ever retyped |
+
+**The code is documented in French**, at length, and that is deliberate: WIIGA
+is built for a francophone utility in Burkina Faso, and the person who would
+maintain it reads French. Every module opens with an explanation of *why* it is
+shaped the way it is, including the versions that were measured and thrown away.

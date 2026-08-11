@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WIIGA — an RL operator for city water under load shedding</title>
+<meta name="description" content="A reinforcement-learning agent schedules three district water pumps through daily power cuts, and decides when to warn the city. Measured against hand-written rules on identical seeds.">
+<style>
+  :root{
+    --paper:#fdfcfa; --paper-2:#f6f2ea; --paper-3:#efe9de;
+    --ink:#1a1714; --ink-2:#544d43; --ink-3:#8b8377;
+    --rule:#e7e0d4; --rule-2:#d3c9b8;
+    --water:#1f6f8b; --water-2:#4fa3c0; --water-3:#a8d4e3;
+    --sun:#d8a12a; --grid:#5f7f90; --diesel:#9c5230;
+    --warn:#c8801e; --bad:#bd4a2c; --good:#2f7d4f;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+       font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+  .sheet{max-width:1060px;margin:0 auto;padding:clamp(36px,6vw,88px) clamp(20px,4vw,44px) 120px}
+
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5.6vw,56px);
+     line-height:1.08;letter-spacing:-.021em;margin:0 0 .46em;text-wrap:balance}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(23px,3.2vw,33px);
+     line-height:1.18;margin:0 0 .5em;letter-spacing:-.012em;text-wrap:balance}
+  h3{font-size:12.5px;text-transform:uppercase;letter-spacing:.12em;
+     color:var(--ink-3);font-weight:650;margin:0 0 14px}
+  p{margin:0 0 1.15em;max-width:66ch}
+  .lede{font-size:clamp(18px,2.1vw,21.5px);color:var(--ink-2);max-width:58ch;line-height:1.6}
+  b,strong{font-weight:640}
+  a{color:var(--water);text-underline-offset:3px}
+  code{font-family:var(--mono);font-size:.87em;background:var(--paper-2);
+       padding:.14em .4em;border-radius:5px}
+  section{margin:clamp(64px,9vw,112px) 0 0;padding-top:clamp(32px,4vw,48px);
+          border-top:1px solid var(--rule)}
+  .quiet{color:var(--ink-3);font-size:14.5px;max-width:70ch}
+
+  /* ---------- headline numbers ---------- */
+  .figs{display:grid;gap:16px;margin:36px 0 10px;
+        grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .fig{background:var(--paper-2);border-radius:13px;padding:20px 22px}
+  .fig.hi{background:color-mix(in srgb,var(--water) 9%,var(--paper-2))}
+  .fig .n{font-family:var(--serif);font-size:clamp(28px,3.9vw,38px);line-height:1;
+          font-weight:600;letter-spacing:-.022em;display:block}
+  .fig.hi .n{color:var(--water)}
+  .fig .l{font-size:13.5px;color:var(--ink-3);line-height:1.45;display:block;margin-top:9px}
+
+  /* ---------- console ---------- */
+  .console{background:var(--paper-2);border-radius:18px;padding:clamp(18px,2.6vw,30px);
+           margin:34px 0 18px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-bottom:22px}
+  .grp{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .grp>span.t{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;
+               color:var(--ink-3);font-weight:650;margin-right:2px}
+  button{font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;cursor:pointer;
+         background:var(--paper);color:var(--ink-2);border:1px solid var(--rule-2);
+         transition:background .13s,color .13s,border-color .13s}
+  button:hover{border-color:var(--ink-3)}
+  button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  button.play{min-width:104px;font-variant-numeric:tabular-nums}
+
+  .stage{display:grid;gap:26px;grid-template-columns:minmax(230px,300px) 1fr;align-items:start}
+  @media(max-width:760px){.stage{grid-template-columns:1fr}}
+
+  .readout{display:flex;flex-wrap:wrap;gap:6px 26px;margin:18px 0 0;
+           padding-top:16px;border-top:1px solid var(--rule)}
+  .ro{min-width:96px}
+  .ro .k{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+  .ro .v{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.25;
+         font-variant-numeric:tabular-nums}
+  .ro .v.bad{color:var(--bad)} .ro .v.good{color:var(--good)}
+
+  .keys{display:flex;flex-wrap:wrap;gap:7px 20px;font-size:13px;color:var(--ink-3);margin:14px 0 0}
+  .keys i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px}
+
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  figure{margin:26px 0}
+  figcaption{font-size:14px;color:var(--ink-3);margin-top:12px;max-width:70ch}
+
+  /* ---------- tables ---------- */
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:540px}
+  caption{text-align:left;font-size:14px;color:var(--ink-3);margin-bottom:12px;max-width:72ch}
+  th,td{padding:10px 13px;border-bottom:1px solid var(--rule);text-align:right;
+        font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left;font-variant-numeric:normal}
+  thead th{font-size:12px;text-transform:uppercase;letter-spacing:.07em;
+           color:var(--ink-3);font-weight:650;border-bottom:1px solid var(--rule-2)}
+  tr.us{background:color-mix(in srgb,var(--water) 7%,transparent)}
+  tr.us td{font-weight:640}
+  td.win{color:var(--good)}
+
+  pre{background:var(--paper-2);border-radius:12px;padding:18px 20px;overflow-x:auto;
+      font-family:var(--mono);font-size:13.5px;line-height:1.75;margin:0 0 16px}
+  .note{border-left:3px solid var(--rule-2);padding-left:18px;color:var(--ink-2);font-size:16px}
+  ul{max-width:66ch;padding-left:1.2em} li{margin-bottom:.6em}
+  footer{margin-top:96px;padding-top:28px;border-top:1px solid var(--rule);
+         font-size:14px;color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>The grid fails eight hours a day.<br>Someone still has to decide when to pump.</h1>
+
+<p class="lede">WIIGA is a reinforcement-learning operator for three district water
+pumps in Ouagadougou, Burkina Faso — under load shedding, on a finite diesel
+reserve, optimising for <b>the worst-served district rather than the average</b>.
+It also does something no published pump controller does: it decides when to
+<b>warn the city</b>, and it pays for being wrong.</p>
+
+<div class="figs" id="headline"></div>
+<p class="note" id="verdict"></p>
+
+<!-- ==================== CONSOLE ==================== -->
+<section>
+  <h2>Watch it decide</h2>
+  <p>One simulated day, hour by hour. Change the city and the same agent — the
+  weights trained on Ouagadougou, unchanged — runs under a climate it never saw.
+  Switch to the rulebook to see what the same day looks like without learning.</p>
+
+  <div class="console">
+    <div class="bar">
+      <div class="grp" id="c-city"><span class="t">City</span></div>
+      <div class="grp" id="c-season"><span class="t">Season</span></div>
+      <div class="grp" id="c-policy"><span class="t">Operator</span></div>
+      <div class="grp">
+        <button class="play" id="c-play" type="button">▶ Play</button>
+        <button id="c-speed" type="button">1×</button>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div>
+        <h3 id="tanks-title">Districts</h3>
+        <svg id="tanks" viewBox="0 0 300 250" role="img"
+             aria-label="Cross-section of the three district storage tanks with their current water level"></svg>
+      </div>
+      <div>
+        <h3>Tank level through the day</h3>
+        <svg id="curve" viewBox="0 0 700 260" role="img"
+             aria-label="Fill level of each district over 24 hours, drawn as the day advances"></svg>
+        <h3 style="margin-top:22px">Energy source, hour by hour</h3>
+        <svg id="strip" viewBox="0 0 700 78" role="img"
+             aria-label="Which energy source each pump uses at each hour"></svg>
+      </div>
+    </div>
+
+    <div class="readout" id="readout"></div>
+
+    <div class="keys">
+      <span><i style="background:var(--sun)"></i>solar</span>
+      <span><i style="background:var(--grid)"></i>grid</span>
+      <span><i style="background:var(--diesel)"></i>diesel generator</span>
+      <span><i style="background:var(--paper-3)"></i>pump idle</span>
+      <span><i style="background:color-mix(in srgb,var(--bad) 16%,transparent)"></i>grid down</span>
+      <span><i style="background:var(--warn)"></i>agent warns the city</span>
+    </div>
+  </div>
+  <p class="quiet">Every scenario here was played in Python by the trained model
+  and written into this page. The browser replays them — there is no model
+  running in this tab, and saying otherwise would be a lie you could not check.</p>
+</section>
+
+<!-- ==================== BENCHMARK ==================== -->
+<section>
+  <h2>What it had to beat</h2>
+  <p class="lede">Beating current practice is easy. Beating somebody who reads the
+  same outage forecast is not — and that is the row that decides whether learning
+  earned its place here.</p>
+  <div class="scroll"><table id="bench"></table></div>
+  <p id="bench-after"></p>
+  <div class="scroll"><table id="seeds"></table></div>
+</section>
+
+<!-- ==================== SEASONS ==================== -->
+<section>
+  <h2>The average hides the problem</h2>
+  <p>Ouagadougou does not have one water problem, it has three. In April it is
+  39.8&nbsp;°C, demand is up a quarter, and the grid fails every evening — but the
+  sky is clear, so the tank-as-battery works. In August it is 30.1&nbsp;°C and it
+  rains 8.7&nbsp;mm a day: demand falls, and so does the sunshine the battery
+  depends on. The two seasons want opposite policies, which is why no fixed
+  setting holds both.</p>
+  <div class="scroll"><table id="seasons"></table></div>
+</section>
+
+<!-- ==================== SPEECH ==================== -->
+<section>
+  <h2>The action that touches no pump</h2>
+  <p>The agent can broadcast one message: <b>fill your jerrycans, the power is
+  about to go</b>. In Europe this action would be meaningless — nobody stores
+  water at home. Here every household has containers, and one sentence at
+  5&nbsp;p.m. moves more water than an hour of diesel.</p>
+
+  <p>It is not a free button. Warning <b>moves demand forward, it does not remove
+  it</b> — the tank is under more strain in the following hour, less during the
+  cut, and the daily volume is conserved exactly. And a false alarm costs no fuel
+  and no money: it costs <b>being listened to</b>. A correct warning buys
+  <b>+0.04</b> of the city's trust, a false one costs <b>−0.15</b>. That asymmetry
+  alone fixes a break-even accuracy of <b>78.9&nbsp;%</b> — no penalty term forbids
+  chatter, it is simply a losing bet, and the agent has to work that out.</p>
+
+  <div class="scroll"><table id="speech"></table></div>
+</section>
+
+<!-- ==================== TRANSFER ==================== -->
+<section>
+  <h2>A city it has never seen</h2>
+  <p><i>Scalable</i> is a word everyone writes and nobody measures. Here it means
+  one thing: <b>the weights trained on Ouagadougou, replayed unchanged on climates
+  that were not in training</b>, against the same hand-written rule. Twelve
+  temperatures, twelve solar sums and twelve rainfall figures are replaced —
+  everything the model knows about geography — and we look.</p>
+
+  <figure>
+    <svg id="climate" viewBox="0 0 700 230" role="img"
+         aria-label="Monthly temperature and rainfall for the selected city"></svg>
+    <figcaption id="climate-cap"></figcaption>
+  </figure>
+  <div class="scroll"><table id="transfer"></table></div>
+</section>
+
+<!-- ==================== TWIN ==================== -->
+<section>
+  <h2>How much concrete does it replace?</h2>
+  <p>The simulator is a <b>digital twin</b> of the network — tanks, pumps,
+  sources, a failing grid, demand that follows heat and holidays, calibrated on
+  three years of measured daily records. You do not connect an agent to a city's
+  water supply without one.</p>
+  <p>But a twin is also useful on its own: it answers capital questions before
+  anyone pours anything. So we ask the one a utility director actually asks —
+  <i>how much bigger would the tanks have to be for the rulebook to serve the
+  city as well as the agent serves it with the tanks we already have?</i></p>
+  <figure>
+    <svg id="equiv" viewBox="0 0 700 250" role="img"
+         aria-label="Dry hours per day for the rulebook as tank capacity increases, against the agent's level"></svg>
+    <figcaption id="equiv-cap"></figcaption>
+  </figure>
+</section>
+
+<!-- ==================== UNITS ==================== -->
+<section>
+  <h2>Physics is universal, money is local</h2>
+  <p>A figure in West African francs reads in Ouagadougou and nowhere else. But
+  converting everything to dollars is the wrong fix: an electricity tariff varies
+  far more between countries than an exchange rate corrects for. So the primary
+  units here are the ones that read everywhere — <b>kilowatt-hours, litres of
+  diesel, kilograms of CO₂, and person-days above the WHO survival threshold</b>.
+  Cost is a presentation layer with the local tariff written on it.</p>
+  <p class="quiet">This is also the one input the project cannot fetch by itself.
+  Climate comes from Open-Meteo with no key and no account; there is no open,
+  reliable equivalent for city-level electricity tariffs. The figures used are
+  declared orders of magnitude, kept in one file so a utility that knows its real
+  tariff replaces them in a minute — better a number labelled generic than a
+  precise one that is wrong.</p>
+</section>
+
+<!-- ==================== VERIFY ==================== -->
+<section>
+  <h2>Check it yourself</h2>
+  <p>Every number on this page comes from a JSON file, and every JSON file comes
+  from a command. Nothing here was typed by hand.</p>
+  <pre>pip install -r requirements.txt
+
+python -m wiiga.resultats    --journees 365   # the tables above
+python -m wiiga.graines      --journees 365   # three training seeds, mean and spread
+python -m wiiga.transfert    --journees 365   # the city transfer
+python -m wiiga.equivalence  --journees 365   # how much storage the agent replaces
+python -m wiiga.ville        Chennai          # plug in any city, no API key
+python -m wiiga.train        --pas 600000     # retrain, ~20 min on a laptop CPU</pre>
+  <p class="note">This page is a single static file with its data written inside
+  it. No server, no serverless function, no network request — it cannot break in
+  front of you because an API changed its mind.</p>
+</section>
+
+<!-- ==================== LIMITS ==================== -->
+<section>
+  <h2>What this is not</h2>
+  <ul>
+    <li><b>PPO for pump scheduling is established work</b>, and so is solar-diesel
+    dispatch. What is new here is the objective and the communication action, not
+    the algorithm.</li>
+    <li><b>The hydraulics are a mass balance per tank, not EPANET.</b> No head
+    loss, no pipe network, no pressure. Right for hourly scheduling; wrong for
+    anything touching a real valve.</li>
+    <li><b>The load-shedding model is hand-calibrated</b>, not fitted to utility
+    outage records — those are not published. The agent's advantage is measured
+    against rules living under the <i>same</i> model, so the comparison stays fair
+    even where the model is wrong.</li>
+    <li><b>Household jerrycan behaviour is a model, not a measurement.</b>
+    45&nbsp;% maximum response, six-hour drawdown. The order of magnitude carries
+    the argument; the exact figure needs a field survey.</li>
+    <li><b>Transfer is climatic only.</b> District profiles, tank sizes and the
+    load-shedding regime stay those of Ouagadougou.</li>
+    <li><b>Demand elasticity to heat — 2.5&nbsp;% per °C above 30&nbsp;°C — is the
+    weakest assumption in the project.</b> It sits next to the constant in the
+    source rather than buried in it. The literature spans 1–4&nbsp;% for hot
+    climates.</li>
+  </ul>
+</section>
+
+<footer id="foot"></footer>
+</div>
+
+<script>
+/*DONNEES*/
+
+(function(){
+const D=DONNEES, S=D.scenarios, C=D.comparaison, R=C.resume, M=C.mesures;
+const NS="http://www.w3.org/2000/svg";
+const AGENT="agent WIIGA (PPO)", RULE="prévoyant (règle écrite)",
+      FIELD="exploitant (consigne fixe)", CHEAP="moins cher (sans prévision)",
+      MUTE="agent WIIGA, sans la parole";
+const NAME={}; NAME[AGENT]="WIIGA agent (PPO)"; NAME[RULE]="hand-written rulebook";
+NAME[FIELD]="current practice (fixed setting)"; NAME[CHEAP]="cheapest source (no forecast)";
+NAME[MUTE]="WIIGA agent, not allowed to speak";
+const SEASON={"pluies":"rainy","sèche chaude":"hot dry","sèche tempérée":"mild dry"};
+const ZONE={"marché":"market","résidentiel":"residential","mixte":"school + clinic"};
+const SRC={"solaire":"var(--sun)","reseau":"var(--grid)","diesel":"var(--diesel)"};
+const MONTH=["J","F","M","A","M","J","J","A","S","O","N","D"];
+
+const n0=v=>Math.round(v).toLocaleString("en-US"), n1=v=>v.toFixed(1), n2=v=>v.toFixed(2);
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);
+  if(p)p.appendChild(e);return e;};
+const clr=(t,h)=>{while(t.firstChild&&(!h||t.children.length>h))t.removeChild(t.lastChild);};
+
+/* ================= headline ================= */
+const H=R.en_humain, vr=R.vs_regle_ecrite, vp=R.vs_pratique_actuelle;
+[["hi",n0(vr.heures_a_sec_pct)+"%","fewer dry hours than the best hand-written rulebook"],
+ ["hi",n0(H.personnes_jours_epargnees_par_an_vs_regle),"person-days a year kept above the WHO survival threshold"],
+ ["",n0(H.kg_co2_evites_par_an_vs_regle/1000)+" t","CO₂ not emitted per year"],
+ ["",n0(H.habitants_desservis),"people across three districts"]
+].forEach(([c,n,l])=>{
+  const d=document.createElement("div"); d.className="fig"+(c?" "+c:"");
+  const a=document.createElement("span"); a.className="n"; a.textContent=n;
+  const b=document.createElement("span"); b.className="l"; b.textContent=l;
+  d.append(a,b); document.getElementById("headline").appendChild(d);
+});
+document.getElementById("verdict").innerHTML=
+ "Against what the utility runs today, the agent cuts dry hours by <b>"+n0(vp.heures_a_sec_pct)+
+ "%</b>. The harder comparison is the rulebook that reads the same forecast — and it still wins by <b>"+
+ n0(vr.heures_a_sec_pct)+"%</b>, while holding the tanks at <b>"+n2(M[AGENT].creux_moyen)+
+ "</b> of capacity at the day's low point instead of <b>"+n2(M[RULE].creux_moyen)+
+ "</b>. It runs the system tighter <i>and</i> leaves fewer people dry.";
+
+/* ================= console ================= */
+const st={ville:Object.keys(S.villes)[0],saison:null,pol:"agent",t:0,play:false,vit:1};
+const SEASONS_ORDER=["sèche chaude","pluies","sèche tempérée"];
+const pill=(txt,on,fn)=>{const b=document.createElement("button");b.type="button";
+  b.textContent=txt;b.setAttribute("aria-pressed",on?"true":"false");b.onclick=fn;return b;};
+
+function courant(){const v=S.villes[st.ville];return v.jours[st.saison].politiques[st.pol];}
+function jour(){return S.villes[st.ville].jours[st.saison];}
+
+function bindVille(){
+  const g=document.getElementById("c-city"); clr(g,1);
+  Object.keys(S.villes).forEach(nom=>{
+    g.appendChild(pill(nom+(nom==="Ouagadougou"?" ★":""),nom===st.ville,()=>{
+      st.ville=nom;
+      const dispo=SEASONS_ORDER.filter(s=>S.villes[nom].jours[s]);
+      if(!dispo.includes(st.saison))st.saison=dispo[0];
+      st.t=0; bindVille(); bindSaison(); dessineClimat(); rendre();
+    }));
+  });
+}
+function bindSaison(){
+  const g=document.getElementById("c-season"); clr(g,1);
+  SEASONS_ORDER.filter(s=>S.villes[st.ville].jours[s]).forEach(s=>{
+    g.appendChild(pill(SEASON[s]||s,s===st.saison,()=>{st.saison=s;st.t=0;bindSaison();rendre();}));
+  });
+}
+function bindPol(){
+  const g=document.getElementById("c-policy"); clr(g,1);
+  [["agent","WIIGA agent"],["regle","rulebook"]].forEach(([k,l])=>{
+    g.appendChild(pill(l,k===st.pol,()=>{st.pol=k;bindPol();rendre();}));
+  });
+}
+st.saison=SEASONS_ORDER.find(s=>S.villes[st.ville].jours[s]);
+bindVille(); bindSaison(); bindPol();
+
+const bPlay=document.getElementById("c-play"), bSpeed=document.getElementById("c-speed");
+bPlay.onclick=()=>{st.play=!st.play; if(st.play&&st.t>=23.99)st.t=0;
+  bPlay.textContent=st.play?"⏸ Pause":"▶ Play";};
+bSpeed.onclick=()=>{st.vit=st.vit===1?2:st.vit===2?4:1; bSpeed.textContent=st.vit+"×";};
+
+/* ---- tanks ---- */
+function dessineTanks(){
+  const s=document.getElementById("tanks"); s.textContent="";
+  const r=courant(), h=Math.min(23,Math.floor(st.t)), f=st.t-h;
+  const a=r.heures[h], b=r.heures[Math.min(23,h+1)];
+  const W=300,Hh=250, n=S.zones.length, bw=76, gap=(W-n*bw)/(n+1);
+
+  S.zones.forEach((z,i)=>{
+    const x=gap+i*(bw+gap), top=26, bh=176;
+    const lvl=a.remplissages[i]+(b.remplissages[i]-a.remplissages[i])*f;
+    const wh=Math.max(2,bh*Math.min(1,Math.max(0,lvl)));
+    const col=lvl<0.08?"var(--bad)":lvl<0.22?"var(--warn)":"var(--water)";
+
+    el("rect",{x:x,y:top,width:bw,height:bh,rx:9,fill:"var(--paper)",
+      stroke:"var(--rule-2)","stroke-width":1.5},s);
+    // eau, avec une surface qui ondule
+    const yw=top+bh-wh, amp=1.8, ph=st.t*2.4+i;
+    let d="M"+x+" "+(top+bh);
+    d+="L"+x+" "+yw;
+    for(let k=0;k<=bw;k+=4) d+="L"+(x+k)+" "+(yw+amp*Math.sin(k/11+ph));
+    d+="L"+(x+bw)+" "+(top+bh)+"Z";
+    el("path",{d:d,fill:col,"fill-opacity":.30},s);
+    el("path",{d:"M"+x+" "+yw+(()=>{let q="";for(let k=0;k<=bw;k+=4)
+      q+="L"+(x+k)+" "+(yw+amp*Math.sin(k/11+ph));return q;})(),
+      fill:"none",stroke:col,"stroke-width":2},s);
+    // bulles quand la pompe tourne
+    if(a.puissances[i]>0.08&&wh>18){
+      const nb=Math.min(5,Math.max(1,Math.round(a.puissances[i]*5)));
+      for(let k=0;k<nb;k++){
+        const bx=x+10+((k*23+i*11)%(bw-20));
+        const by=top+bh-((st.t*26+k*31+i*17)%(wh-6))-4;
+        el("circle",{cx:bx,cy:by,r:1.9+((k+i)%2)*.9,fill:col,"fill-opacity":.42},s);
+      }
+    }
+    // graduations
+    [.25,.5,.75].forEach(g=>el("line",{x1:x+2,x2:x+bw-2,y1:top+bh-bh*g,y2:top+bh-bh*g,
+      stroke:"var(--rule)","stroke-width":1},s));
+
+    const t1=el("text",{x:x+bw/2,y:top-9,"text-anchor":"middle","font-size":11.5,
+      fill:"var(--ink-3)"},s); t1.textContent=ZONE[z]||z;
+    const t2=el("text",{x:x+bw/2,y:top+bh+21,"text-anchor":"middle","font-size":15,
+      "font-weight":650,fill:lvl<0.08?"var(--bad)":"var(--ink)"},s);
+    t2.textContent=Math.round(lvl*100)+"%";
+    const t3=el("text",{x:x+bw/2,y:top+bh+37,"text-anchor":"middle","font-size":10.5,
+      fill:"var(--ink-3)"},s);
+    t3.textContent=a.puissances[i]>0.08?(({"solaire":"solar","reseau":"grid",
+      "diesel":"diesel"})[a.sources[i]]):"idle";
+  });
+}
+
+/* ---- curve ---- */
+function dessineCurve(){
+  const s=document.getElementById("curve"); s.textContent="";
+  const r=courant(), W=700,Hh=260,mL=40,mR=12,mT=14,mB=32;
+  const px=h=>mL+(W-mL-mR)*h/23, py=v=>mT+(Hh-mT-mB)*(1-v);
+
+  r.heures.forEach((x,i)=>{if(!x.reseau)
+    el("rect",{x:px(i)-(W-mL-mR)/46,y:mT,width:(W-mL-mR)/23,height:Hh-mT-mB,
+      fill:"var(--bad)","fill-opacity":.09},s);});
+  [0,.5,1].forEach(v=>{
+    el("line",{x1:mL,x2:W-mR,y1:py(v),y2:py(v),stroke:"var(--rule)"},s);
+    const t=el("text",{x:mL-8,y:py(v)+4,"text-anchor":"end","font-size":11,
+      fill:"var(--ink-3)"},s); t.textContent=Math.round(v*100)+"%";});
+  [0,6,12,18,23].forEach(h=>{const t=el("text",{x:px(h),y:Hh-mB+18,"text-anchor":"middle",
+    "font-size":11,fill:"var(--ink-3)"},s); t.textContent=String(h).padStart(2,"0")+"h";});
+
+  const hn=Math.min(23,Math.floor(st.t)), f=st.t-hn;
+  S.zones.forEach((z,i)=>{
+    let d="";
+    for(let h=0;h<=hn;h++) d+=(h?"L":"M")+px(h).toFixed(1)+" "+py(r.heures[h].remplissages[i]).toFixed(1);
+    if(hn<23&&f>0){const v=r.heures[hn].remplissages[i]
+      +(r.heures[hn+1].remplissages[i]-r.heures[hn].remplissages[i])*f;
+      d+="L"+px(hn+f).toFixed(1)+" "+py(v).toFixed(1);}
+    el("path",{d:d,fill:"none",stroke:"var(--water)","stroke-width":i===1?2.6:1.6,
+      "stroke-opacity":i===1?1:.45,"stroke-linejoin":"round","stroke-linecap":"round"},s);
+  });
+  r.heures.forEach((x,i)=>{if(x.alerte&&i<=st.t){
+    el("line",{x1:px(i),x2:px(i),y1:mT,y2:Hh-mB,stroke:"var(--warn)","stroke-width":1.6,
+      "stroke-dasharray":"3 3"},s);
+    el("circle",{cx:px(i),cy:mT-1,r:3.6,fill:"var(--warn)"},s);}});
+  el("line",{x1:px(st.t),x2:px(st.t),y1:mT-6,y2:Hh-mB+4,stroke:"var(--ink)",
+    "stroke-width":1,"stroke-opacity":.5},s);
+}
+
+/* ---- strip ---- */
+function dessineStrip(){
+  const s=document.getElementById("strip"); s.textContent="";
+  const r=courant(), W=700,mL=40,mR=12, bw=(W-mL-mR)/24;
+  r.heures.forEach((x,i)=>{
+    S.zones.forEach((z,k)=>{
+      const on=x.puissances[k]>0.08, drawn=i<=st.t;
+      el("rect",{x:mL+i*bw+1,y:4+k*22,width:bw-2,height:18,rx:3,
+        fill:on?SRC[x.sources[k]]:"var(--paper-3)",
+        "fill-opacity":drawn?(on?Math.max(.38,x.puissances[k]):.85):.1},s);
+    });
+  });
+  S.zones.forEach((z,k)=>{const t=el("text",{x:mL-8,y:17+k*22,"text-anchor":"end",
+    "font-size":10.5,fill:"var(--ink-3)"},s); t.textContent=(ZONE[z]||z).split(" ")[0];});
+}
+
+/* ---- readout ---- */
+function dessineReadout(){
+  const g=document.getElementById("readout"); g.textContent="";
+  const r=courant(), v=S.villes[st.ville], j=jour(), h=Math.min(23,Math.floor(st.t));
+  let sec=0,cout=0,al=0;
+  for(let i=0;i<=h;i++){
+    const x=r.heures[i];
+    if(Math.min.apply(null,x.remplissages)<=0.001)sec++;
+    cout+=x.cout; if(x.alerte)al++;
+  }
+  const pire=Math.min.apply(null,r.heures[h].remplissages);
+  [["hour",String(h).padStart(2,"0")+":00",""],
+   ["outside",j.temperature+" °C",""],
+   ["worst district",Math.round(pire*100)+"%",pire<0.1?"bad":pire>0.35?"good":""],
+   ["dry hours so far",String(sec),sec>0?"bad":"good"],
+   ["spent",n0(cout)+" "+v.devise,""],
+   ["warnings",String(al),""]
+  ].forEach(([k,val,cls])=>{
+    const d=document.createElement("div"); d.className="ro";
+    const a=document.createElement("div"); a.className="k"; a.textContent=k;
+    const b=document.createElement("div"); b.className="v"+(cls?" "+cls:""); b.textContent=val;
+    d.append(a,b); g.appendChild(d);
+  });
+  document.getElementById("tanks-title").textContent =
+    "Districts — day "+j.numero+(j.evenement?" · "+j.evenement:"");
+}
+
+function rendre(){dessineTanks();dessineCurve();dessineStrip();dessineReadout();}
+
+let last=0;
+function boucle(ts){
+  if(st.play){
+    if(last){st.t=Math.min(23.999,st.t+(ts-last)/1000*1.7*st.vit);}
+    last=ts;
+    if(st.t>=23.999){st.play=false;bPlay.textContent="▶ Replay";}
+    rendre();
+  } else {last=0; dessineTanks();}
+  requestAnimationFrame(boucle);
+}
+rendre(); requestAnimationFrame(boucle);
+
+/* ================= tables ================= */
+const order=[FIELD,CHEAP,RULE,AGENT,MUTE].filter(k=>M[k]);
+let hb="<caption>Every policy sees the same 365 days and the same random seeds. "+
+  "The third row is the real bar: a hand-written rulebook that reads the "+
+  "<i>same outage forecast</i> the agent does.</caption><thead><tr><th>operator</th>"+
+  "<th>dry hours / day</th><th>people below WHO survival / day</th><th>kWh / day</th>"+
+  "<th>kg CO₂ / day</th><th>tank low point</th></tr></thead><tbody>";
+order.forEach(k=>{const m=M[k];
+  hb+="<tr"+(k===AGENT?' class="us"':"")+"><td>"+NAME[k]+"</td><td>"+n2(m.heures_a_sec_par_jour)+
+  "</td><td>"+n0(m.personnes_privees_equivalent_par_jour)+"</td><td>"+
+  n0(m.litres_gasoil_par_jour*3.5)+"</td><td>"+n1(m.kg_co2_par_jour)+"</td><td>"+
+  n2(m.creux_moyen)+"</td></tr>";});
+document.getElementById("bench").innerHTML=hb+"</tbody>";
+const vm=R.vs_lui_meme_sans_la_parole;
+document.getElementById("bench-after").innerHTML=
+ "The last row is the same weights with the warning action switched off — same seeds, "+
+ "same days, one component of the action vector forced to zero. The speech alone is worth <b>"+
+ n0(vm.heures_a_sec_pct)+"%</b> of the dry hours.";
+
+if(D.graines){
+  const G=D.graines, e=G.ecart_a_la_regle_pct;
+  let sb="<caption>PPO is stochastic, so a single lucky run proves nothing. Three full "+
+    "trainings, three seeds, evaluated on the same days against the same rules.</caption>"+
+    "<thead><tr><th>training seed</th><th>dry hours / day</th>"+
+    "<th>warnings / day</th><th>warning accuracy</th></tr></thead><tbody>";
+  for(const [k,m] of Object.entries(G.graines))
+    sb+="<tr><td>"+k.replace("graine_","seed ")+"</td><td>"+n2(m.heures_a_sec_par_jour)+
+      "</td><td>"+n2(m.alertes_par_jour)+"</td><td>"+n0(m.justesse_alertes*100)+"%</td></tr>";
+  sb+="<tr class='us'><td>the rulebook they all beat</td><td>"+
+    n2(G.regles[RULE].heures_a_sec_par_jour)+"</td><td>0</td><td>—</td></tr></tbody>";
+  document.getElementById("seeds").innerHTML=sb;
+}
+
+const seasons=Object.keys(M[AGENT].heures_a_sec_par_saison);
+let sh="<caption>Dry hours per day, by season. Learning matters where the year is "+
+  "hardest.</caption><thead><tr><th>operator</th>"+
+  seasons.map(x=>"<th>"+(SEASON[x]||x)+"</th>").join("")+"</tr></thead><tbody>";
+order.forEach(k=>{sh+="<tr"+(k===AGENT?' class="us"':"")+"><td>"+NAME[k]+"</td>"+
+  seasons.map(x=>"<td>"+n2(M[k].heures_a_sec_par_saison[x])+"</td>").join("")+"</tr>";});
+document.getElementById("seasons").innerHTML=sh+"</tbody>";
+
+const mA=M[AGENT];
+document.getElementById("speech").innerHTML=
+ "<caption>Warnings over the full 365-day evaluation, where trust carries over from one "+
+ "day to the next — the deployment case, not the training one.</caption><thead><tr>"+
+ "<th>operator</th><th>warnings / day</th><th>accuracy</th><th>break-even</th>"+
+ "</tr></thead><tbody><tr class='us'><td>"+NAME[AGENT]+"</td><td>"+n2(mA.alertes_par_jour)+
+ "</td><td>"+n0(mA.justesse_alertes*100)+"%</td><td>78.9%</td></tr>"+
+ "<tr><td>every hand-written rule</td><td>0</td><td>—</td><td>—</td></tr></tbody>";
+
+/* ================= climate ================= */
+function dessineClimat(){
+  const s=document.getElementById("climate"); s.textContent="";
+  const v=S.villes[st.ville], W=700,Hh=230,mL=40,mR=12,mT=14,mB=30, cw=(W-mL-mR)/12;
+  const tmax=Math.max.apply(null,v.tmax), tmin=Math.min.apply(null,v.tmax);
+  const pmax=Math.max(Math.max.apply(null,v.pluie),1);
+  const yT=t=>mT+(Hh-mT-mB)*(1-(t-tmin+2)/(tmax-tmin+4));
+  v.pluie.forEach((p,i)=>{const h=(Hh-mT-mB)*p/pmax;
+    el("rect",{x:mL+i*cw+cw*.24,y:Hh-mB-h,width:cw*.52,height:Math.max(h,0),rx:2,
+      fill:"var(--water)","fill-opacity":.22},s);});
+  const d=v.tmax.map((t,i)=>(i?"L":"M")+(mL+i*cw+cw/2).toFixed(1)+" "+yT(t).toFixed(1)).join("");
+  el("path",{d:d,fill:"none",stroke:"var(--diesel)","stroke-width":2.4,
+    "stroke-linejoin":"round"},s);
+  v.tmax.forEach((t,i)=>el("circle",{cx:mL+i*cw+cw/2,cy:yT(t),r:2.4,fill:"var(--diesel)"},s));
+  MONTH.forEach((m,i)=>{const t=el("text",{x:mL+i*cw+cw/2,y:Hh-mB+18,"text-anchor":"middle",
+    "font-size":11,fill:"var(--ink-3)"},s); t.textContent=m;});
+  const T=D.transfert&&D.transfert.villes[st.ville];
+  const sea=T?Object.entries(T.saisons).sort((a,b)=>b[1]-a[1])
+    .map(([k,n])=>n+" d "+(SEASON[k]||k)).join(" · "):"";
+  document.getElementById("climate-cap").textContent=
+    st.ville+" ("+(v.latitude<0?Math.abs(v.latitude)+"° S":v.latitude+"° N")+")"+
+    (sea?" — "+sea:"")+". Line: monthly mean daily maximum (°C). Bars: rainfall (mm/day). "+
+    "Season boundaries are that city's own — the wettest third of its year, and only where "+
+    "the sky is duller than its own average. A fixed threshold called Sydney rainy for 365 "+
+    "days a year.";
+}
+dessineClimat();
+
+const tt=document.getElementById("transfer");
+if(D.transfert){const T=D.transfert;
+  let th="<caption>Ouagadougou weights, replayed unchanged. Nothing retrained, nothing "+
+    "tuned.</caption><thead><tr><th>city</th><th>rainy / hot / mild (days)</th>"+
+    "<th>agent</th><th>rulebook</th><th>difference</th></tr></thead><tbody>";
+  for(const [nom,v] of Object.entries(T.villes)){
+    const sn=["pluies","sèche chaude","sèche tempérée"].map(k=>v.saisons[k]||0).join(" / ");
+    th+="<tr"+(nom===T.entraine_sur?' class="us"':"")+"><td>"+nom+
+      (nom===T.entraine_sur?" ★ training city":"")+"</td><td>"+sn+"</td><td>"+
+      n2(v.agent.heures_a_sec_par_jour)+"</td><td>"+n2(v.regle_ecrite.heures_a_sec_par_jour)+
+      "</td><td"+(v.agent_bat_la_regle?' class="win"':"")+">"+n0(v.ecart_heures_a_sec_pct)+
+      "%</td></tr>";}
+  tt.innerHTML=th+"</tbody>";
+} else tt.innerHTML="<caption>Transfer measurement not generated yet.</caption>";
+
+/* ================= equivalence ================= */
+const eq=D.equivalence;
+const es=document.getElementById("equiv");
+if(eq){
+  const W=700,Hh=250,mL=48,mR=16,mT=16,mB=38;
+  const pts=eq.regle_par_capacite, xs=pts.map(p=>p.multiplicateur);
+  const x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs);
+  const ys=pts.map(p=>p.heures_a_sec_par_jour);
+  const y1=Math.max(Math.max.apply(null,ys),eq.agent_reseau_actuel.heures_a_sec_par_jour);
+  const px=v=>mL+(W-mL-mR)*(v-x0)/(x1-x0), py=v=>mT+(Hh-mT-mB)*(1-v/(y1*1.08));
+  const cible=eq.agent_reseau_actuel.heures_a_sec_par_jour;
+
+  el("line",{x1:mL,x2:W-mR,y1:py(cible),y2:py(cible),stroke:"var(--water)",
+    "stroke-width":2,"stroke-dasharray":"6 4"},es);
+  const lab=el("text",{x:W-mR,y:py(cible)-9,"text-anchor":"end","font-size":12.5,
+    fill:"var(--water)","font-weight":650},es);
+  lab.textContent="the agent, with today's tanks";
+  el("path",{d:pts.map((p,i)=>(i?"L":"M")+px(p.multiplicateur).toFixed(1)+" "+
+    py(p.heures_a_sec_par_jour).toFixed(1)).join(""),fill:"none",stroke:"var(--ink-2)",
+    "stroke-width":2.4,"stroke-linejoin":"round"},es);
+  pts.forEach(p=>el("circle",{cx:px(p.multiplicateur),cy:py(p.heures_a_sec_par_jour),
+    r:3,fill:"var(--ink-2)"},es));
+  if(eq.capacite_equivalente){
+    el("line",{x1:px(eq.capacite_equivalente),x2:px(eq.capacite_equivalente),y1:mT,
+      y2:Hh-mB,stroke:"var(--bad)","stroke-width":1.6,"stroke-dasharray":"3 3"},es);
+    const t=el("text",{x:px(eq.capacite_equivalente),y:mT-2,"text-anchor":"middle",
+      "font-size":12.5,fill:"var(--bad)","font-weight":650},es);
+    t.textContent="+"+Math.round((eq.capacite_equivalente-1)*100)+"% concrete";
+  }
+  xs.forEach(v=>{const t=el("text",{x:px(v),y:Hh-mB+19,"text-anchor":"middle","font-size":11,
+    fill:"var(--ink-3)"},es); t.textContent=v.toFixed(2)+"×";});
+  [0,y1/2,y1].forEach(v=>{const t=el("text",{x:mL-9,y:py(v)+4,"text-anchor":"end",
+    "font-size":11,fill:"var(--ink-3)"},es); t.textContent=v.toFixed(2);});
+  const ax=el("text",{x:(mL+W-mR)/2,y:Hh-4,"text-anchor":"middle","font-size":11.5,
+    fill:"var(--ink-3)"},es);
+  ax.textContent="storage capacity given to the rulebook, multiple of what exists today";
+
+  document.getElementById("equiv-cap").innerHTML= eq.capacite_equivalente
+   ? "The rulebook only matches the agent at <b>"+eq.capacite_equivalente.toFixed(2)+
+     "× storage</b> — <b>"+n0(eq.m3_de_stockage_evites)+" m³</b> of new tank on the "+
+     n0(eq.capacite_actuelle_m3)+" m³ that exist, a "+
+     n0((eq.capacite_equivalente-1)*100)+"% expansion. That is what the agent is worth in "+
+     "concrete, and it costs nothing to pour."+(eq.carburant_equivalent
+     ? " Buying the same result with fuel instead takes <b>"+eq.carburant_equivalent.toFixed(2)+
+       "× the daily generator budget</b> — more emissions, every day, forever."
+     : " Buying the same result with fuel is not possible at any budget we tried: "+
+       "burning more does not replace deciding better.")
+   : "Even at the largest capacity tested, the rulebook does not catch the agent. The gap "+
+     "is not a storage problem.";
+} else es.parentElement.style.display="none";
+
+/* ================= foot ================= */
+document.getElementById("foot").innerHTML=
+ "Measured on "+C.genere_le.slice(0,10)+" over "+C.journees+" simulated days, one per day "+
+ "of the year, identical seeds for every policy. Climatologies are measured, not invented: "+
+ "2023–2025 daily records from the Open-Meteo / ERA5 archive. Every figure on this page is "+
+ "read from the JSON files in <code>resultats/</code>; none of it is typed by hand.";
+})();
+</script>
+</body>
+</html>

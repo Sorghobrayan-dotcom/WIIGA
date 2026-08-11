@@ -1,0 +1,15 @@
+# Les versions sont celles sur lesquelles les chiffres du dépôt ont été mesurés.
+# Épinglées en minimum plutôt qu'en égalité : on veut qu'une installation neuve
+# fonctionne dans un an, pas qu'elle refuse de démarrer.
+#
+# Rien d'autre n'est nécessaire. Pas de GPU, pas de clé d'API, pas de service
+# tiers : le géocodage et l'archive climatique d'Open-Meteo s'utilisent sans
+# compte, et les villes déjà consultées sont en cache dans `villes/`.
+
+stable-baselines3>=2.7.1
+gymnasium>=1.2.3
+numpy>=2.3.1
+
+# torch arrive avec stable-baselines3. La version CPU suffit largement :
+# l'entraînement complet prend une vingtaine de minutes sur un portable.
+torch>=2.9.0
