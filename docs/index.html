@@ -147,7 +147,7 @@ It also does something no published pump controller does: it decides when to
     <div class="stage">
       <div>
         <h3 id="tanks-title">Districts</h3>
-        <svg id="tanks" viewBox="0 0 300 250" role="img"
+        <svg id="tanks" viewBox="0 0 300 264" role="img"
              aria-label="Cross-section of the three district storage tanks with their current water level"></svg>
       </div>
       <div>
@@ -467,10 +467,21 @@ function dessineTanks(){
     const t2=el("text",{x:x+bw/2,y:top+bh+21,"text-anchor":"middle","font-size":15,
       "font-weight":650,fill:lvl<0.08?"var(--bad)":"var(--ink)"},s);
     t2.textContent=Math.round(lvl*100)+"%";
+    // la puissance, pas seulement la source : ce que l'agent décide vraiment
+    // est un réglage continu par pompe, et le cacher revenait à montrer la
+    // moitié de la décision
+    const p=a.puissances[i], tourne=p>0.08;
     const t3=el("text",{x:x+bw/2,y:top+bh+37,"text-anchor":"middle","font-size":10.5,
-      fill:"var(--ink-3)"},s);
-    t3.textContent=a.puissances[i]>0.08?(({"solaire":"solar","reseau":"grid",
-      "diesel":"diesel"})[a.sources[i]]):"idle";
+      fill:tourne?SRC[a.sources[i]]:"var(--ink-3)"},s);
+    t3.textContent=tourne
+      ? ({"solaire":"solar","reseau":"grid","diesel":"diesel"})[a.sources[i]]
+        +" · "+Math.round(p*100)+"%"
+      : "pump off";
+    // une jauge de puissance sous le nom, pour lire le réglage d'un coup d'œil
+    el("rect",{x:x+8,y:top+bh+44,width:bw-16,height:3,rx:1.5,
+      fill:"var(--rule-2)","fill-opacity":.5},s);
+    if(tourne) el("rect",{x:x+8,y:top+bh+44,width:(bw-16)*Math.min(1,p),height:3,
+      rx:1.5,fill:SRC[a.sources[i]]},s);
   });
 }
 
@@ -535,8 +546,12 @@ function dessineReadout(){
     cout+=x.cout; if(x.alerte)al++;
   }
   const pire=Math.min.apply(null,r.heures[h].remplissages);
+  const demande=r.heures[h].besoins.reduce((a,b)=>a+b,0);
+  const pompage=r.heures[h].puissances.reduce((a,b)=>a+b,0)/r.heures[h].puissances.length;
   [["hour",String(h).padStart(2,"0")+":00",""],
    ["outside",j.temperature+" °C",""],
+   ["city wants",demande.toFixed(0)+" m³",""],
+   ["pumps running",Math.round(pompage*100)+"%",""],
    ["worst district",Math.round(pire*100)+"%",pire<0.1?"bad":pire>0.35?"good":""],
    ["dry hours so far",String(sec),sec>0?"bad":"good"],
    ["spent",n0(cout)+" "+v.devise,""],
