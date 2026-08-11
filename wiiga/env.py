@@ -2,7 +2,7 @@
 
 L'idée qui tient tout le reste. Le solaire est gratuit à 13 h et absent à 19 h,
 et c'est à 19 h que le quartier résidentiel a soif. Stocker cette énergie
-demanderait des batteries au lithium — chères, polluantes, à remplacer dans huit
+demanderait des batteries au lithium - chères, polluantes, à remplacer dans huit
 ans.
 
 Sauf qu'il existe déjà un stockage sur place : **la cuve**. Pomper à 13 h avec du
@@ -66,7 +66,7 @@ JALONS = (0, 2, 4, 6)
 HORIZON_RESEAU = 4
 
 #: Tarifs par défaut, en monnaie locale de la ville d'entraînement. Remplacés
-#: par ceux du `Tarif` passé à l'environnement — voir `tarifs.py`, qui explique
+#: par ceux du `Tarif` passé à l'environnement - voir `tarifs.py`, qui explique
 #: pourquoi la monnaie est une couche de présentation et pas une unité de
 #: mesure : ce projet compte d'abord en kWh, en litres et en personnes.
 PRIX = TARIF_OUAGA.prix_locaux()
@@ -75,13 +75,13 @@ SOURCES = ("solaire", "reseau", "diesel")
 #: kWh de groupe électrogène pour la journée, et c'est tout.
 #:
 #: Sans cette limite le problème n'existe pas : une première version laissait le
-#: diesel illimité, et la mesure l'a montré tout de suite — une règle bête qui
+#: diesel illimité, et la mesure l'a montré tout de suite - une règle bête qui
 #: bascule sur le groupe dès que le réseau tombe ne laissait jamais un quartier à
 #: sec. Une régie a une cuve de gasoil, elle est petite, et la remplir dépend
 #: d'un camion.
 #:
-#: **D'où vient 320 plutôt qu'autre chose.** Ce n'est pas un relevé de terrain —
-#: aucune régie ne publie sa consommation — mais ce n'est pas non plus un nombre
+#: **D'où vient 320 plutôt qu'autre chose.** Ce n'est pas un relevé de terrain -
+#: aucune régie ne publie sa consommation - mais ce n'est pas non plus un nombre
 #: sorti d'un chapeau. Ce que 320 kWh représente, mesuré et pas supposé :
 #:
 #:   91 litres de gasoil par jour, à 3,5 kWh/L
@@ -92,7 +92,7 @@ SOURCES = ("solaire", "reseau", "diesel")
 #: C'est l'ordre de grandeur d'une station de quartier ravitaillée par camion
 #: deux fois par semaine, et c'est la seule justification qu'on avance.
 #:
-#: **Et surtout, la conclusion ne tient pas à cette valeur** — voir
+#: **Et surtout, la conclusion ne tient pas à cette valeur** - voir
 #: `sensibilite.py`, qui balaie de 23 à 366 litres par jour. L'agent bat la règle
 #: écrite de 34 % à 67 % sur toute la plage plausible, et ne perd qu'à 366 L/j,
 #: où le groupe couvre plus de la moitié de l'énergie de la ville. À ce
@@ -106,7 +106,7 @@ CARBURANT_JOUR = 320.0
 #: plus longue que ce que la prévision annonçait.
 RESERVE_MINIMALE = 0.35
 
-#: m³ pompés par kWh. Ordre de grandeur d'une station de quartier.
+#: m3 pompés par kWh. Ordre de grandeur d'une station de quartier.
 RENDEMENT_POMPE = 0.55
 
 #: Escompte de l'agent. Une journée fait vingt-quatre pas ; à 0,98 l'horizon
@@ -115,14 +115,14 @@ RENDEMENT_POMPE = 0.55
 #: **Une version à 0,995 a été essayée et mesurée, puis abandonnée.** L'intention
 #: était bonne : porter l'horizon à huit jours pour que l'agent voie sa
 #: réputation se construire, une réputation vivant sur des semaines. Le résultat
-#: ne l'était pas — les trois graines sont passées sous la règle écrite à la
+#: ne l'était pas - les trois graines sont passées sous la règle écrite à la
 #: main, à 0,82 heure à sec par jour contre 0,33.
 #:
 #: La raison est que **les deux sous-problèmes n'ont pas le même horizon
 #: naturel**. Le pompage est intra-journalier : les cuves repartent pleines
 #: chaque matin, et rien de ce qui se décide aujourd'hui ne porte à huit jours.
 #: Forcer la fonction de valeur à prédire aussi loin à travers un tirage de jour
-#: de l'année et un délestage aléatoire ne lui apprend rien de plus — ça ne fait
+#: de l'année et un délestage aléatoire ne lui apprend rien de plus - ça ne fait
 #: qu'ajouter du bruit à l'estimation d'avantage sur la seule partie du problème
 #: qui rapporte de l'eau.
 #:
@@ -135,12 +135,12 @@ RENDEMENT_POMPE = 0.55
 GAMMA = 0.98
 
 #: Part des journées d'entraînement où la crédibilité est retirée au hasard.
-#: Voir `reset` — c'est ce qui empêche l'agent de rester coincé au plancher.
+#: Voir `reset` - c'est ce qui empêche l'agent de rester coincé au plancher.
 PART_REDEMARRAGE = 0.10
 
 #: Ce que vaut la crédibilité de la régie, en unités de récompense.
 #:
-#: Une fausse alerte coûte 0,15 de confiance, donc 6 points — l'ordre de grandeur
+#: Une fausse alerte coûte 0,15 de confiance, donc 6 points - l'ordre de grandeur
 #: d'une demi-heure de fonctionnement. Une alerte juste et non répétée en rapporte
 #: 1,6. Le rapport entre les deux n'est pas un réglage : il vient tout entier de
 #: l'asymétrie `MONTEE`/`CHUTE`, et ce prix ne fait que la mettre à l'échelle du
@@ -151,7 +151,7 @@ PRIX_CONFIANCE = 40.0
 #: La pompe d'une zone est dimensionnée sur SON pic, pas sur une constante.
 #:
 #: Une première version donnait 20 kW à tout le monde : la ville demandait
-#: 1 100 m³/jour et les trois pompes à fond vingt-quatre heures n'en donnaient
+#: 1 100 m3/jour et les trois pompes à fond vingt-quatre heures n'en donnaient
 #: que 792. Aucune politique ne pouvait servir la ville, donc aucune ne pouvait
 #: être meilleure qu'une autre, et le banc d'essai ne mesurait plus rien.
 #:
@@ -171,12 +171,12 @@ class Zone:
     volume: float
     #: kW à pleine puissance, dimensionné sur le pic de cette zone.
     puissance_kw: float = 20.0
-    #: La demande horaire **de cette journée-là**, en m³, calculée une fois au
+    #: La demande horaire **de cette journée-là**, en m3, calculée une fois au
     #: reset. Elle porte déjà la chaleur, la fête et, s'il y a lieu, le
     #: déplacement du Ramadan vers le soir.
     horaire: np.ndarray | None = None
     #: Combien, dans la cuve, a été pompé au soleil. Suivi en mélange, ce qui
-    #: permet de dire à 19 h quelle part de l'eau bue vient du solaire de midi —
+    #: permet de dire à 19 h quelle part de l'eau bue vient du solaire de midi -
     #: le chiffre qui prouve que la batterie virtuelle fonctionne.
     volume_solaire: float = 0.0
     heures_a_sec: int = 0
@@ -240,14 +240,14 @@ class WiigaEnv(gym.Env):
     def __init__(
         self,
         profils: tuple[ProfilZone, ...] = PROFILS,
-        #: Laissé à None, le réseau suit la saison du jour tiré — c'est le mode
+        #: Laissé à None, le réseau suit la saison du jour tiré - c'est le mode
         #: normal. Forcer un régime sert à l'expérience inverse : montrer qu'un
         #: agent entraîné sur la seule saison chaude s'effondre en hivernage.
         regime: RegimeDelestage | str | None = None,
         cout_passer_la_main: float = 3.0,
         seed: int | None = None,
         climat: Climat = OUAGADOUGOU,
-        #: Fixer un jour pour rejouer une date précise — Tabaski, un jour d'août.
+        #: Fixer un jour pour rejouer une date précise - Tabaski, un jour d'août.
         #: Laissé à None, chaque `reset` tire un jour de l'année, ce qui force la
         #: politique à tenir les trois régimes au lieu d'un seul.
         jour_fixe: int | None = None,
@@ -258,7 +258,7 @@ class WiigaEnv(gym.Env):
         #: Tirer la crédibilité de départ à chaque épisode. **À activer pour
         #: entraîner, à laisser fermé pour mesurer.** Voir `reset`.
         confiance_tiree: bool = False,
-        #: Le prix de l'énergie ici. La physique — kWh, litres, kg de CO₂ — ne
+        #: Le prix de l'énergie ici. La physique - kWh, litres, kg de CO2 - ne
         #: dépend pas du lieu ; la facture, si. Voir `tarifs.py`.
         tarif: Tarif = TARIF_OUAGA,
     ) -> None:
@@ -284,7 +284,7 @@ class WiigaEnv(gym.Env):
         #: c'est volontaire : une réputation se construit sur des semaines. Elle
         #: est donc un état de l'environnement qui survit au `reset`, et elle est
         #: donnée à l'agent dans l'observation pour que le problème reste
-        #: markovien. Les journées sont couplées par cette variable — c'est une
+        #: markovien. Les journées sont couplées par cette variable - c'est une
         #: propriété du problème réel, pas un défaut du simulateur.
         self.credit = Crediteur()
         self.coupures: list[bool] = []
@@ -312,11 +312,11 @@ class WiigaEnv(gym.Env):
         self.journal: list[dict] = []
 
         # deux valeurs par zone (puissance, source), puis passer la main, puis
-        # alerter la ville — la seule action qui ne touche aucune pompe
+        # alerter la ville - la seule action qui ne touche aucune pompe
         self.action_space = spaces.Box(
             low=0.0, high=1.0, shape=(2 * self.n_zones + 2,), dtype=np.float32
         )
-        # remplissages + demande prévue (zones × jalons) + heure, soleil, réseau,
+        # remplissages + demande prévue (zones x jalons) + heure, soleil, réseau,
         # gasoil + prévision de coupure + les deux grandeurs du jour + crédibilité
         #
         # Les deux dernières sont indispensables : la prévision de demande est
@@ -350,7 +350,7 @@ class WiigaEnv(gym.Env):
                 # Ramenée de [-1, 1] à [0, 1] : la moitié basse est la zone de
                 # défiance, où plus personne ne répond mais où l'on continue de
                 # creuser. L'agent doit voir la profondeur du trou, pas seulement
-                # qu'il y est — sans quoi il ne peut pas savoir ce que remonter
+                # qu'il y est - sans quoi il ne peut pas savoir ce que remonter
                 # lui coûtera.
                 (self.credit.confiance + 1.0) / 2.0,
                 # et ce que la ville a déjà en réserve chez elle : sans cette
@@ -401,7 +401,7 @@ class WiigaEnv(gym.Env):
             # servir. Mesuré : plancher atteint au septième jour, puis trois
             # alertes par jour dans le vide pendant trois cent cinquante-huit
             # journées. Un changement de direction à la régie, une ville qui
-            # oublie — l'histoire est plausible, et surtout elle garantit que
+            # oublie - l'histoire est plausible, et surtout elle garantit que
             # toute la gamme de crédibilité reste visitée.
             self.credit.confiance = float(self.rng.uniform(-0.4, 0.95))
         self.carburant = CARBURANT_JOUR
@@ -411,7 +411,7 @@ class WiigaEnv(gym.Env):
         #: regarde. `pire_remplissage` se lit à minuit, quand tout le monde a
         #: fini de boire : il dit combien de réserve reste au matin, pas à quel
         #: point on est passé près de la panne. Les deux sont utiles et se
-        #: lisent à l'envers l'un de l'autre — une cuve pleine à minuit peut
+        #: lisent à l'envers l'un de l'autre - une cuve pleine à minuit peut
         #: avoir frôlé le vide à 19 h.
         self.creux = 1.0
         self.reseau.nouvelle_journee()
@@ -419,7 +419,7 @@ class WiigaEnv(gym.Env):
         self.zones = []
         for profil in self.profils:
             #: La cuve tient un tiers de la journée. Assez pour lisser un pic,
-            #: pas assez pour ignorer le délestage — c'est ce qui force l'agent
+            #: pas assez pour ignorer le délestage - c'est ce qui force l'agent
             #: à choisir quand remplir plutôt qu'à remplir tout le temps.
             #:
             #: Elle est dimensionnée sur la demande **de référence**, jamais sur
@@ -474,7 +474,7 @@ class WiigaEnv(gym.Env):
         # de savoir. Et c'est ce qui rend le problème **apprenable**.
         #
         # Sans ce verrou, deux entraînements sur la même récompense trouvaient
-        # deux optima dégénérés opposés. L'un apprenait à ne jamais parler —
+        # deux optima dégénérés opposés. L'un apprenait à ne jamais parler -
         # zéro alerte, confiance figée à sa valeur de départ. L'autre bavardait
         # à près de sept alertes par jour et voyait sa crédibilité tomber au
         # plancher au quatorzième jour *malgré 87 % de justesse*, parce que
@@ -482,8 +482,8 @@ class WiigaEnv(gym.Env):
         # d'être jugée : elles ne rapportaient rien et les erreurs coûtaient
         # plein tarif. Aucun des deux n'a appris à parler peu et bien.
         #
-        # En interdisant la redite, il ne reste plus qu'une décision — *quand*
-        # dépenser une annonce — et l'économie de confiance porte enfin sur des
+        # En interdisant la redite, il ne reste plus qu'une décision - *quand*
+        # dépenser une annonce - et l'économie de confiance porte enfin sur des
         # avertissements réellement distincts.
         if alerte and self.credit.en_attente:
             alerte = False
@@ -596,7 +596,7 @@ class WiigaEnv(gym.Env):
         # l'avenir ne vaut rien après 23 h. Tant qu'il n'existait que des cuves,
         # c'était sans conséquence : elles repartent pleines. Mais la crédibilité
         # traverse les journées, et sous `terminated` l'agent n'avait aucune
-        # raison d'en prendre soin — mesuré, il tombait au plancher de défiance
+        # raison d'en prendre soin - mesuré, il tombait au plancher de défiance
         # au septième jour et continuait d'émettre trois alertes par jour dans le
         # vide pendant les trois cent cinquante-huit suivants.
         #
@@ -618,23 +618,23 @@ class WiigaEnv(gym.Env):
         chose : deux agents, mêmes graines, même tout, une seule différence.
 
         **Sur le soupçon de récompense détournée.** Cette fonction est écrite à
-        la main, avec des falaises posées par un humain — moins 60 sous 10 %,
+        la main, avec des falaises posées par un humain - moins 60 sous 10 %,
         moins 15 sous 20 %. Un agent assez malin s'installe juste au-dessus d'un
         seuil au lieu de servir la ville. Le reproche est légitime et il se
         mesure : voir `detournement.py`.
 
         Ce qu'il en ressort. L'agent gagne **18 % de récompense** contre la règle
-        écrite, et **59 % d'heures à sec** — soit un rapport de 0,31. Il gagne
+        écrite, et **59 % d'heures à sec** - soit un rapport de 0,31. Il gagne
         trois fois plus sur la tâche que sur le proxy pour lequel il a été
         entraîné, quand un détournement produirait l'inverse. Aucun chiffre
         publié par ce dépôt n'est d'ailleurs cette récompense : les heures à sec,
-        les personnes sous le seuil de l'OMS, les francs et le CO₂ n'apparaissent
+        les personnes sous le seuil de l'OMS, les francs et le CO2 n'apparaissent
         nulle part ici.
 
         Un indicateur reste un peu haut et on ne le cache pas : autour du seuil
         de 20 %, l'agent passe 1,9 fois plus de temps juste au-dessus que juste
         en dessous, contre 1,3 pour la règle. L'explication tient à la
-        distribution complète — l'agent fait tourner les cuves plus bas que les
+        distribution complète - l'agent fait tourner les cuves plus bas que les
         règles (creux moyen 0,26 contre 0,43), donc il habite ces tranches-là
         tout court. Il y passe pourtant *moins* de temps sous 10 % qu'elles.
         """
@@ -652,7 +652,7 @@ class WiigaEnv(gym.Env):
         #: Sans lui, l'agent apprend à faire tourner les cuves à 0,18 de
         #: remplissage quand les règles écrites tiennent 0,66. Sur la moyenne il
         #: a raison : même service, 40 % moins cher. Le coussin des règles est
-        #: effectivement du gaspillage — la plupart du temps.
+        #: effectivement du gaspillage - la plupart du temps.
         #:
         #: Mais « la plupart du temps » n'est pas ce qu'un exploitant achète. À
         #: 0,18 il ne reste rien pour une coupure plus longue que la prévision,
@@ -682,7 +682,7 @@ class WiigaEnv(gym.Env):
         un canal d'alerte devenu inutile.
 
         La forme est celle du *potential-based reward shaping* de Ng, Harada et
-        Russell (1999), avec `Φ = prix × confiance` — mais **la variante non
+        Russell (1999), avec `Φ = prix x confiance` - mais **la variante non
         escomptée `Φ(s') − Φ(s)`, et le choix est délibéré.**
 
         La forme théorique `γ·Φ(s') − Φ(s)` facture à chaque pas un loyer
@@ -697,8 +697,8 @@ class WiigaEnv(gym.Env):
 
         La différence simple n'a pas ce défaut : elle vaut zéro quand rien ne
         bouge, −6 pour une fausse alerte, +1,6 pour une alerte juste et inédite.
-        C'est de la comptabilité — on impute la dépréciation d'un actif à la
-        période où elle survient — et le seuil au-dessus duquel il vaut mieux
+        C'est de la comptabilité - on impute la dépréciation d'un actif à la
+        période où elle survient - et le seuil au-dessus duquel il vaut mieux
         parler reste celui qu'impose l'asymétrie `MONTEE`/`CHUTE`, soit 78,9 %
         de justesse, quel que soit le prix choisi. Le prix ne déplace pas
         l'optimum ; il le rend visible dans l'horizon de l'agent.
@@ -728,7 +728,7 @@ class WiigaEnv(gym.Env):
             "alertes_sans_effet": self.alertes_sans_effet,
             #: et celles que le diffuseur a retenues, une annonce étant en cours
             "alertes_etouffees": self.alertes_etouffees,
-            #: l'énergie par source, en kWh — l'unité qui se lit partout, et la
+            #: l'énergie par source, en kWh - l'unité qui se lit partout, et la
             #: seule dont on puisse tirer un coût dans n'importe quelle monnaie
             "kwh": dict(self.kwh),
             "devise": self.tarif.symbole,

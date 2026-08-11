@@ -4,13 +4,13 @@ La page de démonstration est un fichier statique : pas de serveur, pas de
 fonction *serverless*, pas de requête réseau. Il faut donc que tout ce qu'un
 visiteur peut demander existe déjà dedans.
 
-Ce fichier joue chaque combinaison **ville × journée × politique** avec le modèle
+Ce fichier joue chaque combinaison **ville x journée x politique** avec le modèle
 entraîné et écrit les journaux heure par heure. Le navigateur ne fait ensuite que
 les rejouer : il n'y a aucune intelligence dans la page, et c'est dit là-bas.
 
 Les journées ne sont pas prises au hasard. Pour chaque ville on retient **une
-journée par régime** — la saison des pluies, la saison sèche chaude, la saison
-sèche tempérée — parce que c'est justement le fait que ces trois régimes
+journée par régime** - la saison des pluies, la saison sèche chaude, la saison
+sèche tempérée - parce que c'est justement le fait que ces trois régimes
 demandent des politiques opposées qui rend l'apprentissage nécessaire. Un
 visiteur qui bascule de l'une à l'autre voit l'agent changer d'avis.
 """

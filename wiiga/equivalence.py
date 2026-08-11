@@ -18,8 +18,8 @@ et de la fumée qui ne sort pas.
 
 **Ce que ça ne dit pas :** un vrai chiffrage demanderait un devis de génie civil,
 et le prix du mètre cube de stockage varie du simple au triple selon le terrain.
-On publie donc l'**équivalence physique** — combien de capacité, combien de
-litres — et pas un prix inventé. Le lecteur qui connaît ses coûts fait la
+On publie donc l'**équivalence physique** - combien de capacité, combien de
+litres - et pas un prix inventé. Le lecteur qui connaît ses coûts fait la
 multiplication lui-même.
 
 Exécution : `python -m wiiga.equivalence`
@@ -95,7 +95,7 @@ def seuil_atteint(courbe: list[tuple[float, float]], cible: float) -> float | No
 
     `courbe` est une liste croissante de (multiplicateur, heures à sec). On
     cherche où elle croise `cible`. `None` si elle ne la croise jamais dans la
-    plage essayée — auquel cas il faut le dire plutôt que d'extrapoler.
+    plage essayée - auquel cas il faut le dire plutôt que d'extrapoler.
     """
     for (m0, h0), (m1, h1) in zip(courbe, courbe[1:]):
         if h0 >= cible >= h1 and h0 != h1:

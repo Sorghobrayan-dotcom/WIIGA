@@ -8,13 +8,13 @@ Ici il ne l'est pas. Le délestage est la contrainte qui structure la journée, 
 un agent qui l'ignore optimise un problème que personne n'a. Ce module en fait
 une variable de premier rang, avec les trois propriétés qui le rendent difficile :
 
-  il est probable plutôt que certain — l'agent reçoit une prévision, pas la
+  il est probable plutôt que certain - l'agent reçoit une prévision, pas la
   vérité, et doit décider sous incertitude ;
 
-  il persiste — une coupure qui commence dure des heures, donc l'erreur n'est pas
+  il persiste - une coupure qui commence dure des heures, donc l'erreur n'est pas
   ponctuelle, elle se paie longtemps ;
 
-  il tombe au pire moment — la probabilité culmine sur la pointe du soir, quand
+  il tombe au pire moment - la probabilité culmine sur la pointe du soir, quand
   la demande en eau culmine aussi et que le solaire est déjà couché.
 
 La conséquence, et c'est tout l'intérêt : la bonne politique n'est pas d'acheter
@@ -93,7 +93,7 @@ REGIMES = {r.nom: r for r in (HIVERNAGE, SAISON_TEMPEREE, SAISON_CHAUDE)}
 #: l'environnement parce que c'est une affirmation sur le pays, pas sur le code :
 #: le délestage suit le niveau du barrage et la pointe des climatiseurs, donc il
 #: suit la saison. Sans cette table, la saison pilotait la demande et le soleil
-#: mais laissait le réseau identique toute l'année — un simulateur qui se
+#: mais laissait le réseau identique toute l'année - un simulateur qui se
 #: contredisait lui-même.
 REGIME_PAR_SAISON = {
     "pluies": HIVERNAGE,

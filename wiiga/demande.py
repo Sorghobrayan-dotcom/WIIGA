@@ -4,7 +4,7 @@ Un seul profil de demande pour toute la ville est une simplification qui tue le
 projet, parce qu'elle supprime la question. Si tous les quartiers ont soif en
 même temps, il n'y a rien à arbitrer : on pompe partout au même moment et on
 subit. C'est quand les pics sont **décalés** que la batterie virtuelle a un sens
-— on remplit celui de 19 h pendant que le soleil est encore là, avec l'énergie
+- on remplit celui de 19 h pendant que le soleil est encore là, avec l'énergie
 que celui de 6 h n'utilise plus.
 
 Trois profils, tirés de ce qu'est réellement une ville sahélienne :
@@ -48,7 +48,7 @@ class ProfilZone:
         return c / c.max()
 
     def volume_horaire(self) -> np.ndarray:
-        """La demande en m³ par heure, une fois la courbe mise à l'échelle."""
+        """La demande en m3 par heure, une fois la courbe mise à l'échelle."""
         besoin_jour = self.habitants * self.litres_par_habitant / 1000.0
         courbe = self.courbe()
         return courbe / courbe.sum() * besoin_jour

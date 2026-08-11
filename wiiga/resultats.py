@@ -6,10 +6,10 @@ y avoir trois versions du même chiffre.
 
 Trois familles de mesures, parce qu'une seule ment toujours par omission :
 
-- **le service** — heures à sec, jours à sec. Ce que l'habitant subit.
-- **le coût** — FCFA, litres de gasoil, kg de CO₂. Ce que la régie paie, et ce
+- **le service** - heures à sec, jours à sec. Ce que l'habitant subit.
+- **le coût** - FCFA, litres de gasoil, kg de CO2. Ce que la régie paie, et ce
   que l'atmosphère paie.
-- **le risque** — le creux de la journée, et combien de fois on frôle le vide.
+- **le risque** - le creux de la journée, et combien de fois on frôle le vide.
   Une politique qui sert bien en moyenne et se vide une fois par mois n'est pas
   déployable, et la moyenne ne le dit pas.
 
@@ -33,7 +33,7 @@ SORTIE = Path(__file__).resolve().parent.parent / "resultats" / "comparaison.jso
 
 #: Un groupe électrogène diesel rend environ 3,5 kWh par litre de gasoil, et un
 #: litre brûlé émet 2,68 kg de CO2. Les deux chiffres sont des ordres de
-#: grandeur usuels, pas des mesures faites sur le groupe de la régie — c'est dit
+#: grandeur usuels, pas des mesures faites sur le groupe de la régie - c'est dit
 #: ici plutôt que sous-entendu.
 KWH_PAR_LITRE = 3.5
 CO2_PAR_LITRE = 2.68
@@ -314,12 +314,12 @@ def main() -> None:
     print(f"vs lui-même, muet    : "
           f"{resume['vs_lui_meme_sans_la_parole']['heures_a_sec_pct']:.0f}% d'heures à sec "
           f"en moins, {resume['vs_lui_meme_sans_la_parole']['cout_pct']:.0f}% moins cher "
-          f"— mêmes poids, seule l'alerte diffère")
+          f"- mêmes poids, seule l'alerte diffère")
     if not resume["reserve_plus_fine_que_la_regle"]:
         print("l'agent garde autant de réserve que la règle")
     else:
         print(f"réserve plus fine que la règle : creux {resultat_agent['creux_moyen']:.2f} "
-              f"contre {regle['creux_moyen']:.2f} — à dire tel quel")
+              f"contre {regle['creux_moyen']:.2f} - à dire tel quel")
     h = resume["en_humain"]
     print(f"\n{'en gens plutôt qu\'en mètres cubes':<40}")
     print("-" * 62)

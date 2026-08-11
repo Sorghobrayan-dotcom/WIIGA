@@ -8,7 +8,7 @@ et c'est la pleine saison de délestage. Mais le ciel est dégagé, donc la cuve
 batterie fonctionne : on remplit à midi pour le pic de 19 h.
 
 **En août il fait 30,1 °C et il tombe 8,7 mm par jour.** La demande retombe,
-mais l'ensoleillement chute de 21 % en moyenne — et jusqu'à 4,1 MJ/m² sur une
+mais l'ensoleillement chute de 21 % en moyenne - et jusqu'à 4,1 MJ/m² sur une
 journée couverte contre 25,5 au plus clair. La batterie virtuelle s'effondre au
 moment où l'on aurait pu s'en passer, et redevient indispensable quand elle
 marche le mieux.
@@ -239,7 +239,7 @@ class Journee:
         annonçait 365 jours de saison des pluies : une ville tempérée reçoit de
         la pluie toute l'année sans avoir de mousson pour autant. Un tiers
         supérieur de la distribution locale dit ce qu'un seuil universel ne peut
-        pas dire — qu'une saison est un **écart à la normale du lieu**.
+        pas dire - qu'une saison est un **écart à la normale du lieu**.
         """
         if self.pluie >= self.seuil_pluie and self.ensoleillement < self.seuil_soleil:
             return "pluies"
@@ -256,7 +256,7 @@ def seuils(climat: Climat) -> tuple[float, float, float]:
 
     Le **rang** d'abord : le tiers le plus arrosé de l'année localement, ce qui
     évite de comparer Ouagadougou à Chennai avec la même règle. Mais le rang seul
-    ne dit rien — un tiers d'une année en est toujours un tiers, et découper par
+    ne dit rien - un tiers d'une année en est toujours un tiers, et découper par
     quantile donnait exactement 122 jours de « pluies » à Ouagadougou, à Sydney
     et à Nairobi. Un chiffre identique partout est un chiffre qui ne mesure rien.
 

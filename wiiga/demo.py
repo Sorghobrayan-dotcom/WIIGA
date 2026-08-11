@@ -2,7 +2,7 @@
 
 L'argument de WIIGA ne se lit pas dans un tableau de moyennes. Il se voit sur
 une journée : à 13 h l'agent pompe à pleine puissance vers un quartier qui ne
-consomme rien, et à 19 h — réseau coupé, soleil couché, demande au maximum — la
+consomme rien, et à 19 h - réseau coupé, soleil couché, demande au maximum - la
 cuve est pleine.
 
 C'est ça, la batterie virtuelle. Le soleil de midi a été stocké sous forme
@@ -83,7 +83,7 @@ def dessiner(env: WiigaEnv, journal: list[dict], sortie: Path = SORTIE) -> Path:
     ax_ctx.set_ylabel("disponible / demandé")
     ax_ctx.legend(loc="upper left", frameon=False, fontsize=9)
     ax_ctx.set_title(
-        "Une journée de saison chaude — le soleil, la demande, et les coupures",
+        "Une journée de saison chaude - le soleil, la demande, et les coupures",
         loc="left", fontsize=13, color=ENCRE, pad=10,
     )
 

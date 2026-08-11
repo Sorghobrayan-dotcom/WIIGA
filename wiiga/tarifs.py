@@ -7,7 +7,7 @@ change d'un pays à l'autre bien plus qu'un taux de change ne le corrige.
 
 La bonne réponse tient en une phrase : **la physique est universelle, l'argent
 est local.** Ce projet mesure donc d'abord en kilowattheures, en litres de
-gasoil, en kilos de CO₂ et en personnes-jours au-dessus du seuil de survie — des
+gasoil, en kilos de CO2 et en personnes-jours au-dessus du seuil de survie - des
 unités qui se lisent à Sydney comme à Ouagadougou. Le coût monétaire est une
 couche de présentation posée par-dessus, avec le tarif du lieu et la conversion
 écrite en clair.
@@ -37,7 +37,7 @@ class Tarif:
     unité commune pour comparer deux villes, et qu'on affiche ensuite dans la
     monnaie locale. Le solaire est à zéro partout : le panneau est déjà posé, et
     son amortissement ne dépend pas de l'heure à laquelle l'agent décide de
-    pomper — le mettre dans le coût horaire fausserait précisément l'arbitrage
+    pomper - le mettre dans le coût horaire fausserait précisément l'arbitrage
     qu'on veut mesurer.
     """
 
@@ -72,7 +72,7 @@ class Tarif:
 
 
 #: Ouagadougou, tarifs SONABEL indicatifs. Ce sont les valeurs sur lesquelles
-#: tous les chiffres du dépôt ont été mesurés — 120, 250 et 400 FCFA le kWh —
+#: tous les chiffres du dépôt ont été mesurés - 120, 250 et 400 FCFA le kWh -
 #: reconstruites ici en dollars pour que les autres villes s'y comparent.
 #:
 #: Le franc CFA est arrimé à l'euro à parité fixe (655,957 FCFA pour 1 €), ce qui

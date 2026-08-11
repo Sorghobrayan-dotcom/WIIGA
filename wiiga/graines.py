@@ -7,7 +7,7 @@ graine peut n'être qu'une bonne pioche.**
 
 Trois entraînements complets, trois graines différentes, évalués sur les mêmes
 365 journées et les mêmes graines d'évaluation que les règles écrites. On publie
-la moyenne, l'écart-type, et surtout **le pire des trois** — parce que c'est lui
+la moyenne, l'écart-type, et surtout **le pire des trois** - parce que c'est lui
 qui dit ce qu'on obtient quand on n'a pas de chance.
 
 Un résultat qui ne survit pas à sa propre variance n'est pas un résultat. Si les
@@ -72,7 +72,7 @@ def main() -> None:
     chemins = modeles()
     if not chemins:
         raise SystemExit(
-            f"aucun modèle dans {DOSSIER} — lancer d'abord `--entrainer`"
+            f"aucun modèle dans {DOSSIER} - lancer d'abord `--entrainer`"
         )
 
     # les règles d'abord : elles ne dépendent d'aucune graine d'entraînement, et
@@ -125,7 +125,7 @@ def main() -> None:
         for m in par_graine.values():
             ligne += f"{m[cle]:>13.{dec}f}"
         ligne += f"{stats[cle]['moyenne']:>11.{dec}f}{stats[cle]['ecart_type']:>9.{dec}f}"
-        ligne += f"{regle[cle]:>11.{dec}f}" if cle in regle else f"{'—':>11}"
+        ligne += f"{regle[cle]:>11.{dec}f}" if cle in regle else f"{'-':>11}"
         print(ligne)
 
     print(f"\nécart à la règle écrite, heures à sec : "
@@ -134,7 +134,7 @@ def main() -> None:
     print(
         "les trois graines battent la règle écrite"
         if toutes_gagnent
-        else "au moins une graine perd contre la règle écrite — à dire tel quel"
+        else "au moins une graine perd contre la règle écrite - à dire tel quel"
     )
 
     SORTIE.parent.mkdir(parents=True, exist_ok=True)

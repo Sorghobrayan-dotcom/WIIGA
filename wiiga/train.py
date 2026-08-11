@@ -48,7 +48,7 @@ def entrainer(
     # `confiance_tiree` uniquement ici : à l'entraînement l'agent doit rencontrer
     # toute la gamme de crédibilité, sans quoi il détruit le canal d'alerte dans
     # ses vingt premières journées et n'apprend jamais à s'en servir. À la
-    # mesure, la confiance persiste — c'est le vrai déploiement.
+    # mesure, la confiance persiste - c'est le vrai déploiement.
     reglages = dict(confiance_tiree=True, equite=equite)
     if n_envs > 1:
         env = make_vec_env(
@@ -72,7 +72,7 @@ def entrainer(
         batch_size=64,
         # une journée fait 24 pas : inutile d'escompter sur mille. Importé plutôt
         # que réécrit, l'environnement s'en servant aussi pour raisonner sur son
-        # horizon — deux valeurs qui divergeraient seraient invisibles.
+        # horizon - deux valeurs qui divergeraient seraient invisibles.
         gamma=GAMMA,
         verbose=verbose,
         seed=seed,
@@ -126,7 +126,7 @@ def comparer(agent: PPO, journees: int = 200, seed: int = 1000) -> None:
     print(
         "l'apprentissage bat la règle écrite à la main"
         if mieux
-        else "la règle écrite bat l'apprentissage — à dire tel quel"
+        else "la règle écrite bat l'apprentissage - à dire tel quel"
     )
 
 

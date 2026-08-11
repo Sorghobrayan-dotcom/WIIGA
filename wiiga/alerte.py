@@ -2,7 +2,7 @@
 
 L'agent dispose d'une action qui ne touche aucune pompe : **dire à la ville de
 remplir ses bidons avant la coupure**. Par SMS, par radio de quartier, par le
-crieur du marché — le canal importe peu, le mécanisme est le même.
+crieur du marché - le canal importe peu, le mécanisme est le même.
 
 Cette action n'existe nulle part dans la littérature sur le pompage, et pour une
 raison qui n'a rien de technique : **en Europe personne ne stocke l'eau chez
@@ -15,7 +15,7 @@ Trois propriétés en font un vrai problème d'apprentissage plutôt qu'un bouto
 **Prévenir avance la demande, ça ne la supprime pas.** Les foyers remplissent
 maintenant ce qu'ils auraient bu plus tard. La cuve est donc *plus* sollicitée
 dans l'heure qui suit, et moins pendant la coupure. L'agent échange une tension
-immédiate contre une tension future — et se trompe s'il alerte quand la cuve est
+immédiate contre une tension future - et se trompe s'il alerte quand la cuve est
 déjà basse.
 
 **Le coût de l'action est l'efficacité future de cette même action.** Alerter à
@@ -62,7 +62,7 @@ CONFIANCE_INITIALE = 0.55
 #: mécanisme.**
 #:
 #: Une première version arrêtait la confiance à zéro. Mesuré : une fois au
-#: plancher, mentir devenait *gratuit* — la soustraction était écrêtée, donc plus
+#: plancher, mentir devenait *gratuit* - la soustraction était écrêtée, donc plus
 #: aucune fausse alerte ne coûtait quoi que ce soit, tandis que la réponse des
 #: foyers valait déjà zéro. L'état était absorbant et sans coût, et l'agent y
 #: tombait puis y restait en émettant sept alertes par jour à 57 % de justesse :
@@ -71,8 +71,8 @@ CONFIANCE_INITIALE = 0.55
 #: En dessous de zéro il n'y a pas « pas de confiance », il y a de la défiance
 #: active. Une régie qui a crié au loup cinquante fois n'est pas à égalité avec
 #: une régie inconnue : elle doit d'abord remonter le trou qu'elle a creusé. La
-#: réponse des foyers reste nulle sur toute la zone négative — on ne peut pas
-#: répondre moins que pas du tout — mais chaque mensonge continue de coûter.
+#: réponse des foyers reste nulle sur toute la zone négative - on ne peut pas
+#: répondre moins que pas du tout - mais chaque mensonge continue de coûter.
 DEFIANCE_MAX = -1.0
 
 #: Dans combien d'heures une alerte doit être suivie d'une coupure pour être
@@ -115,7 +115,7 @@ class Crediteur:
 
         Écrêtée à zéro : sous la défiance, personne ne bouge, et on ne peut pas
         répondre moins que pas du tout. La confiance, elle, continue de descendre
-        — c'est ce qui distingue la profondeur du trou de son existence.
+        - c'est ce qui distingue la profondeur du trou de son existence.
         """
         return REPONSE_MAX * max(0.0, self.confiance)
 
@@ -134,7 +134,7 @@ class Crediteur:
 
         Deux définitions plus faibles ont été essayées et écartées par la mesure.
         Comparer à l'heure de l'alerte précédente laissait fuir l'état d'un jour
-        sur l'autre — une alerte à 2 h du matin passait pour la répétition de
+        sur l'autre - une alerte à 2 h du matin passait pour la répétition de
         celle de 15 h la veille. Se fier au remplissage des bidons ne mordait
         pas : à confiance initiale les récipients ne dépassent jamais la moitié,
         et quatre annonces collées *gagnaient* de la confiance au lieu d'en
@@ -182,7 +182,7 @@ def deplacer_demande(horaire: np.ndarray, heure: int, part: float) -> np.ndarray
 
     Le volume total de la journée ne change pas : les bidons remplis à 17 h sont
     bus à 20 h. C'est un déplacement, et c'est pour cela que l'alerte n'est pas
-    une baguette magique — elle tend la cuve tout de suite.
+    une baguette magique - elle tend la cuve tout de suite.
     """
     h = np.asarray(horaire, dtype=np.float64).copy()
     debut = heure + 1

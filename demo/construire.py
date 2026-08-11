@@ -4,7 +4,7 @@ La page est **entièrement autonome** : les données sont écrites à l'intérie
 HTML au moment de la construction. Aucune requête réseau, aucun serveur, aucune
 fonction *serverless*. Elle s'ouvre depuis un disque comme depuis GitHub Pages,
 et elle ne peut pas tomber en panne devant un jury parce qu'une API a changé
-d'avis — c'est exactement le piège qui a coûté un concours précédent.
+d'avis - c'est exactement le piège qui a coûté un concours précédent.
 
 Elle ne calcule aucun résultat non plus. Elle lit les JSON de `resultats/`,
 demande à `scenarios.py` les journées rejouables, et met en forme. Si un chiffre
@@ -35,7 +35,7 @@ def rassembler() -> dict:
     """Tout ce que la page dessine, en un seul objet.
 
     `comparaison` est obligatoire : sans elle il n'y a pas de page. Les trois
-    autres sont facultatives, et la page se replie proprement si l'une manque —
+    autres sont facultatives, et la page se replie proprement si l'une manque -
     on préfère une section absente à une section qui affiche des zéros.
     """
     from scenarios import construire as construire_scenarios
@@ -53,7 +53,7 @@ def rassembler() -> dict:
         if chemin.exists():
             donnees[cle] = json.loads(chemin.read_text(encoding="utf-8"))
         else:
-            print(f"  (absent : {fichier} — la section correspondante sera masquée)")
+            print(f"  (absent : {fichier} - la section correspondante sera masquée)")
     return donnees
 
 
