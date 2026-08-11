@@ -23,3 +23,7 @@ peterson.py
 
 # artefact d une capture ratee
 captures$nom.png
+
+# strategie de concours : gardee en local, pas publiee
+PLAN-CONCOURS.md
+IDEES.md
