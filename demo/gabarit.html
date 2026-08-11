@@ -62,6 +62,10 @@
   button:hover{border-color:var(--ink-3)}
   button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
   button.play{min-width:104px;font-variant-numeric:tabular-nums}
+  .grp.grow{flex:1 1 220px;min-width:200px}
+  input[type=range]{flex:1;min-width:110px;accent-color:var(--water);cursor:pointer}
+  .clock{font-family:var(--mono);font-size:14px;color:var(--ink-2);min-width:48px;
+         font-variant-numeric:tabular-nums}
 
   .stage{display:grid;gap:26px;grid-template-columns:minmax(230px,300px) 1fr;align-items:start}
   @media(max-width:760px){.stage{grid-template-columns:1fr}}
@@ -117,7 +121,7 @@ It also does something no published pump controller does: it decides when to
 <p class="note" id="verdict"></p>
 
 <!-- ==================== CONSOLE ==================== -->
-<section>
+<section id="console">
   <h2>Watch it decide</h2>
   <p>One simulated day, hour by hour. Change the city and the same agent — the
   weights trained on Ouagadougou, unchanged — runs under a climate it never saw.
@@ -131,6 +135,12 @@ It also does something no published pump controller does: it decides when to
       <div class="grp">
         <button class="play" id="c-play" type="button">▶ Play</button>
         <button id="c-speed" type="button">1×</button>
+      </div>
+      <div class="grp grow">
+        <span class="t">Hour</span>
+        <input id="c-hour" type="range" min="0" max="23" step="0.25" value="0"
+               aria-label="Hour of the day">
+        <span class="clock" id="c-clock">00:00</span>
       </div>
     </div>
 
@@ -167,7 +177,7 @@ It also does something no published pump controller does: it decides when to
 </section>
 
 <!-- ==================== BENCHMARK ==================== -->
-<section>
+<section id="bench-sec">
   <h2>What it had to beat</h2>
   <p class="lede">Beating current practice is easy. Beating somebody who reads the
   same outage forecast is not — and that is the row that decides whether learning
@@ -178,7 +188,7 @@ It also does something no published pump controller does: it decides when to
 </section>
 
 <!-- ==================== SEASONS ==================== -->
-<section>
+<section id="saisons">
   <h2>The average hides the problem</h2>
   <p>Ouagadougou does not have one water problem, it has three. In April it is
   39.8&nbsp;°C, demand is up a quarter, and the grid fails every evening — but the
@@ -190,7 +200,7 @@ It also does something no published pump controller does: it decides when to
 </section>
 
 <!-- ==================== SPEECH ==================== -->
-<section>
+<section id="parole">
   <h2>The action that touches no pump</h2>
   <p>The agent can broadcast one message: <b>fill your jerrycans, the power is
   about to go</b>. In Europe this action would be meaningless — nobody stores
@@ -209,7 +219,7 @@ It also does something no published pump controller does: it decides when to
 </section>
 
 <!-- ==================== TRANSFER ==================== -->
-<section>
+<section id="villes">
   <h2>A city it has never seen</h2>
   <p><i>Scalable</i> is a word everyone writes and nobody measures. Here it means
   one thing: <b>the weights trained on Ouagadougou, replayed unchanged on climates
@@ -226,7 +236,7 @@ It also does something no published pump controller does: it decides when to
 </section>
 
 <!-- ==================== TWIN ==================== -->
-<section>
+<section id="beton">
   <h2>How much concrete does it replace?</h2>
   <p>The simulator is a <b>digital twin</b> of the network — tanks, pumps,
   sources, a failing grid, demand that follows heat and holidays, calibrated on
@@ -381,12 +391,38 @@ function bindPol(){
   });
 }
 st.saison=SEASONS_ORDER.find(s=>S.villes[st.ville].jours[s]);
+
+// Lien profond : #ville=Sydney&heure=19&operateur=regle ouvre la console
+// directement sur cette scène. Sert à pointer quelqu'un vers le moment précis
+// où la décision se voit, plutôt qu'à lui demander de rejouer une journée.
+(function(){
+  const q=new URLSearchParams(location.hash.slice(1));
+  const v=q.get("ville"); if(v&&S.villes[v]) st.ville=v;
+  const s=q.get("saison"); if(s&&S.villes[st.ville].jours[s]) st.saison=s;
+  const p=q.get("operateur"); if(p==="agent"||p==="regle") st.pol=p;
+  const h=parseFloat(q.get("heure")); if(!isNaN(h)) st.t=Math.min(23.99,Math.max(0,h));
+  const vers=q.get("vers");
+  // après la mise en page, pas pendant : les tableaux et les tracés sont écrits
+  // par ce script, donc la position d'une section n'est connue qu'une fois le
+  // dessin fini. Sans ce délai, le lien tombe quelques centaines de pixels trop
+  // haut, ce qui se voit.
+  if(vers) addEventListener("load",()=>setTimeout(()=>{
+    const cible=document.getElementById(vers);
+    if(cible) cible.scrollIntoView({block:"start",behavior:"instant"});
+  },250));
+})();
+
 bindVille(); bindSaison(); bindPol();
 
-const bPlay=document.getElementById("c-play"), bSpeed=document.getElementById("c-speed");
+const bPlay=document.getElementById("c-play"), bSpeed=document.getElementById("c-speed"),
+      bHour=document.getElementById("c-hour"), lClock=document.getElementById("c-clock");
 bPlay.onclick=()=>{st.play=!st.play; if(st.play&&st.t>=23.99)st.t=0;
   bPlay.textContent=st.play?"⏸ Pause":"▶ Play";};
 bSpeed.onclick=()=>{st.vit=st.vit===1?2:st.vit===2?4:1; bSpeed.textContent=st.vit+"×";};
+// le curseur d'heure : on peut sauter à 19 h, quand le réseau tombe et que le
+// quartier résidentiel a soif — c'est là que la décision se voit
+bHour.oninput=()=>{st.play=false; bPlay.textContent="▶ Play";
+  st.t=parseFloat(bHour.value); rendre();};
 
 /* ---- tanks ---- */
 function dessineTanks(){
@@ -515,7 +551,12 @@ function dessineReadout(){
     "Districts — day "+j.numero+(j.evenement?" · "+j.evenement:"");
 }
 
-function rendre(){dessineTanks();dessineCurve();dessineStrip();dessineReadout();}
+function rendre(){
+  dessineTanks();dessineCurve();dessineStrip();dessineReadout();
+  if(document.activeElement!==bHour) bHour.value=st.t;
+  const h=Math.floor(st.t), m=Math.floor((st.t-h)*60);
+  lClock.textContent=String(h).padStart(2,"0")+":"+String(m).padStart(2,"0");
+}
 
 let last=0;
 function boucle(ts){

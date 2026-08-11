@@ -1,14 +1,15 @@
 {
-  "genere_le": "2026-08-11T07:04:00+00:00",
+  "genere_le": "2026-08-11T19:08:00+00:00",
   "journees": 365,
   "seed": 1000,
+  "modele": "agents/graine_0",
   "mesures": {
     "exploitant (consigne fixe)": {
       "heures_a_sec_par_jour": 3.2164383561643834,
       "jours_avec_coupure_sur_200": 95,
       "litres_manquants_par_jour": 57310.4304052906,
       "personnes_privees_equivalent_par_jour": 2865.52152026453,
-      "fcfa_par_jour": 852894.1561643835,
+      "fcfa_par_jour": 853960.2931506849,
       "litres_gasoil_par_jour": 0.0,
       "kg_co2_par_jour": 0.0,
       "part_solaire_bue": 0.0,
@@ -31,7 +32,7 @@
       "jours_avec_coupure_sur_200": 30,
       "litres_manquants_par_jour": 11026.467078271577,
       "personnes_privees_equivalent_par_jour": 551.3233539135788,
-      "fcfa_par_jour": 324424.8438356164,
+      "fcfa_par_jour": 324656.43561643834,
       "litres_gasoil_par_jour": 61.199714042752,
       "kg_co2_par_jour": 164.01523363457537,
       "part_solaire_bue": 0.3230241432629069,
@@ -54,7 +55,7 @@
       "jours_avec_coupure_sur_200": 26,
       "litres_manquants_par_jour": 10390.388670728857,
       "personnes_privees_equivalent_par_jour": 519.5194335364429,
-      "fcfa_par_jour": 321336.8849315068,
+      "fcfa_par_jour": 321557.3178082192,
       "litres_gasoil_par_jour": 62.80832124975015,
       "kg_co2_par_jour": 168.32630094933043,
       "part_solaire_bue": 0.3242371010661444,
@@ -73,46 +74,46 @@
       "confiance_finale": 0.55
     },
     "agent WIIGA (PPO)": {
-      "heures_a_sec_par_jour": 0.2054794520547945,
-      "jours_avec_coupure_sur_200": 18,
-      "litres_manquants_par_jour": 2939.0217451123717,
-      "personnes_privees_equivalent_par_jour": 146.95108725561857,
-      "fcfa_par_jour": 266333.69315068494,
-      "litres_gasoil_par_jour": 43.11308280566371,
-      "kg_co2_par_jour": 115.54306191917875,
-      "part_solaire_bue": 0.34753477639489455,
-      "creux_moyen": 0.22948874680190004,
+      "heures_a_sec_par_jour": 0.15616438356164383,
+      "jours_avec_coupure_sur_200": 15,
+      "litres_manquants_par_jour": 2255.894978276308,
+      "personnes_privees_equivalent_par_jour": 112.7947489138154,
+      "fcfa_par_jour": 268744.66575342463,
+      "litres_gasoil_par_jour": 39.85927809108154,
+      "kg_co2_par_jour": 106.82286528409854,
+      "part_solaire_bue": 0.3664305195281872,
+      "creux_moyen": 0.2604481286131861,
       "creux_pire_jour": 0.0,
-      "jours_creux_sous_10pct": 30,
-      "jours_creux_sous_5pct": 24,
-      "remplissage_fin_de_jour": 0.2708641030615564,
+      "jours_creux_sous_10pct": 23,
+      "jours_creux_sous_5pct": 20,
+      "remplissage_fin_de_jour": 0.3739286130527123,
       "heures_a_sec_par_saison": {
         "pluies": 0.017241379310344827,
-        "sèche chaude": 0.67,
-        "sèche tempérée": 0.040268456375838924
+        "sèche chaude": 0.4,
+        "sèche tempérée": 0.10067114093959731
       },
-      "alertes_par_jour": 5.772602739726027,
-      "justesse_alertes": 0.5780730897009967,
-      "confiance_finale": -1.0
+      "alertes_par_jour": 0.7013698630136986,
+      "justesse_alertes": 0.96484375,
+      "confiance_finale": 1.0
     },
     "agent WIIGA, sans la parole": {
-      "heures_a_sec_par_jour": 0.21095890410958903,
-      "jours_avec_coupure_sur_200": 18,
-      "litres_manquants_par_jour": 3042.1670161651746,
-      "personnes_privees_equivalent_par_jour": 152.10835080825873,
-      "fcfa_par_jour": 268597.1287671233,
-      "litres_gasoil_par_jour": 44.876179249760625,
-      "kg_co2_par_jour": 120.26816038935848,
-      "part_solaire_bue": 0.3472079658536176,
-      "creux_moyen": 0.23866474889312247,
+      "heures_a_sec_par_jour": 0.2273972602739726,
+      "jours_avec_coupure_sur_200": 20,
+      "litres_manquants_par_jour": 3243.022899196273,
+      "personnes_privees_equivalent_par_jour": 162.15114495981365,
+      "fcfa_par_jour": 290704.57808219176,
+      "litres_gasoil_par_jour": 47.4119572923902,
+      "kg_co2_par_jour": 127.06404554360574,
+      "part_solaire_bue": 0.33729579558911627,
+      "creux_moyen": 0.2500787163007823,
       "creux_pire_jour": 0.0,
-      "jours_creux_sous_10pct": 31,
-      "jours_creux_sous_5pct": 26,
-      "remplissage_fin_de_jour": 0.2802288062510282,
+      "jours_creux_sous_10pct": 30,
+      "jours_creux_sous_5pct": 27,
+      "remplissage_fin_de_jour": 0.3663040018869217,
       "heures_a_sec_par_saison": {
         "pluies": 0.017241379310344827,
-        "sèche chaude": 0.67,
-        "sèche tempérée": 0.053691275167785234
+        "sèche chaude": 0.71,
+        "sèche tempérée": 0.06711409395973154
       },
       "alertes_par_jour": 0.0,
       "justesse_alertes": 0.0,
@@ -121,33 +122,33 @@
   },
   "resume": {
     "vs_pratique_actuelle": {
-      "heures_a_sec_pct": 93.61158432708689,
-      "cout_pct": 68.77294899657481,
+      "heures_a_sec_pct": 95.14480408858603,
+      "cout_pct": 68.52960636355917,
       "co2_pct": 0.0
     },
     "vs_regle_ecrite": {
-      "heures_a_sec_pct": 38.01652892561984,
-      "cout_pct": 17.116986676629374,
-      "co2_pct": 31.357689637604814
+      "heures_a_sec_pct": 52.892561983471076,
+      "cout_pct": 16.424024312297774,
+      "co2_pct": 36.538220894989934
     },
     "vs_lui_meme_sans_la_parole": {
-      "heures_a_sec_pct": 2.5974025974026,
-      "cout_pct": 0.8426879419104882
+      "heures_a_sec_pct": 31.325301204819283,
+      "cout_pct": 7.554030443427806
     },
     "en_humain": {
       "habitants_desservis": 22000,
       "personnes_sous_le_seuil_par_jour": {
-        "agent": 146.95108725561857,
+        "agent": 112.7947489138154,
         "regle_ecrite": 519.5194335364429,
         "pratique_actuelle": 2865.52152026453
       },
-      "personnes_jours_epargnees_par_an_vs_regle": 135987.44639250086,
-      "personnes_jours_epargnees_par_an_vs_pratique": 992278.2080482527,
-      "part_de_la_ville_touchee_agent": 0.0066795948752553895,
+      "personnes_jours_epargnees_par_an_vs_regle": 148454.50988725902,
+      "personnes_jours_epargnees_par_an_vs_pratique": 1004745.2715430107,
+      "part_de_la_ville_touchee_agent": 0.005127034041537064,
       "part_de_la_ville_touchee_regle": 0.023614519706201948,
-      "fcfa_epargnes_par_an_vs_regle": 20076164.99999999,
-      "kg_co2_evites_par_an_vs_regle": 19265.882246005363,
-      "litres_gasoil_evites_par_an_vs_regle": 7188.762032091551
+      "fcfa_epargnes_par_an_vs_regle": 19276618.000000007,
+      "kg_co2_evites_par_an_vs_regle": 22448.75401780964,
+      "litres_gasoil_evites_par_an_vs_regle": 8376.400752914042
     },
     "apprentissage_bat_la_regle": true,
     "reserve_plus_fine_que_la_regle": true

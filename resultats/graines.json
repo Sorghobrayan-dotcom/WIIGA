@@ -1,119 +1,119 @@
 {
-  "genere_le": "2026-08-11T18:05:59+00:00",
+  "genere_le": "2026-08-11T19:06:39+00:00",
   "journees": 365,
   "seed_evaluation": 1000,
   "graines": {
     "graine_0": {
-      "heures_a_sec_par_jour": 1.4164383561643836,
-      "jours_avec_coupure_sur_200": 89,
-      "litres_manquants_par_jour": 37975.77381649717,
-      "personnes_privees_equivalent_par_jour": 1898.7886908248583,
-      "fcfa_par_jour": 235023.38082191782,
-      "litres_gasoil_par_jour": 0.017162415668013697,
-      "kg_co2_par_jour": 0.04599527399027671,
-      "part_solaire_bue": 0.3259591987987733,
-      "creux_moyen": 0.11238762602135932,
+      "heures_a_sec_par_jour": 0.15616438356164383,
+      "jours_avec_coupure_sur_200": 15,
+      "litres_manquants_par_jour": 2255.894978276308,
+      "personnes_privees_equivalent_par_jour": 112.7947489138154,
+      "fcfa_par_jour": 268744.66575342463,
+      "litres_gasoil_par_jour": 39.85927809108154,
+      "kg_co2_par_jour": 106.82286528409854,
+      "part_solaire_bue": 0.3664305195281872,
+      "creux_moyen": 0.2604481286131861,
       "creux_pire_jour": 0.0,
-      "jours_creux_sous_10pct": 117,
-      "jours_creux_sous_5pct": 105,
-      "remplissage_fin_de_jour": 0.17194152388076978,
+      "jours_creux_sous_10pct": 23,
+      "jours_creux_sous_5pct": 20,
+      "remplissage_fin_de_jour": 0.3739286130527123,
       "heures_a_sec_par_saison": {
-        "pluies": 0.4051724137931034,
-        "sèche chaude": 3.35,
-        "sèche tempérée": 0.9060402684563759
+        "pluies": 0.017241379310344827,
+        "sèche chaude": 0.4,
+        "sèche tempérée": 0.10067114093959731
       },
-      "alertes_par_jour": 0.23835616438356164,
-      "justesse_alertes": 0.9770114942528736,
+      "alertes_par_jour": 0.7013698630136986,
+      "justesse_alertes": 0.96484375,
       "confiance_finale": 1.0
     },
     "graine_1": {
-      "heures_a_sec_par_jour": 0.5753424657534246,
-      "jours_avec_coupure_sur_200": 33,
-      "litres_manquants_par_jour": 11856.992295610298,
-      "personnes_privees_equivalent_par_jour": 592.8496147805149,
-      "fcfa_par_jour": 252176.03013698632,
-      "litres_gasoil_par_jour": 56.470166101201094,
-      "kg_co2_par_jour": 151.34004515121893,
-      "part_solaire_bue": 0.4054157857664914,
-      "creux_moyen": 0.15754766521721472,
+      "heures_a_sec_par_jour": 0.09315068493150686,
+      "jours_avec_coupure_sur_200": 11,
+      "litres_manquants_par_jour": 1648.8648604924322,
+      "personnes_privees_equivalent_par_jour": 82.44324302462161,
+      "fcfa_par_jour": 254443.17260273974,
+      "litres_gasoil_par_jour": 43.410553521630426,
+      "kg_co2_par_jour": 116.34028343796955,
+      "part_solaire_bue": 0.3775668052041024,
+      "creux_moyen": 0.2708164262806037,
       "creux_pire_jour": 0.0,
-      "jours_creux_sous_10pct": 53,
-      "jours_creux_sous_5pct": 36,
-      "remplissage_fin_de_jour": 0.38618487476472824,
+      "jours_creux_sous_10pct": 17,
+      "jours_creux_sous_5pct": 15,
+      "remplissage_fin_de_jour": 0.39029727780018303,
       "heures_a_sec_par_saison": {
-        "pluies": 0.0603448275862069,
-        "sèche chaude": 1.76,
-        "sèche tempérée": 0.18120805369127516
+        "pluies": 0.017241379310344827,
+        "sèche chaude": 0.28,
+        "sèche tempérée": 0.026845637583892617
       },
-      "alertes_par_jour": 2.654794520547945,
-      "justesse_alertes": 0.6986584107327142,
-      "confiance_finale": -0.7099999999999992
+      "alertes_par_jour": 0.7808219178082192,
+      "justesse_alertes": 0.9543859649122807,
+      "confiance_finale": 1.0
     },
     "graine_2": {
-      "heures_a_sec_par_jour": 0.4794520547945205,
-      "jours_avec_coupure_sur_200": 33,
-      "litres_manquants_par_jour": 9108.576889840184,
-      "personnes_privees_equivalent_par_jour": 455.4288444920092,
-      "fcfa_par_jour": 254734.49589041097,
-      "litres_gasoil_par_jour": 49.38244384040215,
-      "kg_co2_par_jour": 132.34494949227778,
-      "part_solaire_bue": 0.3470152659332389,
-      "creux_moyen": 0.1698449926141484,
+      "heures_a_sec_par_jour": 0.20821917808219179,
+      "jours_avec_coupure_sur_200": 20,
+      "litres_manquants_par_jour": 3143.9934396725753,
+      "personnes_privees_equivalent_par_jour": 157.19967198362878,
+      "fcfa_par_jour": 253619.73424657533,
+      "litres_gasoil_par_jour": 78.14771399267772,
+      "kg_co2_par_jour": 209.4358735003763,
+      "part_solaire_bue": 0.4086905276942293,
+      "creux_moyen": 0.20364710685460166,
       "creux_pire_jour": 0.0,
-      "jours_creux_sous_10pct": 53,
-      "jours_creux_sous_5pct": 43,
-      "remplissage_fin_de_jour": 0.24577167120001708,
+      "jours_creux_sous_10pct": 25,
+      "jours_creux_sous_5pct": 23,
+      "remplissage_fin_de_jour": 0.48075754648469826,
       "heures_a_sec_par_saison": {
-        "pluies": 0.09482758620689655,
-        "sèche chaude": 1.41,
-        "sèche tempérée": 0.15436241610738255
+        "pluies": 0.017241379310344827,
+        "sèche chaude": 0.67,
+        "sèche tempérée": 0.04697986577181208
       },
-      "alertes_par_jour": 0.3917808219178082,
+      "alertes_par_jour": 0.5753424657534246,
       "justesse_alertes": 1.0,
       "confiance_finale": 1.0
     }
   },
   "statistiques": {
     "heures_a_sec_par_jour": {
-      "moyenne": 0.823744292237443,
-      "ecart_type": 0.5155224852410816,
-      "min": 0.4794520547945205,
-      "max": 1.4164383561643836
+      "moyenne": 0.15251141552511416,
+      "ecart_type": 0.05762115636291272,
+      "min": 0.09315068493150686,
+      "max": 0.20821917808219179
     },
     "personnes_privees_equivalent_par_jour": {
-      "moyenne": 982.3557166991276,
-      "ecart_type": 796.6229748603607,
-      "min": 455.4288444920092,
-      "max": 1898.7886908248583
+      "moyenne": 117.47922130735526,
+      "ecart_type": 37.59772770900057,
+      "min": 82.44324302462161,
+      "max": 157.19967198362878
     },
     "fcfa_par_jour": {
-      "moyenne": 247311.30228310506,
-      "ecart_type": 10718.26465105666,
-      "min": 235023.38082191782,
-      "max": 254734.49589041097
+      "moyenne": 258935.8575342466,
+      "ecart_type": 8504.648828262227,
+      "min": 253619.73424657533,
+      "max": 268744.66575342463
     },
     "kg_co2_par_jour": {
-      "moyenne": 94.57699663916235,
-      "ecart_type": 82.41532672446128,
-      "min": 0.04599527399027671,
-      "max": 151.34004515121893
+      "moyenne": 144.19967407414813,
+      "ecart_type": 56.696266180083384,
+      "min": 106.82286528409854,
+      "max": 209.4358735003763
     },
     "creux_moyen": {
-      "moyenne": 0.1465934279509075,
-      "ecart_type": 0.030254482800230683,
-      "min": 0.11238762602135932,
-      "max": 0.1698449926141484
+      "moyenne": 0.24497055391613046,
+      "ecart_type": 0.03616069491748294,
+      "min": 0.20364710685460166,
+      "max": 0.2708164262806037
     },
     "alertes_par_jour": {
-      "moyenne": 1.0949771689497716,
-      "ecart_type": 1.3530178894400953,
-      "min": 0.23835616438356164,
-      "max": 2.654794520547945
+      "moyenne": 0.6858447488584475,
+      "ecart_type": 0.10361574774779575,
+      "min": 0.5753424657534246,
+      "max": 0.7808219178082192
     },
     "justesse_alertes": {
-      "moyenne": 0.8918899683285293,
-      "ecart_type": 0.1677377238050523,
-      "min": 0.6986584107327142,
+      "moyenne": 0.9730765716374269,
+      "ecart_type": 0.023895492531671864,
+      "min": 0.9543859649122807,
       "max": 1.0
     }
   },
@@ -189,10 +189,10 @@
     }
   },
   "ecart_a_la_regle_pct": {
-    "moyenne": -148.48484848484847,
-    "min": -327.27272727272725,
-    "max": -44.6280991735537,
-    "ecart_type": 155.50884885371468
+    "moyenne": 53.99449035812673,
+    "min": 37.190082644628106,
+    "max": 71.900826446281,
+    "ecart_type": 17.38158848963896
   },
-  "toutes_les_graines_battent_la_regle": false
+  "toutes_les_graines_battent_la_regle": true
 }

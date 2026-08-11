@@ -198,9 +198,33 @@ a judge finds.
 
 ## What did not work
 
-Four mechanisms were built, measured, and thrown away. They are documented in the
+Six mechanisms were built, measured, and thrown away. They are documented in the
 code at the exact place they failed, because a project that only reports its
 successes is a project you cannot check.
+
+- **Letting the agent repeat itself produced two opposite degenerate optima.**
+  Same reward, same environment, two training seeds. One learned to *never speak*
+  — zero warnings, trust frozen at its starting value forever. The other
+  chattered at seven warnings a day and hit the distrust floor on day 14 *despite
+  87 % accuracy*, because almost every warning landed while another was still
+  awaiting judgement: those earn nothing, while the 13 % that were wrong cost full
+  price. Neither learned to speak rarely and well. The reward structure was
+  sound — break-even at 78.9 % — the problem was **exploration**: nothing guided
+  the agent between silence and shouting. The fix is what every real alerting
+  system does: **the broadcaster does not re-send while the previous warning is
+  still live.** One decision remains — *when* to spend a warning — and the result
+  is 0.87 warnings a day at 95 % accuracy, with trust climbing to its maximum.
+- **Raising the discount factor to see reputation further ahead broke the
+  pumping.** Reputation lives on weeks; at γ = 0.98 the agent's useful horizon is
+  about two days. Raising it to 0.995 — an eight-day horizon — sounded right and
+  measured wrong: all three seeds fell *below* the hand-written rulebook, 0.82 dry
+  hours a day against 0.33. **The two sub-problems do not share a natural
+  horizon.** Pumping is intraday — the tanks refill every morning, and nothing
+  decided today reaches eight days out. Forcing the value function to predict that
+  far through a random day-of-year and random outages teaches it nothing and adds
+  noise to the advantage estimate on the only part of the problem that yields
+  water. What the horizon was meant to buy, the broadcast lock provides
+  structurally.
 
 - **Trust clamped at zero made lying free.** Once at the floor, the subtraction
   was clipped, so a false alarm cost nothing while household response was already
