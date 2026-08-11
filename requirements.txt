@@ -1,0 +1,16 @@
+# Le prototype de mars, tel qu'il était.
+#
+# Le dépôt contenait un fichier nommé « REquirements.txt » qui était en réalité
+# un document Word renommé — du XML Office en clair, que ni pip ni un lecteur
+# ne peuvent utiliser. Il est remplacé ici par la liste réelle, déduite des
+# imports de WIIGA (2).py.
+#
+# Cette branche n'est plus développée : elle existe pour montrer d'où le projet
+# est parti. Le travail se poursuit sur `main`.
+
+gymnasium
+numpy
+wntr
+matplotlib
+stable-baselines3
+torch
