@@ -616,6 +616,27 @@ class WiigaEnv(gym.Env):
         `equite=False` bascule sur la moyenne. Ce n'est pas une option offerte à
         l'utilisateur, c'est l'ablation qui prouve que la ligne sert à quelque
         chose : deux agents, mêmes graines, même tout, une seule différence.
+
+        **Sur le soupçon de récompense détournée.** Cette fonction est écrite à
+        la main, avec des falaises posées par un humain — moins 60 sous 10 %,
+        moins 15 sous 20 %. Un agent assez malin s'installe juste au-dessus d'un
+        seuil au lieu de servir la ville. Le reproche est légitime et il se
+        mesure : voir `detournement.py`.
+
+        Ce qu'il en ressort. L'agent gagne **18 % de récompense** contre la règle
+        écrite, et **59 % d'heures à sec** — soit un rapport de 0,31. Il gagne
+        trois fois plus sur la tâche que sur le proxy pour lequel il a été
+        entraîné, quand un détournement produirait l'inverse. Aucun chiffre
+        publié par ce dépôt n'est d'ailleurs cette récompense : les heures à sec,
+        les personnes sous le seuil de l'OMS, les francs et le CO₂ n'apparaissent
+        nulle part ici.
+
+        Un indicateur reste un peu haut et on ne le cache pas : autour du seuil
+        de 20 %, l'agent passe 1,9 fois plus de temps juste au-dessus que juste
+        en dessous, contre 1,3 pour la règle. L'explication tient à la
+        distribution complète — l'agent fait tourner les cuves plus bas que les
+        règles (creux moyen 0,26 contre 0,43), donc il habite ces tranches-là
+        tout court. Il y passe pourtant *moins* de temps sous 10 % qu'elles.
         """
         remplissages = [z.remplissage for z in self.zones]
         pire = min(remplissages) if self.equite else sum(remplissages) / len(remplissages)
