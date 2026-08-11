@@ -19,7 +19,7 @@ published pump controller asks: **should I tell the city?**
 ### 1. The tank is the battery
 
 Solar power is free at 1 p.m. and gone by 7 p.m., which is exactly when the
-residential district gets thirsty. Storing that energy would mean lithium —
+residential district gets thirsty. Storing that energy would mean lithium -
 expensive, and due for replacement in eight years.
 
 But the storage is already on site. It is the **tank**. Pumping at midday, on
@@ -30,7 +30,7 @@ This is also what makes learning necessary rather than decorative. To decide
 whether to fill *now*, the agent must hold four things together that do not
 arrive at the same time: the district's peak six hours out, the sun's arc, the
 risk of a grid cut this evening, and the diesel that is left. A hand-written
-rule does not arbitrate four horizons — and we measured that, against a rule
+rule does not arbitrate four horizons - and we measured that, against a rule
 that reads the same forecast the agent does.
 
 ### 2. The reward reads the worst-served district, not the average
@@ -39,13 +39,13 @@ that reads the same forecast the agent does.
 
 With an average, draining one district to keep two full is an excellent policy.
 It is also unacceptable. Every number in the results table below comes from an
-agent that was optimised for the district doing worst — which is why it is more
+agent that was optimised for the district doing worst - which is why it is more
 expensive than it could be, and why that is the point.
 
 ### 3. The agent can talk to the city
 
 The agent has one action that touches no pump: **warn the city to fill their
-jerrycans before the cut.** SMS, neighbourhood radio, the market crier — the
+jerrycans before the cut.** SMS, neighbourhood radio, the market crier - the
 channel does not matter, the mechanism does.
 
 This action does not exist in the pump-scheduling literature, for a reason that
@@ -68,11 +68,11 @@ There is no penalty term forbidding the agent to chatter. Talking too often is
 simply a losing bet, and it has to work that out.
 
 One structural rule makes that learnable: **the broadcaster does not re-send
-while the previous warning is still awaiting judgement** — which is what any real
+while the previous warning is still awaiting judgement** - which is what any real
 alerting system does. Without it, measured, two seeds on the same reward found
 opposite degenerate optima: one never spoke at all, the other shouted seven times
 a day and lost all credibility by day 14 despite being right 87 % of the time.
-With it, one decision remains — *when* to spend a warning.
+With it, one decision remains - *when* to spend a warning.
 
 ---
 
@@ -94,7 +94,7 @@ on a laptop CPU:
 python -m wiiga.train --pas 600000
 ```
 
-Point the model at any city on earth — no API key, no account:
+Point the model at any city on earth - no API key, no account:
 
 ```bash
 python -m wiiga.ville Chennai
@@ -113,15 +113,15 @@ cached to `villes/` so the demo runs offline afterwards.
 
 ### What each policy costs the city
 
-| operator | dry hours / day | dry days / 200 | local currency / day | L diesel / day | kg CO₂ / day | tank low point |
+| operator | dry hours / day | dry days / 200 | local currency / day | L diesel / day | kg CO2 / day | tank low point |
 |---|---:|---:|---:|---:|---:|---:|
-| exploitant (consigne fixe) | 3,22 | 95 | 853 960 | 0,0 | 0,0 | 0,19 |
-| moins cher (sans prévision) | 0,40 | 30 | 324 656 | 61,2 | 164,0 | 0,41 |
-| prévoyant (règle écrite) | 0,33 | 26 | 321 557 | 62,8 | 168,3 | 0,43 |
-| **agent WIIGA (PPO)** | 0,16 | 15 | 268 745 | 39,9 | 106,8 | 0,26 |
-| agent WIIGA, sans la parole | 0,23 | 20 | 290 705 | 47,4 | 127,1 | 0,25 |
+| exploitant (consigne fixe) | 3,22 | 95 | 853 960 | 0,0 | 0,0 | 0,19 |
+| moins cher (sans prévision) | 0,40 | 30 | 324 656 | 61,2 | 164,0 | 0,41 |
+| prévoyant (règle écrite) | 0,33 | 26 | 321 557 | 62,8 | 168,3 | 0,43 |
+| **agent WIIGA (PPO)** | 0,16 | 15 | 268 745 | 39,9 | 106,8 | 0,26 |
+| agent WIIGA, sans la parole | 0,23 | 20 | 290 705 | 47,4 | 127,1 | 0,25 |
 
-### The same table, season by season — dry hours per day
+### The same table, season by season - dry hours per day
 
 | operator | hot dry | rainy | mild dry |
 |---|---:|---:|---:|
@@ -143,8 +143,8 @@ hot dry season, which is exactly when the city is thirstiest.
 
 ### At a glance
 
-- **against what the utility runs today**: 95 % fewer dry hours, 69 % cheaper to run, 0 % less CO₂
-- **against the hand-written rulebook**: 53 % fewer dry hours, 16 % cheaper to run, 37 % less CO₂
+- **against what the utility runs today**: 95 % fewer dry hours, 69 % cheaper to run, 0 % less CO2
+- **against the hand-written rulebook**: 53 % fewer dry hours, 16 % cheaper to run, 37 % less CO2
 - **against itself, with the warning switched off**: 31 % fewer dry hours, 8 % cheaper to run
 
 ### Does the result survive its own variance
@@ -156,15 +156,15 @@ hot dry season, which is exactly when the city is thirstiest.
 | seed 0 | 0,16 | 0,70 | 96 % |
 | seed 1 | 0,09 | 0,78 | 95 % |
 | seed 2 | 0,21 | 0,58 | 100 % |
-| **the rulebook they all beat** | **0,33** | 0 | — |
+| **the rulebook they all beat** | **0,33** | 0 | - |
 
 All three seeds beat the hand-written rulebook, by **54 %** on average and between **37 %** and **72 %** depending on the seed. The worst of the three is the number to plan with.
 
 ### What it replaces in concrete
 
-The simulator is a digital twin, so it answers capital questions. The hand-written rulebook only matches the agent at **1.22× storage** — **96 m³** of new tank on the 440 m³ that exist, a **22 % expansion**. That is what the agent is worth in concrete, and it costs nothing to pour.
+The simulator is a digital twin, so it answers capital questions. The hand-written rulebook only matches the agent at **1.22x storage** - **96 m3** of new tank on the 440 m3 that exist, a **22 % expansion**. That is what the agent is worth in concrete, and it costs nothing to pour.
 
-Buying the same result with fuel instead takes **1.72× the daily generator budget** — more emissions, every day, for as long as the station runs.
+Buying the same result with fuel instead takes **1.72x the daily generator budget** - more emissions, every day, for as long as the station runs.
 
 ### And in a city it has never seen
 
@@ -178,7 +178,7 @@ Buying the same result with fuel instead takes **1.72× the daily generator budg
 | Sydney | 68 / 119 / 178 | 0,09 | 0,09 | -6 % | 0,58 |
 | Lima | 0 / 146 / 219 | 0,13 | 0,12 | -9 % | 0,76 |
 
-The agent beats the rulebook in **3 of 5** of these cities, with nothing retrained. It does not win everywhere, and the pattern is worth more than a clean sweep would be: **its advantage tracks how hard the city is.** Where the rulebook already keeps taps running — Sydney, Lima — there is nothing left to win. Where the problem bites, the gap opens. A tool that helps most exactly where the need is greatest is the tool you want.
+The agent beats the rulebook in **3 of 5** of these cities, with nothing retrained. It does not win everywhere, and the pattern is worth more than a clean sweep would be: **its advantage tracks how hard the city is.** Where the rulebook already keeps taps running - Sydney, Lima - there is nothing left to win. Where the problem bites, the gap opens. A tool that helps most exactly where the need is greatest is the tool you want.
 
 <!-- chiffres:fin -->
 
@@ -197,16 +197,16 @@ limitation you declared yourself.
   resolution this is the right level of detail; for anything touching a real
   valve it is not.
 - **The load-shedding model is calibrated by hand**, not fitted to SONABEL
-  outage records — those are not published. The three regimes are plausible, and
+  outage records - those are not published. The three regimes are plausible, and
   the agent's advantage is measured against rules operating under the *same*
   model, so the comparison is fair even where the model is wrong.
 - **The demand elasticity to heat (2.5 % per °C above 30 °C) is the weakest
   assumption in the project.** It is written in `calendrier.py` next to the
-  constant rather than buried in it. The literature spans 1–4 % for hot climates.
+  constant rather than buried in it. The literature spans 1-4 % for hot climates.
 - **Transfer to another city is climatic only.** District profiles, tank sizes
   and the load-shedding regime stay those of Ouagadougou. We change what the
-  model knows about geography — twelve temperatures, twelve solar sums, twelve
-  rainfall figures — and nothing else.
+  model knows about geography - twelve temperatures, twelve solar sums, twelve
+  rainfall figures - and nothing else.
 - **Household jerrycan behaviour is a model, not a measurement.** 45 % maximum
   response, six-hour drawdown. The order of magnitude is what carries the
   argument; the exact figure would need a field survey.
@@ -218,12 +218,12 @@ limitation you declared yourself.
 | Path | What lives there |
 |---|---|
 | `wiiga/env.py` | the Gymnasium environment: tanks, pumps, sources, reward |
-| `wiiga/grid.py` | load shedding — three seasonal regimes, forecast vs truth |
+| `wiiga/grid.py` | load shedding - three seasonal regimes, forecast vs truth |
 | `wiiga/alerte.py` | the warning channel and the city's trust in the utility |
 | `wiiga/calendrier.py` | heat, sun, rain, Ramadan and Tabaski across the year |
 | `wiiga/ville.py` | plug any city on earth in via Open-Meteo |
 | `wiiga/baselines.py` | what the agent has to beat, including a rule that reads the same forecast |
-| `wiiga/resultats.py` | the measurement harness — the only place numbers are produced |
+| `wiiga/resultats.py` | the measurement harness - the only place numbers are produced |
 | `wiiga/transfert.py` | the same weights, replayed on climates never seen in training |
 | `wiiga/rapport.py` | turns the JSON into the tables above, so no number is ever retyped |
 

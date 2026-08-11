@@ -1,15 +1,15 @@
 """L'agent optimise-t-il la tâche, ou la récompense qu'on a écrite pour elle ?
 
 C'est le reproche de fond qu'on peut faire à toute récompense écrite à la main,
-et celle de `_recompense` en est une : `12 × pire`, moins 60 sous 10 %, moins 15
-sous 20 %, moins 25 × le déficit de réserve. Des falaises posées par un humain.
+et celle de `_recompense` en est une : `12 x pire`, moins 60 sous 10 %, moins 15
+sous 20 %, moins 25 x le déficit de réserve. Des falaises posées par un humain.
 Un agent assez malin exploite les falaises au lieu de servir la ville.
 
 Trois défenses, dont deux seulement sont des mesures.
 
 **La première est structurelle** : aucun chiffre publié par ce dépôt n'est la
 récompense. Les heures à sec, les personnes sous le seuil de survie de l'OMS, les
-francs, les kilos de CO₂, le creux de cuve — rien de tout cela n'apparaît dans
+francs, les kilos de CO2, le creux de cuve - rien de tout cela n'apparaît dans
 `_recompense`, qui ne connaît que des taux de remplissage et un coût. La
 récompense est un moyen ; ce qu'on publie est la fin. C'est nécessaire et ça ne
 suffit pas : un proxy bien choisi peut quand même être détourné.
@@ -23,7 +23,7 @@ Une politique honnête n'a aucune raison de préférer ces tranches ; une politi
 qui triche les habite.
 
 **La troisième compare les deux avantages.** Les règles écrites reçoivent elles
-aussi une récompense, alors qu'elles ne l'optimisent jamais — elles n'en
+aussi une récompense, alors qu'elles ne l'optimisent jamais - elles n'en
 connaissent pas l'existence. Si l'agent creusait l'écart bien plus en récompense
 qu'en heures à sec, ce serait le signe qu'il gagne sur le proxy sans gagner sur
 la tâche. Si les deux écarts vont de pair, l'objection tombe.

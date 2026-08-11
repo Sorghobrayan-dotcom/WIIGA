@@ -6,18 +6,18 @@ Ouagadougou, rejoués tels quels sur des climats qui n'étaient pas dans
 l'entraînement, contre la même règle écrite à la main.**
 
 Rien n'est réentraîné, rien n'est réglé, aucune constante ne change. On remplace
-douze températures, douze ensoleillements et douze pluviométries — c'est-à-dire
-tout ce que le modèle sait de la géographie — et on regarde.
+douze températures, douze ensoleillements et douze pluviométries - c'est-à-dire
+tout ce que le modèle sait de la géographie - et on regarde.
 
 Les quatre villes ne sont pas choisies pour être faciles :
 
-- **Chennai** — mousson du nord-est, saison des pluies en octobre-décembre au
+- **Chennai** - mousson du nord-est, saison des pluies en octobre-décembre au
   lieu de juillet-septembre. Le calendrier est décalé de trois mois.
-- **Nairobi** — deux saisons des pluies par an au lieu d'une, et l'altitude
+- **Nairobi** - deux saisons des pluies par an au lieu d'une, et l'altitude
   écrase l'amplitude thermique dont l'agent se sert pour anticiper la demande.
-- **Sydney** — hémisphère sud. Tout est inversé : le pic de chaleur tombe en
+- **Sydney** - hémisphère sud. Tout est inversé : le pic de chaleur tombe en
   janvier. Aucune règle apprise sur le numéro du jour ne peut survivre.
-- **Lima** — désert côtier. Zéro jour de saison des pluies, et un ensoleillement
+- **Lima** - désert côtier. Zéro jour de saison des pluies, et un ensoleillement
   qui s'effondre en hiver sans qu'il pleuve : la cuve-batterie tombe en panne
   pour une raison que l'agent n'a jamais rencontrée.
 
@@ -133,7 +133,7 @@ def main() -> None:
     print(
         "\nl'agent bat la règle écrite dans TOUTES les villes"
         if garde
-        else "\nl'agent perd contre la règle dans au moins une ville — à dire tel quel"
+        else "\nl'agent perd contre la règle dans au moins une ville - à dire tel quel"
     )
 
     SORTIE.parent.mkdir(parents=True, exist_ok=True)

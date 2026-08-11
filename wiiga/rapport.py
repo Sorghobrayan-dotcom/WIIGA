@@ -34,7 +34,7 @@ SAISONS = ("sèche chaude", "pluies", "sèche tempérée")
 
 def _fr(x: float, decimales: int = 0) -> str:
     """Un nombre lisible : espace fine pour les milliers, virgule décimale."""
-    s = f"{x:,.{decimales}f}".replace(",", " ").replace(".", ",")
+    s = f"{x:,.{decimales}f}".replace(",", " ").replace(".", ",")
     return s
 
 
@@ -42,7 +42,7 @@ def tableau_principal(d: dict) -> list[str]:
     m = d["mesures"]
     lignes = [
         "| operator | dry hours / day | dry days / 200 | local currency / day "
-        "| L diesel / day | kg CO₂ / day | tank low point |",
+        "| L diesel / day | kg CO2 / day | tank low point |",
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
     for nom, v in m.items():
@@ -126,7 +126,7 @@ def construire() -> str:
     bloc += ["", "### What each policy costs the city", ""]
     bloc += tableau_principal(d)
 
-    bloc += ["", "### The same table, season by season — dry hours per day", ""]
+    bloc += ["", "### The same table, season by season - dry hours per day", ""]
     bloc += tableau_saisons(d)
     bloc += [
         "",
@@ -148,7 +148,7 @@ def construire() -> str:
         if "cout_pct" in e:
             morceaux.append(f"{_fr(e['cout_pct'])} % cheaper to run")
         if "co2_pct" in e:
-            morceaux.append(f"{_fr(e['co2_pct'])} % less CO₂")
+            morceaux.append(f"{_fr(e['co2_pct'])} % less CO2")
         bloc.append(f"- **against {titre}**: " + ", ".join(morceaux))
 
     if GRAINES.exists():
@@ -175,7 +175,7 @@ def construire() -> str:
         regle = g["regles"]["prévoyant (règle écrite)"]
         bloc.append(
             f"| **the rulebook they all beat** "
-            f"| **{_fr(regle['heures_a_sec_par_jour'], 2)}** | 0 | — |"
+            f"| **{_fr(regle['heures_a_sec_par_jour'], 2)}** | 0 | - |"
         )
         verdict = (
             "All three seeds beat the hand-written rulebook"
@@ -196,9 +196,9 @@ def construire() -> str:
             bloc.append(
                 f"The simulator is a digital twin, so it answers capital questions. "
                 f"The hand-written rulebook only matches the agent at "
-                f"**{q['capacite_equivalente']:.2f}× storage** — "
-                f"**{_fr(q['m3_de_stockage_evites'])} m³** of new tank on the "
-                f"{_fr(q['capacite_actuelle_m3'])} m³ that exist, a "
+                f"**{q['capacite_equivalente']:.2f}x storage** - "
+                f"**{_fr(q['m3_de_stockage_evites'])} m3** of new tank on the "
+                f"{_fr(q['capacite_actuelle_m3'])} m3 that exist, a "
                 f"**{_fr((q['capacite_equivalente'] - 1) * 100)} % expansion**. "
                 f"That is what the agent is worth in concrete, and it costs nothing "
                 f"to pour."
@@ -206,7 +206,7 @@ def construire() -> str:
             if q.get("carburant_equivalent"):
                 bloc.append(
                     f"\nBuying the same result with fuel instead takes "
-                    f"**{q['carburant_equivalent']:.2f}× the daily generator budget** — "
+                    f"**{q['carburant_equivalent']:.2f}x the daily generator budget** - "
                     f"more emissions, every day, for as long as the station runs."
                 )
         else:
@@ -233,7 +233,7 @@ def construire() -> str:
             "of these cities, with nothing retrained. It does not win everywhere, "
             "and the pattern is worth more than a clean sweep would be: **its "
             "advantage tracks how hard the city is.** Where the rulebook already "
-            "keeps taps running — Sydney, Lima — there is nothing left to win. "
+            "keeps taps running - Sydney, Lima - there is nothing left to win. "
             "Where the problem bites, the gap opens. A tool that helps most "
             "exactly where the need is greatest is the tool you want.",
         ]
@@ -246,7 +246,7 @@ def main() -> None:
     if not README.exists():
         print(bloc)
         raise SystemExit(
-            f"\n({README.name} n'existe pas encore — bloc affiché plutôt qu'inséré)"
+            f"\n({README.name} n'existe pas encore - bloc affiché plutôt qu'inséré)"
         )
 
     texte = README.read_text(encoding="utf-8")

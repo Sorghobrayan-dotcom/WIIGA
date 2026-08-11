@@ -3,7 +3,7 @@
 `Climat` a toujours été le seul point par lequel la géographie entre dans le
 simulateur : douze températures, douze ensoleillements, douze pluviométries.
 Ce fichier va les chercher pour une ville quelconque au lieu de les avoir codées
-en dur, et c'est tout ce qu'il fait. Rien d'autre ne change — ni l'agent, ni la
+en dur, et c'est tout ce qu'il fait. Rien d'autre ne change - ni l'agent, ni la
 récompense, ni les pompes.
 
 Deux appels, sans clé d'API et sans compte :
@@ -21,7 +21,7 @@ recharge hors ligne, à l'identique, et le fichier dit de quand il date.
 
 Ce que ce module ne sait pas faire, et qu'il vaut mieux écrire que sous-entendre :
 il rapatrie le climat, **pas le calendrier social**. Les fêtes qui déplacent la
-demande d'eau — Tabaski, Ramadan — n'existent dans aucune API météo. Une ville
+demande d'eau - Tabaski, Ramadan - n'existent dans aucune API météo. Une ville
 récupérée arrive donc avec ses saisons justes et son calendrier vide, sauf si on
 le lui fournit. C'est une limite du monde, pas du code.
 
@@ -154,7 +154,7 @@ def climat_de(
 ) -> Climat:
     """Le climat d'une ville : du cache si on l'a, du réseau sinon.
 
-    `hors_ligne=True` interdit le réseau — c'est le mode de la démonstration,
+    `hors_ligne=True` interdit le réseau - c'est le mode de la démonstration,
     où l'on préfère un échec net à une attente devant un jury.
     """
     CACHE.mkdir(parents=True, exist_ok=True)

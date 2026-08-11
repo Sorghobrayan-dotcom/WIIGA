@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WIIGA — an RL operator for city water under load shedding</title>
+<title>WIIGA - an RL operator for city water under load shedding</title>
 <meta name="description" content="A reinforcement-learning agent schedules three district water pumps through daily power cuts, and decides when to warn the city. Measured against hand-written rules on identical seeds.">
 <style>
   :root{
@@ -112,7 +112,7 @@
 <h1>The grid fails eight hours a day.<br>Someone still has to decide when to pump.</h1>
 
 <p class="lede">WIIGA is a reinforcement-learning operator for three district water
-pumps in Ouagadougou, Burkina Faso — under load shedding, on a finite diesel
+pumps in Ouagadougou, Burkina Faso - under load shedding, on a finite diesel
 reserve, optimising for <b>the worst-served district rather than the average</b>.
 It also does something no published pump controller does: it decides when to
 <b>warn the city</b>, and it pays for being wrong.</p>
@@ -123,8 +123,8 @@ It also does something no published pump controller does: it decides when to
 <!-- ==================== CONSOLE ==================== -->
 <section id="console">
   <h2>Watch it decide</h2>
-  <p>One simulated day, hour by hour. Change the city and the same agent — the
-  weights trained on Ouagadougou, unchanged — runs under a climate it never saw.
+  <p>One simulated day, hour by hour. Change the city and the same agent - the
+  weights trained on Ouagadougou, unchanged - runs under a climate it never saw.
   Switch to the rulebook to see what the same day looks like without learning.</p>
 
   <div class="console">
@@ -134,7 +134,7 @@ It also does something no published pump controller does: it decides when to
       <div class="grp" id="c-policy"><span class="t">Operator</span></div>
       <div class="grp">
         <button class="play" id="c-play" type="button">▶ Play</button>
-        <button id="c-speed" type="button">1×</button>
+        <button id="c-speed" type="button">1x</button>
       </div>
       <div class="grp grow">
         <span class="t">Hour</span>
@@ -172,7 +172,7 @@ It also does something no published pump controller does: it decides when to
     </div>
   </div>
   <p class="quiet">Every scenario here was played in Python by the trained model
-  and written into this page. The browser replays them — there is no model
+  and written into this page. The browser replays them - there is no model
   running in this tab, and saying otherwise would be a lie you could not check.</p>
 </section>
 
@@ -180,7 +180,7 @@ It also does something no published pump controller does: it decides when to
 <section id="bench-sec">
   <h2>What it had to beat</h2>
   <p class="lede">Beating current practice is easy. Beating somebody who reads the
-  same outage forecast is not — and that is the row that decides whether learning
+  same outage forecast is not - and that is the row that decides whether learning
   earned its place here.</p>
   <div class="scroll"><table id="bench"></table></div>
   <p id="bench-after"></p>
@@ -191,7 +191,7 @@ It also does something no published pump controller does: it decides when to
 <section id="saisons">
   <h2>The average hides the problem</h2>
   <p>Ouagadougou does not have one water problem, it has three. In April it is
-  39.8&nbsp;°C, demand is up a quarter, and the grid fails every evening — but the
+  39.8&nbsp;°C, demand is up a quarter, and the grid fails every evening - but the
   sky is clear, so the tank-as-battery works. In August it is 30.1&nbsp;°C and it
   rains 8.7&nbsp;mm a day: demand falls, and so does the sunshine the battery
   depends on. The two seasons want opposite policies, which is why no fixed
@@ -203,16 +203,16 @@ It also does something no published pump controller does: it decides when to
 <section id="parole">
   <h2>The action that touches no pump</h2>
   <p>The agent can broadcast one message: <b>fill your jerrycans, the power is
-  about to go</b>. In Europe this action would be meaningless — nobody stores
+  about to go</b>. In Europe this action would be meaningless - nobody stores
   water at home. Here every household has containers, and one sentence at
   5&nbsp;p.m. moves more water than an hour of diesel.</p>
 
   <p>It is not a free button. Warning <b>moves demand forward, it does not remove
-  it</b> — the tank is under more strain in the following hour, less during the
+  it</b> - the tank is under more strain in the following hour, less during the
   cut, and the daily volume is conserved exactly. And a false alarm costs no fuel
   and no money: it costs <b>being listened to</b>. A correct warning buys
   <b>+0.04</b> of the city's trust, a false one costs <b>−0.15</b>. That asymmetry
-  alone fixes a break-even accuracy of <b>78.9&nbsp;%</b> — no penalty term forbids
+  alone fixes a break-even accuracy of <b>78.9&nbsp;%</b> - no penalty term forbids
   chatter, it is simply a losing bet, and the agent has to work that out.</p>
 
   <div class="scroll"><table id="speech"></table></div>
@@ -224,8 +224,8 @@ It also does something no published pump controller does: it decides when to
   <p><i>Scalable</i> is a word everyone writes and nobody measures. Here it means
   one thing: <b>the weights trained on Ouagadougou, replayed unchanged on climates
   that were not in training</b>, against the same hand-written rule. Twelve
-  temperatures, twelve solar sums and twelve rainfall figures are replaced —
-  everything the model knows about geography — and we look.</p>
+  temperatures, twelve solar sums and twelve rainfall figures are replaced -
+  everything the model knows about geography - and we look.</p>
 
   <figure>
     <svg id="climate" viewBox="0 0 700 230" role="img"
@@ -238,12 +238,12 @@ It also does something no published pump controller does: it decides when to
 <!-- ==================== TWIN ==================== -->
 <section id="beton">
   <h2>How much concrete does it replace?</h2>
-  <p>The simulator is a <b>digital twin</b> of the network — tanks, pumps,
+  <p>The simulator is a <b>digital twin</b> of the network - tanks, pumps,
   sources, a failing grid, demand that follows heat and holidays, calibrated on
   three years of measured daily records. You do not connect an agent to a city's
   water supply without one.</p>
   <p>But a twin is also useful on its own: it answers capital questions before
-  anyone pours anything. So we ask the one a utility director actually asks —
+  anyone pours anything. So we ask the one a utility director actually asks -
   <i>how much bigger would the tanks have to be for the rulebook to serve the
   city as well as the agent serves it with the tanks we already have?</i></p>
   <figure>
@@ -259,14 +259,14 @@ It also does something no published pump controller does: it decides when to
   <p>A figure in West African francs reads in Ouagadougou and nowhere else. But
   converting everything to dollars is the wrong fix: an electricity tariff varies
   far more between countries than an exchange rate corrects for. So the primary
-  units here are the ones that read everywhere — <b>kilowatt-hours, litres of
-  diesel, kilograms of CO₂, and person-days above the WHO survival threshold</b>.
+  units here are the ones that read everywhere - <b>kilowatt-hours, litres of
+  diesel, kilograms of CO2, and person-days above the WHO survival threshold</b>.
   Cost is a presentation layer with the local tariff written on it.</p>
   <p class="quiet">This is also the one input the project cannot fetch by itself.
   Climate comes from Open-Meteo with no key and no account; there is no open,
   reliable equivalent for city-level electricity tariffs. The figures used are
   declared orders of magnitude, kept in one file so a utility that knows its real
-  tariff replaces them in a minute — better a number labelled generic than a
+  tariff replaces them in a minute - better a number labelled generic than a
   precise one that is wrong.</p>
 </section>
 
@@ -284,7 +284,7 @@ python -m wiiga.equivalence  --journees 365   # how much storage the agent repla
 python -m wiiga.ville        Chennai          # plug in any city, no API key
 python -m wiiga.train        --pas 600000     # retrain, ~20 min on a laptop CPU</pre>
   <p class="note">This page is a single static file with its data written inside
-  it. No server, no serverless function, no network request — it cannot break in
+  it. No server, no serverless function, no network request - it cannot break in
   front of you because an API changed its mind.</p>
 </section>
 
@@ -299,7 +299,7 @@ python -m wiiga.train        --pas 600000     # retrain, ~20 min on a laptop CPU
     loss, no pipe network, no pressure. Right for hourly scheduling; wrong for
     anything touching a real valve.</li>
     <li><b>The load-shedding model is hand-calibrated</b>, not fitted to utility
-    outage records — those are not published. The agent's advantage is measured
+    outage records - those are not published. The agent's advantage is measured
     against rules living under the <i>same</i> model, so the comparison stays fair
     even where the model is wrong.</li>
     <li><b>Household jerrycan behaviour is a model, not a measurement.</b>
@@ -307,9 +307,9 @@ python -m wiiga.train        --pas 600000     # retrain, ~20 min on a laptop CPU
     the argument; the exact figure needs a field survey.</li>
     <li><b>Transfer is climatic only.</b> District profiles, tank sizes and the
     load-shedding regime stay those of Ouagadougou.</li>
-    <li><b>Demand elasticity to heat — 2.5&nbsp;% per °C above 30&nbsp;°C — is the
+    <li><b>Demand elasticity to heat - 2.5&nbsp;% per °C above 30&nbsp;°C - is the
     weakest assumption in the project.</b> It sits next to the constant in the
-    source rather than buried in it. The literature spans 1–4&nbsp;% for hot
+    source rather than buried in it. The literature spans 1-4&nbsp;% for hot
     climates.</li>
   </ul>
 </section>
@@ -343,7 +343,7 @@ const clr=(t,h)=>{while(t.firstChild&&(!h||t.children.length>h))t.removeChild(t.
 const H=R.en_humain, vr=R.vs_regle_ecrite, vp=R.vs_pratique_actuelle;
 [["hi",n0(vr.heures_a_sec_pct)+"%","fewer dry hours than the best hand-written rulebook"],
  ["hi",n0(H.personnes_jours_epargnees_par_an_vs_regle),"person-days a year kept above the WHO survival threshold"],
- ["",n0(H.kg_co2_evites_par_an_vs_regle/1000)+" t","CO₂ not emitted per year"],
+ ["",n0(H.kg_co2_evites_par_an_vs_regle/1000)+" t","CO2 not emitted per year"],
  ["",n0(H.habitants_desservis),"people across three districts"]
 ].forEach(([c,n,l])=>{
   const d=document.createElement("div"); d.className="fig"+(c?" "+c:"");
@@ -353,7 +353,7 @@ const H=R.en_humain, vr=R.vs_regle_ecrite, vp=R.vs_pratique_actuelle;
 });
 document.getElementById("verdict").innerHTML=
  "Against what the utility runs today, the agent cuts dry hours by <b>"+n0(vp.heures_a_sec_pct)+
- "%</b>. The harder comparison is the rulebook that reads the same forecast — and it still wins by <b>"+
+ "%</b>. The harder comparison is the rulebook that reads the same forecast - and it still wins by <b>"+
  n0(vr.heures_a_sec_pct)+"%</b>, while holding the tanks at <b>"+n2(M[AGENT].creux_moyen)+
  "</b> of capacity at the day's low point instead of <b>"+n2(M[RULE].creux_moyen)+
  "</b>. It runs the system tighter <i>and</i> leaves fewer people dry.";
@@ -418,9 +418,9 @@ const bPlay=document.getElementById("c-play"), bSpeed=document.getElementById("c
       bHour=document.getElementById("c-hour"), lClock=document.getElementById("c-clock");
 bPlay.onclick=()=>{st.play=!st.play; if(st.play&&st.t>=23.99)st.t=0;
   bPlay.textContent=st.play?"⏸ Pause":"▶ Play";};
-bSpeed.onclick=()=>{st.vit=st.vit===1?2:st.vit===2?4:1; bSpeed.textContent=st.vit+"×";};
+bSpeed.onclick=()=>{st.vit=st.vit===1?2:st.vit===2?4:1; bSpeed.textContent=st.vit+"x";};
 // le curseur d'heure : on peut sauter à 19 h, quand le réseau tombe et que le
-// quartier résidentiel a soif — c'est là que la décision se voit
+// quartier résidentiel a soif - c'est là que la décision se voit
 bHour.oninput=()=>{st.play=false; bPlay.textContent="▶ Play";
   st.t=parseFloat(bHour.value); rendre();};
 
@@ -550,7 +550,7 @@ function dessineReadout(){
   const pompage=r.heures[h].puissances.reduce((a,b)=>a+b,0)/r.heures[h].puissances.length;
   [["hour",String(h).padStart(2,"0")+":00",""],
    ["outside",j.temperature+" °C",""],
-   ["city wants",demande.toFixed(0)+" m³",""],
+   ["city wants",demande.toFixed(0)+" m3",""],
    ["pumps running",Math.round(pompage*100)+"%",""],
    ["worst district",Math.round(pire*100)+"%",pire<0.1?"bad":pire>0.35?"good":""],
    ["dry hours so far",String(sec),sec>0?"bad":"good"],
@@ -563,7 +563,7 @@ function dessineReadout(){
     d.append(a,b); g.appendChild(d);
   });
   document.getElementById("tanks-title").textContent =
-    "Districts — day "+j.numero+(j.evenement?" · "+j.evenement:"");
+    "Districts - day "+j.numero+(j.evenement?" · "+j.evenement:"");
 }
 
 function rendre(){
@@ -591,7 +591,7 @@ let hb="<caption>Every policy sees the same 365 days and the same random seeds. 
   "The third row is the real bar: a hand-written rulebook that reads the "+
   "<i>same outage forecast</i> the agent does.</caption><thead><tr><th>operator</th>"+
   "<th>dry hours / day</th><th>people below WHO survival / day</th><th>kWh / day</th>"+
-  "<th>kg CO₂ / day</th><th>tank low point</th></tr></thead><tbody>";
+  "<th>kg CO2 / day</th><th>tank low point</th></tr></thead><tbody>";
 order.forEach(k=>{const m=M[k];
   hb+="<tr"+(k===AGENT?' class="us"':"")+"><td>"+NAME[k]+"</td><td>"+n2(m.heures_a_sec_par_jour)+
   "</td><td>"+n0(m.personnes_privees_equivalent_par_jour)+"</td><td>"+
@@ -600,7 +600,7 @@ order.forEach(k=>{const m=M[k];
 document.getElementById("bench").innerHTML=hb+"</tbody>";
 const vm=R.vs_lui_meme_sans_la_parole;
 document.getElementById("bench-after").innerHTML=
- "The last row is the same weights with the warning action switched off — same seeds, "+
+ "The last row is the same weights with the warning action switched off - same seeds, "+
  "same days, one component of the action vector forced to zero. The speech alone is worth <b>"+
  n0(vm.heures_a_sec_pct)+"%</b> of the dry hours.";
 
@@ -614,7 +614,7 @@ if(D.graines){
     sb+="<tr><td>"+k.replace("graine_","seed ")+"</td><td>"+n2(m.heures_a_sec_par_jour)+
       "</td><td>"+n2(m.alertes_par_jour)+"</td><td>"+n0(m.justesse_alertes*100)+"%</td></tr>";
   sb+="<tr class='us'><td>the rulebook they all beat</td><td>"+
-    n2(G.regles[RULE].heures_a_sec_par_jour)+"</td><td>0</td><td>—</td></tr></tbody>";
+    n2(G.regles[RULE].heures_a_sec_par_jour)+"</td><td>0</td><td>-</td></tr></tbody>";
   document.getElementById("seeds").innerHTML=sb;
 }
 
@@ -629,11 +629,11 @@ document.getElementById("seasons").innerHTML=sh+"</tbody>";
 const mA=M[AGENT];
 document.getElementById("speech").innerHTML=
  "<caption>Warnings over the full 365-day evaluation, where trust carries over from one "+
- "day to the next — the deployment case, not the training one.</caption><thead><tr>"+
+ "day to the next - the deployment case, not the training one.</caption><thead><tr>"+
  "<th>operator</th><th>warnings / day</th><th>accuracy</th><th>break-even</th>"+
  "</tr></thead><tbody><tr class='us'><td>"+NAME[AGENT]+"</td><td>"+n2(mA.alertes_par_jour)+
  "</td><td>"+n0(mA.justesse_alertes*100)+"%</td><td>78.9%</td></tr>"+
- "<tr><td>every hand-written rule</td><td>0</td><td>—</td><td>—</td></tr></tbody>";
+ "<tr><td>every hand-written rule</td><td>0</td><td>-</td><td>-</td></tr></tbody>";
 
 /* ================= climate ================= */
 function dessineClimat(){
@@ -656,8 +656,8 @@ function dessineClimat(){
     .map(([k,n])=>n+" d "+(SEASON[k]||k)).join(" · "):"";
   document.getElementById("climate-cap").textContent=
     st.ville+" ("+(v.latitude<0?Math.abs(v.latitude)+"° S":v.latitude+"° N")+")"+
-    (sea?" — "+sea:"")+". Line: monthly mean daily maximum (°C). Bars: rainfall (mm/day). "+
-    "Season boundaries are that city's own — the wettest third of its year, and only where "+
+    (sea?" - "+sea:"")+". Line: monthly mean daily maximum (°C). Bars: rainfall (mm/day). "+
+    "Season boundaries are that city's own - the wettest third of its year, and only where "+
     "the sky is duller than its own average. A fixed threshold called Sydney rainy for 365 "+
     "days a year.";
 }
@@ -708,7 +708,7 @@ if(eq){
     t.textContent="+"+Math.round((eq.capacite_equivalente-1)*100)+"% concrete";
   }
   xs.forEach(v=>{const t=el("text",{x:px(v),y:Hh-mB+19,"text-anchor":"middle","font-size":11,
-    fill:"var(--ink-3)"},es); t.textContent=v.toFixed(2)+"×";});
+    fill:"var(--ink-3)"},es); t.textContent=v.toFixed(2)+"x";});
   [0,y1/2,y1].forEach(v=>{const t=el("text",{x:mL-9,y:py(v)+4,"text-anchor":"end",
     "font-size":11,fill:"var(--ink-3)"},es); t.textContent=v.toFixed(2);});
   const ax=el("text",{x:(mL+W-mR)/2,y:Hh-4,"text-anchor":"middle","font-size":11.5,
@@ -717,12 +717,12 @@ if(eq){
 
   document.getElementById("equiv-cap").innerHTML= eq.capacite_equivalente
    ? "The rulebook only matches the agent at <b>"+eq.capacite_equivalente.toFixed(2)+
-     "× storage</b> — <b>"+n0(eq.m3_de_stockage_evites)+" m³</b> of new tank on the "+
-     n0(eq.capacite_actuelle_m3)+" m³ that exist, a "+
+     "x storage</b> - <b>"+n0(eq.m3_de_stockage_evites)+" m3</b> of new tank on the "+
+     n0(eq.capacite_actuelle_m3)+" m3 that exist, a "+
      n0((eq.capacite_equivalente-1)*100)+"% expansion. That is what the agent is worth in "+
      "concrete, and it costs nothing to pour."+(eq.carburant_equivalent
      ? " Buying the same result with fuel instead takes <b>"+eq.carburant_equivalent.toFixed(2)+
-       "× the daily generator budget</b> — more emissions, every day, forever."
+       "x the daily generator budget</b> - more emissions, every day, forever."
      : " Buying the same result with fuel is not possible at any budget we tried: "+
        "burning more does not replace deciding better.")
    : "Even at the largest capacity tested, the rulebook does not catch the agent. The gap "+
@@ -733,7 +733,7 @@ if(eq){
 document.getElementById("foot").innerHTML=
  "Measured on "+C.genere_le.slice(0,10)+" over "+C.journees+" simulated days, one per day "+
  "of the year, identical seeds for every policy. Climatologies are measured, not invented: "+
- "2023–2025 daily records from the Open-Meteo / ERA5 archive. Every figure on this page is "+
+ "2023-2025 daily records from the Open-Meteo / ERA5 archive. Every figure on this page is "+
  "read from the JSON files in <code>resultats/</code>; none of it is typed by hand.";
 })();
 </script>

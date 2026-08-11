@@ -46,7 +46,7 @@ def moins_cher(obs: np.ndarray, env: WiigaEnv) -> np.ndarray:
 
     Gratuit au soleil, sinon réseau, sinon groupe. Elle ne regarde jamais devant
     elle, donc elle se fait prendre par le délestage exactement comme un
-    exploitant sans prévision — et c'est le point.
+    exploitant sans prévision - et c'est le point.
     """
     heure = env.heure
     soleil = solaire_horaire(heure)
@@ -103,7 +103,7 @@ POLITIQUES = {
 def evaluer(politique, env: WiigaEnv, journees: int = 200, seed: int = 0) -> dict:
     """Faire tourner une politique sur `journees` journées et compter ce qui compte.
 
-    Ce qui compte n'est pas la récompense — elle dépend de la façon dont on l'a
+    Ce qui compte n'est pas la récompense - elle dépend de la façon dont on l'a
     écrite. Ce sont les heures pendant lesquelles un quartier n'a pas eu d'eau,
     et les francs dépensés.
     """
@@ -131,7 +131,7 @@ def evaluer(politique, env: WiigaEnv, journees: int = 200, seed: int = 0) -> dic
         "coût / jour (FCFA)": cout / journees,
         "pire remplissage moyen": float(np.mean(pire)),
         #: la marge au pire moment de la journée, moyennée sur les journées, et
-        #: le pire jour de tous — c'est celui-là qu'un exploitant regarde
+        #: le pire jour de tous - c'est celui-là qu'un exploitant regarde
         "creux moyen": float(np.mean(creux)),
         "creux du pire jour": float(np.min(creux)),
         "mains rendues / jour": rendues / journees,
