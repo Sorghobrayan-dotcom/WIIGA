@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-08-11T19:06:39+00:00",
+  "genere_le": "2026-08-12T03:23:43+00:00",
   "journees": 365,
   "seed_evaluation": 1000,
   "graines": {
@@ -119,23 +119,23 @@
   },
   "regles": {
     "exploitant (consigne fixe)": {
-      "heures_a_sec_par_jour": 3.2164383561643834,
-      "jours_avec_coupure_sur_200": 95,
-      "litres_manquants_par_jour": 57310.4304052906,
-      "personnes_privees_equivalent_par_jour": 2865.52152026453,
-      "fcfa_par_jour": 853960.2931506849,
-      "litres_gasoil_par_jour": 0.0,
-      "kg_co2_par_jour": 0.0,
+      "heures_a_sec_par_jour": 2.4767123287671233,
+      "jours_avec_coupure_sur_200": 77,
+      "litres_manquants_par_jour": 45560.976039384135,
+      "personnes_privees_equivalent_par_jour": 2278.0488019692066,
+      "fcfa_par_jour": 961761.2904109589,
+      "litres_gasoil_par_jour": 76.99833528917908,
+      "kg_co2_par_jour": 206.35553857499997,
       "part_solaire_bue": 0.0,
-      "creux_moyen": 0.19251558654678366,
+      "creux_moyen": 0.26784294492270044,
       "creux_pire_jour": 0.0,
-      "jours_creux_sous_10pct": 106,
-      "jours_creux_sous_5pct": 104,
-      "remplissage_fin_de_jour": 0.7221714298410778,
+      "jours_creux_sous_10pct": 89,
+      "jours_creux_sous_5pct": 83,
+      "remplissage_fin_de_jour": 0.7356136038831677,
       "heures_a_sec_par_saison": {
-        "pluies": 0.2672413793103448,
-        "sèche chaude": 8.78,
-        "sèche tempérée": 1.778523489932886
+        "pluies": 0.08620689655172414,
+        "sèche chaude": 7.09,
+        "sèche tempérée": 1.2416107382550337
       },
       "alertes_par_jour": 0.0,
       "justesse_alertes": 0.0,
