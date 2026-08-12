@@ -1,16 +1,32 @@
 # WIIGA
 
-**A reinforcement-learning operator for city water pumps in a place where the
-electricity grid goes down every evening.**
+**In most cities, the water pumps simply run. All of them, all day, so that
+water is always there. WIIGA asks a different question: what if we brought the
+water where it is needed, when it is needed, on the cleanest power available at
+that moment?**
 
-Ouagadougou, Burkina Faso. Three district pumps, three storage tanks, one shared
-diesel reserve, and a grid that is load-shed on a schedule nobody publishes. The
-question a utility operator actually faces at 4 p.m. is not *"what is the
-cheapest kilowatt-hour"*. It is *"will there be power at seven, and if not, is
-there enough water already in the tank for the evening"*.
+WIIGA builds a digital twin of a city's water network, then decides - every hour,
+for every district - **which pump runs, at what power, filling which tank, on
+which source of energy.** It reads the date, the hour, the temperature, the
+season and the district, and it prefers solar every time solar can do the job.
+Grid second. The diesel generator last, and only when there is nothing else.
 
-WIIGA is a PPO agent that answers that question every hour, and one more that no
-published pump controller asks: **should I tell the city?**
+Here is what that looks like on one real simulated day in Ouagadougou:
+
+| | 1 p.m. | 7 p.m. |
+|---|---|---|
+| the city wants | 116 m3 | 69 m3 |
+| **pumps running** | **100 %** | **2 %** |
+| on what | **solar, all three** | nothing, they are off |
+| worst district tank | 79 % and filling | 57 %, and nobody is dry |
+
+At 1 p.m. it pushes every pump flat out on free sunlight. At 7 p.m. - peak
+demand, grid down, sun gone - it barely pumps at all, because **the water is
+already in the tank**. It did not react to the evening. It prepared for it at
+midday.
+
+That is the whole idea, and everything below is either how it works or proof
+that it works.
 
 ---
 
