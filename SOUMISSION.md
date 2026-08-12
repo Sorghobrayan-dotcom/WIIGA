@@ -91,7 +91,7 @@ It is not a free button:
 - **The cost of the action is the future effectiveness of that same action.** A
   false alarm costs no fuel and no money. It costs being listened to.
 - **Credibility is lost faster than it is earned.** A correct warning buys
-  **+0.04** of trust; a false one costs **−0.15**. That asymmetry alone fixes a
+  **+0.04** of trust; a false one costs **-0.15**. That asymmetry alone fixes a
   break-even accuracy of **78.9 %**. No penalty term forbids chatter - it is
   simply a losing bet, and the agent has to work that out.
 
@@ -233,8 +233,8 @@ successes is a project you cannot check.
   absence of trust but *active disbelief*: response stays zero, and every further
   lie still digs.
 - **The textbook form of potential-based reward shaping charged rent.**
-  `γ·Φ(s′) − Φ(s)` costs `(1−γ)·Φ` every step merely for *holding* the potential:
-  measured, a day with no warning at all cost −10.6, and a trusted utility paid
+  `γ·Φ(s') - Φ(s)` costs `(1-γ)·Φ` every step merely for *holding* the potential:
+  measured, a day with no warning at all cost -10.6, and a trusted utility paid
   twice what a discredited one paid. It rewarded destroying your own reputation.
 - **Two definitions of "repeating yourself" failed.** Comparing to the hour of
   the previous warning leaked across days - a 2 a.m. warning counted as a repeat
