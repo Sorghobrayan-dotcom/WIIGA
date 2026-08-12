@@ -43,7 +43,7 @@ import gymnasium as gym
 import numpy as np
 from gymnasium import spaces
 
-from .alerte import VIDAGE_BIDONS, Crediteur, deplacer_demande
+from .alerte import FENETRE_JUGEMENT, VIDAGE_BIDONS, Crediteur, deplacer_demande
 from .calendrier import OUAGADOUGOU, Climat, Journee, deformation_ramadan, journee
 from .demande import PROFILS, ProfilZone, prevision
 from .tarifs import OUAGADOUGOU as TARIF_OUAGA
@@ -300,6 +300,14 @@ class WiigaEnv(gym.Env):
         #: attendant encore son jugement. Compté pour pouvoir dire combien de
         #: fois l'agent a *voulu* se répéter.
         self.alertes_etouffees = 0
+        #: L'autre moitie du chiffre. `justesse` dit la part des annonces qui
+        #: se sont revelees justes - la precision. Elle ne dit rien des coupures
+        #: arrivees sans que personne soit prevenu. Un agent qui n'alerte qu'une
+        #: fois par an, sur la coupure dont il est certain, afficherait 100 % de
+        #: justesse et n'aurait servi a rien. On compte donc aussi les episodes
+        #: de coupure, et ceux qui ont ete annonces.
+        self.coupures_totales = 0
+        self.coupures_annoncees = 0
 
         self.rng = np.random.default_rng(seed)
         self.reseau = Reseau(self.regime, self.rng)
@@ -461,6 +469,12 @@ class WiigaEnv(gym.Env):
             choix = np.minimum((action[1 : 2 * self.n_zones : 2] * 3).astype(int), 2)
 
         reseau_up = self.reseau.disponible(heure)
+        # un episode commence quand le courant part apres avoir ete la
+        if not reseau_up and (heure == 0 or self.reseau.disponible(heure - 1)):
+            self.coupures_totales += 1
+            fenetre = self.journal[max(0, heure - FENETRE_JUGEMENT) : heure]
+            if any(r["alerte"] for r in fenetre):
+                self.coupures_annoncees += 1
         self.coupures.append(not reseau_up)
         # juger les alertes dont la fenêtre s'est refermée avant d'en lancer une
         # nouvelle : on ne s'accorde pas de crédit sur une promesse en cours
@@ -728,6 +742,14 @@ class WiigaEnv(gym.Env):
             "alertes_sans_effet": self.alertes_sans_effet,
             #: et celles que le diffuseur a retenues, une annonce étant en cours
             "alertes_etouffees": self.alertes_etouffees,
+            #: le rappel : combien de coupures ont ete annoncees, sur combien
+            "coupures_totales": self.coupures_totales,
+            "coupures_annoncees": self.coupures_annoncees,
+            "rappel_alertes": (
+                self.coupures_annoncees / self.coupures_totales
+                if self.coupures_totales
+                else 0.0
+            ),
             #: l'énergie par source, en kWh - l'unité qui se lit partout, et la
             #: seule dont on puisse tirer un coût dans n'importe quelle monnaie
             "kwh": dict(self.kwh),

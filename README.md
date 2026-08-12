@@ -11,22 +11,35 @@ which source of energy.** It reads the date, the hour, the temperature, the
 season and the district, and it prefers solar every time solar can do the job.
 Grid second. The diesel generator last, and only when there is nothing else.
 
-Here is what that looks like on one real simulated day in Ouagadougou:
+Three moments from one simulated day, and they are the whole project. Every
+figure here is what the live demo replays, hour by hour, in front of you.
 
-| | 1 p.m. | 7 p.m. |
-|---|---|---|
-| the city wants | 116 m3 | 69 m3 |
-| **pumps running** | **100 %** | **2 %** |
-| on what | **solar, all three** | nothing, they are off |
-| worst district tank | 79 % and filling | 57 %, and nobody is dry |
+**1 p.m. - it fills the tanks on sunlight it does not pay for.** All three pumps
+at 100 %, all three on solar. Nobody in the city is thirsty at 1 p.m.; the agent
+is not serving demand, it is **storing work already done**. The tank is the
+battery, and it costs nothing to build because it is already there.
 
-At 1 p.m. it pushes every pump flat out on free sunlight. At 7 p.m. - peak
-demand, grid down, sun gone - it barely pumps at all, because **the water is
-already in the tank**. It did not react to the evening. It prepared for it at
-midday.
+**7 p.m. - peak demand, grid down, sun gone, and it barely pumps.** Pumps at
+0 %, 7 %, 0 %. It does not need to: the worst district is at 57 % and nobody
+goes dry. It did not react to the evening. It prepared for it at midday.
 
-That is the whole idea, and everything below is either how it works or proof
-that it works.
+**3 a.m. - it hands the station back.** This is the one we did not expect. The
+agent has an action that means *not this hour, you take it*, and it costs 3.0 of
+reward every time it uses it. At 3 a.m. it pays that price and lets the
+utility's own fixed setting run - which pumps at full power on the night grid
+and takes the tanks to 0.90. It does the same at 6 and 7 a.m., then takes
+control back at 8 a.m., when the sun comes up and the arbitrage starts to
+matter.
+
+**It learned when it is useless.** At night there is no sun to trade, no peak to
+anticipate, no outage to fear, and the fifty-year-old fixed setting is simply the
+right answer. So it steps aside and pays for the privilege. For an operator, that
+is the opposite of the thing they fear about tools like this: it is not software
+taking the station, it is software that hands it back and says when it has
+nothing to add.
+
+That is the whole idea. Everything below is either how it works, or proof that
+it works.
 
 ---
 
@@ -104,6 +117,20 @@ Three properties make it a genuine learning problem rather than a button:
 
 There is no penalty term forbidding the agent to chatter. Talking too often is
 simply a losing bet, and it has to work that out.
+
+**Both halves of the number, because precision alone flatters.** Over a year the
+agent speaks 0.70 times a day and is right **96 %** of the time - that is
+precision. The other half is recall: it warns before **173 of the 641 outage
+episodes**, so **73 % of outages happen with nobody warned.** That is not an
+oversight, it is the operating point the credibility economy forces. Below 78.9 %
+accuracy trust collapses and the channel dies, so the agent buys precision by
+giving up coverage. A version that warned before every outage would be believed
+by no one by the end of the month.
+
+**And the speech is not decoration.** The same weights with the warning switched
+off - same seeds, same days, one component of the action vector forced to zero -
+leave **45 % more dry hours** (0.227 against 0.156) and cost **8 % more** to run
+(290 705 against 268 745). It earns its place in the story, not just in the table.
 
 One structural rule makes that learnable: **the broadcaster does not re-send
 while the previous warning is still awaiting judgement** - which is what any real
