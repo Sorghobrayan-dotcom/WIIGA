@@ -33,6 +33,28 @@ risk of a grid cut this evening, and the diesel that is left. A hand-written
 rule does not arbitrate four horizons - and we measured that, against a rule
 that reads the same forecast the agent does.
 
+### Why a threshold cannot do this job
+
+The hand-written rulebook reads the same outage forecast the agent does and fires
+an "urgent" flag above a risk threshold. Sweeping that threshold over a 6x5 grid
+barely moves anything: from 0.05 to 0.60, the rulebook lands between 0.71 and
+0.85 dry hours a day, and most of the grid is flat to the second decimal.
+
+That is not a badly chosen constant. It is a property of the information itself.
+Measured over 8 760 forecast hours, the risk of an outage in the next four hours
+has a median of **0.046** across the year and **0.58** in the hot dry season -
+the signal is bimodal. It sits near zero when nothing is coming and high when
+something is, and it almost never occupies the middle where a threshold would
+have anything to arbitrate. Moving the threshold from 0.15 to 0.60 changes how
+often the rule declares an emergency by four percentage points, because there is
+almost no probability mass in between.
+
+A scalar threshold on a bimodal signal has exactly two states. The agent reads
+the same forecast as a vector, alongside tank levels, sunshine, the seasonal
+demand multiplier and the fuel left, and can be at 40 % on one pump and 90 % on
+another in the same hour. **That is the difference the numbers measure**, and it
+is why the gap survives giving the rule its best possible constants.
+
 ### 2. The reward reads the worst-served district, not the average
 
 `min`, not `mean`. One line, and it carries the whole project.
@@ -167,7 +189,7 @@ All three seeds beat the hand-written rulebook, by **54 %** on average and betwe
 | | dry hours / day |
 |---|---:|
 | the rulebook as written in this repo | 0,817 |
-| **the best rulebook of the family** (threshold 0.15, factor 1.4) | **0,708** |
+| **the best rulebook of the family** (threshold 0.05, factor 1.4) | **0,708** |
 | the agent | 0,267 |
 
 The repo's rulebook was **under-tuned by 13 %**, and the agent still beats the best of the family by **62 %**. The rule was allowed to pick its constants while looking at the very days it is scored on - an advantage the agent does not get, since its weights are frozen before it sees them.
@@ -209,6 +231,29 @@ The agent beats the rulebook in **3 of 5** of these cities, with nothing retrain
 <!-- chiffres:fin -->
 
 ---
+
+## About the baseline we compare against
+
+`exploitant` is meant to be what a utility actually runs: full power at night,
+idle by day, and the generator when the grid drops. It is the number every claim
+in this file is measured against, so it deserves a paragraph rather than a line.
+
+**A first version never started the generator.** It pumped on the grid around the
+clock, which during an eight-hour outage means pumping nothing. It scored 0.0
+litres of diesel a day - a perfect carbon footprint achieved by serving nobody -
+and made the agent look ten times better than it is. That is a straw man, and it
+was corrected. The current version burns 77 litres a day, costs more to run than
+any other policy in the table, and still leaves the worst district dry for 2.48
+hours a day. The gap WIIGA can claim against current practice got smaller, and
+the comparison got worth making: **the CO2 line now compares two policies that
+both burn fuel**, 107 kg against 206.
+
+What it still is: an assumption. No utility publishes its dispatch rule, so this
+is what a careful operator would plausibly do with no forecast and no tool, not
+a transcript of what any particular station does. **Twenty minutes on the phone
+with someone who runs one would replace this paragraph with a fact**, and that is
+the single most valuable thing that could happen to this project - more than any
+amount of extra compute, because it is the one thing a simulator cannot generate.
 
 ## What this is not
 
