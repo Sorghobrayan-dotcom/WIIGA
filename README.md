@@ -83,7 +83,7 @@ Three properties make it a genuine learning problem rather than a button:
 - **The cost of the action is the future effectiveness of that same action.** A
   false alarm costs no fuel and no money. It costs being listened to.
 - **Credibility is lost far faster than it is earned.** A correct warning buys
-  +0.04 of trust; a false one costs −0.15. That asymmetry alone fixes a
+  +0.04 of trust; a false one costs -0.15. That asymmetry alone fixes a
   break-even accuracy of **78.9 %**, and the agent has to learn to stay above it.
 
 There is no penalty term forbidding the agent to chatter. Talking too often is

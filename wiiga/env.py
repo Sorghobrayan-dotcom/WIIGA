@@ -683,11 +683,11 @@ class WiigaEnv(gym.Env):
 
         La forme est celle du *potential-based reward shaping* de Ng, Harada et
         Russell (1999), avec `Φ = prix x confiance` - mais **la variante non
-        escomptée `Φ(s') − Φ(s)`, et le choix est délibéré.**
+        escomptée `Φ(s') - Φ(s)`, et le choix est délibéré.**
 
-        La forme théorique `γ·Φ(s') − Φ(s)` facture à chaque pas un loyer
-        `(1−γ)·Φ` pour la simple détention du potentiel. Mesuré ici : une journée
-        sans la moindre alerte coûte −10,6, et une régie à qui la ville fait
+        La forme théorique `γ·Φ(s') - Φ(s)` facture à chaque pas un loyer
+        `(1-γ)·Φ` pour la simple détention du potentiel. Mesuré ici : une journée
+        sans la moindre alerte coûte -10,6, et une régie à qui la ville fait
         pleinement confiance paie deux fois plus qu'une régie discréditée. Dans
         un cadre épisodique où la confiance traverse les épisodes et où la valeur
         est tronquée à la fin de journée, ce loyer n'est jamais compensé par le
@@ -696,7 +696,7 @@ class WiigaEnv(gym.Env):
         découpage-là.
 
         La différence simple n'a pas ce défaut : elle vaut zéro quand rien ne
-        bouge, −6 pour une fausse alerte, +1,6 pour une alerte juste et inédite.
+        bouge, -6 pour une fausse alerte, +1,6 pour une alerte juste et inédite.
         C'est de la comptabilité - on impute la dépréciation d'un actif à la
         période où elle survient - et le seuil au-dessus duquel il vaut mieux
         parler reste celui qu'impose l'asymétrie `MONTEE`/`CHUTE`, soit 78,9 %
