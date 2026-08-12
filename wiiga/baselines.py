@@ -32,13 +32,28 @@ def _action(puissances, sources, passer_la_main=False, alerter=False) -> np.ndar
 
 
 def exploitant(obs: np.ndarray, env: WiigaEnv) -> np.ndarray:
-    """La consigne fixe : à fond la nuit, au ralenti le jour, toujours réseau.
+    """La consigne fixe : a fond la nuit, au ralenti le jour, groupe si coupure.
 
-    C'est ce qui tourne réellement, et c'est le seuil au-dessus duquel le projet
-    a une raison d'exister.
+    C'est ce qui tourne reellement, et c'est le seuil au-dessus duquel le projet
+    a une raison d'exister. Il doit donc etre juste, meme quand l'injustice
+    arrangerait nos chiffres.
+
+    **Une premiere version pompait toujours sur le reseau, y compris pendant le
+    delestage.** Elle affichait 0,0 litre de gasoil par jour et 3,22 heures a sec
+    - un bilan carbone parfait obtenu en ne servant personne. Ce n'etait pas un
+    exploitant prudent, c'etait un exploitant qui regarde sa station s'arreter
+    huit heures par jour sans toucher au groupe qu'il a paye. Personne ne fait
+    ca : la seule raison d'avoir une reserve de gasoil sur site est de la bruler
+    quand le courant part.
+
+    La corriger reduit l'ecart que WIIGA peut revendiquer contre la pratique
+    actuelle, et c'est exactement pour cela qu'il fallait la corriger. Un facteur
+    dix contre un adversaire qu'on a empeche de se defendre ne prouve rien.
     """
     puissances = consigne_exploitant(env.heure, env.n_zones)
-    return _action(puissances, ["reseau"] * env.n_zones)
+    # le repli que tout exploitant applique : si le reseau tombe, on demarre
+    source = "reseau" if env.reseau.disponible(env.heure) else "diesel"
+    return _action(puissances, [source] * env.n_zones)
 
 
 def moins_cher(obs: np.ndarray, env: WiigaEnv) -> np.ndarray:

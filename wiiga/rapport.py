@@ -24,6 +24,8 @@ COMPARAISON = RACINE / "resultats" / "comparaison.json"
 TRANSFERT = RACINE / "resultats" / "transfert.json"
 GRAINES = RACINE / "resultats" / "graines.json"
 EQUIVALENCE = RACINE / "resultats" / "equivalence.json"
+SENSIBILITE = RACINE / "resultats" / "sensibilite.json"
+MEILLEURE = RACINE / "resultats" / "meilleure_regle.json"
 README = RACINE / "README.md"
 
 DEBUT = "<!-- chiffres:début -->"
@@ -188,6 +190,79 @@ def construire() -> str:
             f"between **{_fr(e['min'])} %** and **{_fr(e['max'])} %** depending on the "
             "seed. The worst of the three is the number to plan with.",
         ]
+
+    if MEILLEURE.exists():
+        b = json.loads(MEILLEURE.read_text(encoding="utf-8"))
+        bloc += [
+            "",
+            "### Was the rulebook given its best shot?",
+            "",
+            "*The fair objection to any \"we beat the baseline\" claim: you did not "
+            "show a rule cannot do this, you showed that YOUR rule does not. So the "
+            "rulebook's two hand-set constants were swept over a 5x5 grid, and the "
+            "agent replayed against the best of the family.*",
+            "",
+            f"| | dry hours / day |",
+            "|---|---:|",
+            f"| the rulebook as written in this repo | {_fr(b['regle_du_depot'], 3)} |",
+            f"| **the best rulebook of the family** (threshold "
+            f"{b['meilleure_regle']['seuil']}, factor {b['meilleure_regle']['facteur']}) "
+            f"| **{_fr(b['meilleure_regle']['heures_a_sec'], 3)}** |",
+            f"| the agent | {_fr(b['agent_heures_a_sec'], 3)} |",
+            "",
+            (f"The repo's rulebook was **under-tuned by "
+             f"{_fr((b['regle_du_depot'] - b['meilleure_regle']['heures_a_sec']) / b['regle_du_depot'] * 100)} %**, "
+             f"and the agent still beats the best of the family by "
+             f"**{_fr(b['ecart_agent_vs_meilleure_pct'])} %**. The rule was allowed to "
+             "pick its constants while looking at the very days it is scored on - an "
+             "advantage the agent does not get, since its weights are frozen before "
+             "it sees them.")
+            if b["agent_bat_la_meilleure"]
+            else "**The best rulebook of the family beats the agent**, and that is "
+                 "said here rather than left to be found.",
+        ]
+
+    if SENSIBILITE.exists():
+        s = json.loads(SENSIBILITE.read_text(encoding="utf-8"))
+        carb = s["balayages"].get("CARBURANT_JOUR", [])
+        perdues = [x for x in carb if not x["agent_gagne"]]
+        gagnees = [x for x in carb if x["agent_gagne"]]
+        if carb:
+            bloc += [
+                "",
+                "### Where this stops being true",
+                "",
+                "*A result with no stated boundary is a result nobody believes. The "
+                "daily generator budget is the constant the whole problem turns on, "
+                "so here is the agent swept across it.*",
+                "",
+                "| diesel available per day | agent | rulebook | difference |",
+                "|---|---:|---:|---:|",
+            ]
+            for x in carb:
+                litres = x["valeur"] / 3.5
+                bloc.append(
+                    f"| {_fr(litres)} L ({_fr(x['valeur'] / 2257 * 100)} % of the "
+                    f"day's energy){' **<- the value used**' if x['retenue'] else ''} "
+                    f"| {_fr(x['agent_heures_a_sec'], 2)} "
+                    f"| {_fr(x['regle_heures_a_sec'], 2)} "
+                    f"| {_fr(x['ecart_pct'])} % |"
+                )
+            if perdues and gagnees:
+                seuil = min(x["valeur"] for x in perdues) / 3.5
+                bas = min(x["valeur"] for x in gagnees) / 3.5
+                bloc += [
+                    "",
+                    f"**The agent wins from {_fr(bas)} to "
+                    f"{_fr(max(x['valeur'] for x in gagnees) / 3.5)} litres a day, and "
+                    f"loses at {_fr(seuil)}.** We are not burying that line, we are "
+                    "naming it. At that budget the generator covers more than half the "
+                    "city's pumping energy: there is no arbitrage left to make, you "
+                    "simply burn diesel, and twenty lines of `if` are enough. **WIIGA "
+                    "is for utilities that are constrained** - and an advantage that "
+                    "survived the removal of the constraint would be the suspicious "
+                    "result, not this one.",
+                ]
 
     if EQUIVALENCE.exists():
         q = json.loads(EQUIVALENCE.read_text(encoding="utf-8"))
