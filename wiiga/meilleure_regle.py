@@ -39,11 +39,11 @@ from .resultats import mesurer
 
 SORTIE = Path(__file__).resolve().parent.parent / "resultats" / "meilleure_regle.json"
 
-#: La grille. Le seuil de risque va de tres nerveux (0,15 : on declare l'urgence
+#: La grille. Le seuil de risque va de tres nerveux (0,05 : on declare l'urgence
 #: au moindre nuage) a tres flegmatique (0,75 : il faut une quasi-certitude). Le
 #: facteur de gonflement va de 1,0 (aucune reaction) a 3,0 (on remplit tout ce
 #: qu'on peut). La valeur du depot, 0,45 et 1,8, est dans la grille.
-SEUILS = (0.15, 0.30, 0.45, 0.60, 0.75)
+SEUILS = (0.05, 0.15, 0.30, 0.45, 0.60, 0.75)
 FACTEURS = (1.0, 1.4, 1.8, 2.4, 3.0)
 
 
