@@ -14,6 +14,23 @@ power available**
 
 ---
 
+## One day, to make the numbers mean something
+
+**25 February. 38.7 C. Hot dry season, when Ouagadougou is thirstiest and the
+grid fails every evening.**
+
+That day, the best hand-written rulebook leaves 222 256 litres unserved -
+**11 113 people below the WHO survival threshold of 20 litres. Half the city.**
+
+The agent, same day, same outages, same sunshine, same demand: **546 people.**
+**A difference of 10 566 people, in one day.**
+
+The five days where that gap is largest are all in the hot dry season, between
+38 and 40 C. The agent's value does not spread evenly across the year - it
+concentrates exactly on the days the city can least afford.
+
+---
+
 ## Problem Statement
 
 In most cities, the water pumps simply run. All of them, most of the day, so

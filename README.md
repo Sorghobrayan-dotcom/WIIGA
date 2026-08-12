@@ -43,6 +43,25 @@ it works.
 
 ---
 
+## One day
+
+**25 February. 38.7 C. The hot dry season, when Ouagadougou is at its thirstiest
+and the grid fails every evening.**
+
+On that day, the best hand-written rulebook leaves 222 256 litres unserved -
+**11 113 people below the WHO survival threshold of 20 litres. Half the city.**
+
+The agent, same day, same outages, same sunshine, same demand: **546 people.**
+
+**A difference of 10 566 people, in a single day.**
+
+That is not the average day. It is the worst one, and that is the point: the five
+days where the gap is largest are all in the hot dry season, between 38 and
+40 C. The agent's value does not spread evenly across the year - **it concentrates
+exactly on the days the city can least afford.**
+
+---
+
 ## The three things that make this different
 
 ### 1. The tank is the battery
