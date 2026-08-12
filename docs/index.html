@@ -109,13 +109,19 @@
 <body>
 <div class="sheet">
 
-<h1>The grid fails eight hours a day.<br>Someone still has to decide when to pump.</h1>
+<h1>Most cities just leave the pumps running.<br>What if the water went where it is
+needed, when it is needed?</h1>
 
-<p class="lede">WIIGA is a reinforcement-learning operator for three district water
-pumps in Ouagadougou, Burkina Faso - under load shedding, on a finite diesel
-reserve, optimising for <b>the worst-served district rather than the average</b>.
-It also does something no published pump controller does: it decides when to
-<b>warn the city</b>, and it pays for being wrong.</p>
+<p class="lede">WIIGA builds a digital twin of a city's water network, then
+decides every hour - for every district - <b>which pump runs, at what power,
+filling which tank, on which source of energy</b>. Solar whenever solar can do
+the job. Grid second. The diesel generator last, and only when there is nothing
+else left.</p>
+
+<p class="lede">At 1 p.m. it pushes every pump flat out on free sunlight. At
+7 p.m., when demand peaks and the grid is down, it barely pumps at all -
+<b>because the water is already in the tank</b>. It did not react to the evening.
+It prepared for it at midday.</p>
 
 <div class="figs" id="headline"></div>
 <p class="note" id="verdict"></p>
@@ -123,9 +129,10 @@ It also does something no published pump controller does: it decides when to
 <!-- ==================== CONSOLE ==================== -->
 <section id="console">
   <h2>Watch it decide</h2>
-  <p>One simulated day, hour by hour. Change the city and the same agent - the
-  weights trained on Ouagadougou, unchanged - runs under a climate it never saw.
-  Switch to the rulebook to see what the same day looks like without learning.</p>
+  <p>One simulated day, hour by hour. <b>Drag the hour slider to 13:00, then to
+  19:00</b> - that is the whole argument in two moves. Change the city and the
+  same agent, weights trained on Ouagadougou and unchanged, runs under a climate
+  it never saw. Switch to the rulebook to see the same day without learning.</p>
 
   <div class="console">
     <div class="bar">
