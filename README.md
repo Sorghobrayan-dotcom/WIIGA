@@ -199,21 +199,21 @@ cached to `villes/` so the demo runs offline afterwards.
 
 | operator | dry hours / day | dry days / 200 | local currency / day | L diesel / day | kg CO2 / day | tank low point |
 |---|---:|---:|---:|---:|---:|---:|
-| exploitant (consigne fixe) | 2,48 | 77 | 961 761 | 77,0 | 206,4 | 0,27 |
-| moins cher (sans prévision) | 0,40 | 30 | 324 656 | 61,2 | 164,0 | 0,41 |
-| prévoyant (règle écrite) | 0,33 | 26 | 321 557 | 62,8 | 168,3 | 0,43 |
-| **agent WIIGA (PPO)** | 0,16 | 15 | 268 745 | 39,9 | 106,8 | 0,26 |
-| agent WIIGA, sans la parole | 0,23 | 20 | 290 705 | 47,4 | 127,1 | 0,25 |
+| what the utility runs today | 2,48 | 77 | 961 761 | 77,0 | 206,4 | 0,27 |
+| cheapest source, no forecast | 0,40 | 30 | 324 656 | 61,2 | 164,0 | 0,41 |
+| hand-written rulebook | 0,33 | 26 | 321 557 | 62,8 | 168,3 | 0,43 |
+| **WIIGA agent** | 0,16 | 15 | 268 745 | 39,9 | 106,8 | 0,26 |
+| WIIGA, not allowed to speak | 0,23 | 20 | 290 705 | 47,4 | 127,1 | 0,25 |
 
 ### The same table, season by season - dry hours per day
 
 | operator | hot dry | rainy | mild dry |
 |---|---:|---:|---:|
-| exploitant (consigne fixe) | 7,09 | 0,09 | 1,24 |
-| moins cher (sans prévision) | 1,33 | 0,01 | 0,08 |
-| prévoyant (règle écrite) | 1,11 | 0,01 | 0,06 |
-| **agent WIIGA (PPO)** | 0,40 | 0,02 | 0,10 |
-| agent WIIGA, sans la parole | 0,71 | 0,02 | 0,07 |
+| what the utility runs today | 7,09 | 0,09 | 1,24 |
+| cheapest source, no forecast | 1,33 | 0,01 | 0,08 |
+| hand-written rulebook | 1,11 | 0,01 | 0,06 |
+| **WIIGA agent** | 0,40 | 0,02 | 0,10 |
+| WIIGA, not allowed to speak | 0,71 | 0,02 | 0,07 |
 
 The annual average hides the point: the hand-written rules give way in the
 hot dry season, which is exactly when the city is thirstiest.
@@ -222,8 +222,8 @@ hot dry season, which is exactly when the city is thirstiest.
 
 | operator | warnings / day | accuracy | trust at the end |
 |---|---:|---:|---:|
-| agent WIIGA (PPO) | 0,70 | 96 % | 1,00 |
-| agent WIIGA, sans la parole | 0,00 | 0 % | 0,55 |
+| WIIGA agent | 0,70 | 96 % | 1,00 |
+| WIIGA, not allowed to speak | 0,00 | 0 % | 0,55 |
 
 ### At a glance
 

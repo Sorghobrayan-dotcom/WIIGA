@@ -33,6 +33,22 @@ FIN = "<!-- chiffres:fin -->"
 
 SAISONS = ("sèche chaude", "pluies", "sèche tempérée")
 
+#: Les politiques portent des noms francais dans le code, parce que le code est
+#: francais. Le README est anglais : les laisser tels quels obligeait un lecteur
+#: a dechiffrer "exploitant (consigne fixe)" au milieu d'un tableau, ce qui est
+#: exactement le genre de friction qui fait sauter une ligne.
+NOMS = {
+    "exploitant (consigne fixe)": "what the utility runs today",
+    "moins cher (sans prévision)": "cheapest source, no forecast",
+    "prévoyant (règle écrite)": "hand-written rulebook",
+    "agent WIIGA (PPO)": "WIIGA agent",
+    "agent WIIGA, sans la parole": "WIIGA, not allowed to speak",
+}
+
+
+def _nom(cle: str) -> str:
+    return NOMS.get(cle, cle)
+
 
 def _fr(x: float, decimales: int = 0) -> str:
     """Un nombre lisible : espace fine pour les milliers, virgule décimale."""
@@ -50,7 +66,7 @@ def tableau_principal(d: dict) -> list[str]:
     for nom, v in m.items():
         gras = "**" if nom.startswith("agent WIIGA (") else ""
         lignes.append(
-            f"| {gras}{nom}{gras} | {_fr(v['heures_a_sec_par_jour'], 2)} "
+            f"| {gras}{_nom(nom)}{gras} | {_fr(v['heures_a_sec_par_jour'], 2)} "
             f"| {v['jours_avec_coupure_sur_200']} | {_fr(v['fcfa_par_jour'])} "
             f"| {_fr(v['litres_gasoil_par_jour'], 1)} "
             f"| {_fr(v['kg_co2_par_jour'], 1)} | {_fr(v['creux_moyen'], 2)} |"
@@ -72,7 +88,7 @@ def tableau_saisons(d: dict) -> list[str]:
         cases = " | ".join(
             _fr(v["heures_a_sec_par_saison"][s], 2) for s in presentes
         )
-        lignes.append(f"| {gras}{nom}{gras} | {cases} |")
+        lignes.append(f"| {gras}{_nom(nom)}{gras} | {cases} |")
     return lignes
 
 
@@ -86,7 +102,7 @@ def tableau_parole(d: dict) -> list[str]:
         if v["alertes_par_jour"] == 0 and not nom.startswith("agent"):
             continue
         lignes.append(
-            f"| {nom} | {_fr(v['alertes_par_jour'], 2)} "
+            f"| {_nom(nom)} | {_fr(v['alertes_par_jour'], 2)} "
             f"| {_fr(v['justesse_alertes'] * 100)} % "
             f"| {_fr(v['confiance_finale'], 2)} |"
         )
