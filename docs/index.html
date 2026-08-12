@@ -78,6 +78,12 @@
          font-variant-numeric:tabular-nums}
   .ro .v.bad{color:var(--bad)} .ro .v.good{color:var(--good)}
 
+  .recit{margin:16px 0 0;padding:14px 18px;border-radius:12px;max-width:none;
+         background:color-mix(in srgb,var(--water) 10%,var(--paper));
+         border-left:3px solid var(--water);font-size:16.5px;line-height:1.55}
+  .recit b{color:var(--water)}
+  button#c-tour[aria-pressed=true]{background:var(--water);border-color:var(--water);
+                                   color:#fff}
   .keys{display:flex;flex-wrap:wrap;gap:7px 20px;font-size:13px;color:var(--ink-3);margin:14px 0 0}
   .keys i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px}
 
@@ -129,10 +135,11 @@ It prepared for it at midday.</p>
 <!-- ==================== CONSOLE ==================== -->
 <section id="console">
   <h2>Watch it decide</h2>
-  <p>One simulated day, hour by hour. <b>Drag the hour slider to 13:00, then to
-  19:00</b> - that is the whole argument in two moves. Change the city and the
-  same agent, weights trained on Ouagadougou and unchanged, runs under a climate
-  it never saw. Switch to the rulebook to see the same day without learning.</p>
+  <p>One simulated day, hour by hour. <b>Press "Show me the day"</b> and it walks
+  you through the four hours that matter, in about twenty seconds. Then take the
+  hour slider yourself, change the city - the same agent, weights trained on
+  Ouagadougou and unchanged, running under a climate it never saw - or switch the
+  operator to the rulebook and replay the same day without learning.</p>
 
   <div class="console">
     <div class="bar">
@@ -140,6 +147,7 @@ It prepared for it at midday.</p>
       <div class="grp" id="c-season"><span class="t">Season</span></div>
       <div class="grp" id="c-policy"><span class="t">Operator</span></div>
       <div class="grp">
+        <button class="play" id="c-tour" type="button">▶ Show me the day</button>
         <button class="play" id="c-play" type="button">▶ Play</button>
         <button id="c-speed" type="button">1x</button>
       </div>
@@ -167,6 +175,8 @@ It prepared for it at midday.</p>
       </div>
     </div>
 
+    <p class="recit" id="recit" hidden></p>
+    <p class="recit" id="recit" hidden></p>
     <div class="readout" id="readout"></div>
 
     <div class="keys">
@@ -428,7 +438,45 @@ bPlay.onclick=()=>{st.play=!st.play; if(st.play&&st.t>=23.99)st.t=0;
 bSpeed.onclick=()=>{st.vit=st.vit===1?2:st.vit===2?4:1; bSpeed.textContent=st.vit+"x";};
 // le curseur d'heure : on peut sauter à 19 h, quand le réseau tombe et que le
 // quartier résidentiel a soif - c'est là que la décision se voit
-bHour.oninput=()=>{st.play=false; bPlay.textContent="▶ Play";
+const bTour=document.getElementById("c-tour"), lRecit=document.getElementById("recit");
+// La visite guidee : quatre heures d'une meme journee, avec ce qu'elles racontent.
+// Elle existe parce qu'une console vide n'apprend rien a qui ne sait pas ou regarder,
+// et qu'un jure qui ouvre la page ne sait pas ou regarder.
+const VISITE=[
+ [3,"<b>3 a.m.</b> - the agent hands the station back to the operator. It pays 3.0 of "+
+    "reward to say <i>not this hour, you take it</i>. At night there is no sun to trade "+
+    "and no peak to anticipate: the old fixed setting is simply the right answer, and "+
+    "the agent knows it."],
+ [13,"<b>1 p.m.</b> - all three pumps at 100 %, all three on solar. Nobody is thirsty at "+
+    "1 p.m.: it is not serving demand, it is <b>storing work already done</b>. The tank "+
+    "is the battery, and it was already built."],
+ [19,"<b>7 p.m.</b> - peak demand, grid down, sun gone. The pumps are almost off and "+
+    "nobody is dry. <b>It did not react to the evening. It prepared for it at midday.</b>"],
+ [23,"<b>11 p.m.</b> - the day closes with zero dry hours. Now switch the operator to "+
+    "<i>rulebook</i> and come back here: at this same hour the residential district has "+
+    "been at 0 % for three hours."],
+];
+let tourId=null;
+function arreterTour(){
+  if(tourId){clearTimeout(tourId); tourId=null;}
+  bTour.setAttribute("aria-pressed","false");
+  bTour.textContent="▶ Show me the day";
+}
+bTour.onclick=()=>{
+  if(tourId){arreterTour(); lRecit.hidden=true; return;}
+  st.play=false; bPlay.textContent="▶ Play";
+  bTour.setAttribute("aria-pressed","true"); bTour.textContent="⏹ Stop";
+  lRecit.hidden=false;
+  let i=0;
+  const etape=()=>{
+    if(i>=VISITE.length){arreterTour(); return;}
+    const [h,txt]=VISITE[i++];
+    st.t=h; rendre(); lRecit.innerHTML=txt;
+    tourId=setTimeout(etape, 5200);
+  };
+  etape();
+};
+bHour.oninput=()=>{st.play=false; arreterTour(); bPlay.textContent="▶ Play";
   st.t=parseFloat(bHour.value); rendre();};
 
 /* ---- tanks ---- */
