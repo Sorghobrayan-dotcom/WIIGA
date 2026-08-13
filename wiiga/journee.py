@@ -79,17 +79,24 @@ def journee_type(climat: Climat, saison: str) -> int | None:
     return jours[len(jours) // 2] if jours else None
 
 
-def rejouer(politique, climat: Climat, tarif, jour: int, graine: int = GRAINE_CONSOLE):
+def rejouer(politique, climat: Climat, tarif, jour: int, graine: int = GRAINE_CONSOLE,
+            apres_reset=None):
     """Une politique, une journee fixee, et tout ce qui s'y est passe.
 
     Rend l'environnement et le bilan de fin de journee : `env.journal` porte les
     vingt-quatre heures, et c'est la seule facon d'aller relire ce que l'agent a
     fait a 13 h. La console passe par ici aussi, pour qu'il n'existe qu'un seul
     chemin de rejeu.
+
+    `apres_reset` deforme la journee avant la premiere decision, dans la meme
+    convention que `resultats.mesurer` : c'est par la que la console fait rejouer
+    une journee avec un choc de consommation sur un quartier.
     """
     env = WiigaEnv(seed=0, climat=climat, tarif=tarif)
     env.jour_fixe = jour
     obs, _ = env.reset(seed=graine)
+    if apres_reset is not None:
+        apres_reset(env)
     fini = False
     while not fini:
         obs, _, arret, tronque, info = env.step(politique(obs, env))

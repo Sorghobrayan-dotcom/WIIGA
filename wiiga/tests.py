@@ -210,6 +210,46 @@ def test_bilans() -> None:
              or zone.volume == zone.capacite)
 
 
+# --------------------------------------------------------------------------- 6
+def test_choc_invisible() -> None:
+    """Le choc gonfle la demande reelle et n'entre pas dans l'observation.
+
+    `choc.py` mesure ce que devient l'agent quand la demande d'un quartier
+    depasse ce que la prevision annonce. Toute cette mesure repose sur une seule
+    propriete : l'agent ne peut pas voir la deformation. Si elle passait dans son
+    vecteur d'entree, il ne subirait pas un choc, il lirait une consigne - et le
+    tableau publie ne dirait plus rien de ce qu'il pretend dire.
+    """
+    from .choc import DEBUT, FIN, ZONE_VEDETTE, choc
+
+    env = WiigaEnv(seed=0)
+    env.jour_fixe = 88
+    obs_avant, _ = env.reset(seed=24)
+
+    zone = env.zones[ZONE_VEDETTE]
+    toutes_avant = [z.horaire.copy() for z in env.zones]
+    avant = zone.horaire.copy()
+    choc(ZONE_VEDETTE, 3.0)(env)
+    obs_apres = env._observation()
+
+    fenetre = slice(DEBUT, FIN)
+    verifier("le choc multiplie bien la demande de la fenetre",
+             np.allclose(zone.horaire[fenetre], avant[fenetre] * 3.0),
+             f"{avant[fenetre].sum():.1f} -> {zone.horaire[fenetre].sum():.1f} m3")
+
+    dehors = np.r_[0:DEBUT, FIN:24]
+    verifier("il ne touche pas les heures ou l'ecole est vide",
+             np.allclose(zone.horaire[dehors], avant[dehors]))
+
+    verifier("l'agent ne voit rien dans son observation",
+             np.array_equal(obs_avant, obs_apres),
+             f"{int((obs_avant != obs_apres).sum())} composantes changees")
+
+    verifier("les autres quartiers ne bougent pas",
+             all(np.allclose(env.zones[i].horaire, toutes_avant[i])
+                 for i in range(env.n_zones) if i != ZONE_VEDETTE))
+
+
 def main() -> None:
     for titre, fn in (
         ("1. l'alerte deplace la demande, elle ne la cree pas", test_volume_conserve),
@@ -217,6 +257,7 @@ def main() -> None:
         ("3. la defiance existe sous zero", test_defiance),
         ("4. l'equite change vraiment la recompense", test_equite),
         ("5. l'energie et l'eau se conservent", test_bilans),
+        ("6. un choc de consommation est invisible pour l'agent", test_choc_invisible),
     ):
         print(f"\n{titre}")
         fn()
