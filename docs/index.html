@@ -7,15 +7,44 @@
 <meta name="description" content="A reinforcement-learning agent schedules three district water pumps through daily power cuts, and decides when to warn the city. Measured against hand-written rules on identical seeds.">
 <style>
   :root{
-    --paper:#fdfcfa; --paper-2:#f6f2ea; --paper-3:#efe9de;
-    --ink:#1a1714; --ink-2:#544d43; --ink-3:#8b8377;
-    --rule:#e7e0d4; --rule-2:#d3c9b8;
-    --water:#1f6f8b; --water-2:#4fa3c0; --water-3:#a8d4e3;
-    --sun:#d8a12a; --grid:#5f7f90; --diesel:#9c5230;
-    --warn:#c8801e; --bad:#bd4a2c; --good:#2f7d4f;
+    /* OKLCH : on raisonne en clarte/chroma/teinte, pas en hex. Le papier tire
+       vers le sable chaud, l'encre vers le brun profond plutot que le noir -
+       un ecran de bureau en plein midi a Ouagadougou n'est pas un studio. */
+    --paper:      oklch(98.6% 0.008 85);
+    --paper-2:    oklch(96.2% 0.014 82);
+    --paper-3:    oklch(93.4% 0.020 80);
+    --ink:        oklch(21% 0.022 55);
+    --ink-2:      oklch(43% 0.020 58);
+    --ink-3:      oklch(60% 0.016 62);
+    --rule:       oklch(90.5% 0.016 78);
+    --rule-2:     oklch(83% 0.022 76);
+
+    /* l'eau porte la marque : une seule teinte, trois profondeurs */
+    --water:      oklch(48% 0.096 226);
+    --water-2:    oklch(63% 0.108 224);
+    --water-3:    oklch(82% 0.070 220);
+    --water-deep: oklch(34% 0.078 232);
+
+    --sun:        oklch(74% 0.142 78);
+    --grid:       oklch(56% 0.044 235);
+    --diesel:     oklch(50% 0.106 42);
+    --warn:       oklch(64% 0.140 62);
+    --bad:        oklch(53% 0.155 32);
+    --good:       oklch(52% 0.108 152);
+
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
-    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+
+    --pas:clamp(76px,10vw,140px);
+  }
+  @supports not (color: oklch(50% 0.1 200)){
+    :root{ --paper:#fdfcfa; --paper-2:#f6f2ea; --paper-3:#efe9de;
+           --ink:#231c15; --ink-2:#5b5147; --ink-3:#8b8377;
+           --rule:#e7e0d4; --rule-2:#d3c9b8;
+           --water:#0f6d8e; --water-2:#3fa0c2; --water-3:#a9d6e6;
+           --water-deep:#0a4a63; --sun:#c99521; --grid:#5f7f90;
+           --diesel:#9c5230; --warn:#c8801e; --bad:#bd4a2c; --good:#2f7d4f; }
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -24,8 +53,9 @@
        text-rendering:optimizeLegibility}
   .sheet{max-width:1000px;margin:0 auto;padding:clamp(36px,6vw,88px) clamp(20px,4vw,44px) 120px}
 
-  h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5.6vw,56px);
-     line-height:1.08;letter-spacing:-.021em;margin:0 0 .46em;text-wrap:balance}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(38px,7.4vw,78px);
+     line-height:1.02;letter-spacing:-.028em;margin:0 0 .4em;text-wrap:balance;
+     font-feature-settings:"liga" 1,"kern" 1}
   h2{font-family:var(--serif);font-weight:600;font-size:clamp(25px,3.4vw,36px);
      line-height:1.16;margin:0 0 .62em;letter-spacing:-.014em;text-wrap:balance}
   h3{font-size:12.5px;text-transform:uppercase;letter-spacing:.12em;
@@ -37,7 +67,7 @@
   a{color:var(--water);text-underline-offset:3px}
   code{font-family:var(--mono);font-size:.87em;background:var(--paper-2);
        padding:.14em .4em;border-radius:5px}
-  section{margin:clamp(76px,10vw,128px) 0 0;padding-top:clamp(40px,5vw,60px);
+  section{margin:var(--pas) 0 0;padding-top:clamp(44px,5.5vw,68px);
           border-top:1px solid var(--rule)}
   .quiet{color:var(--ink-3);font-size:15.5px;max-width:60ch;line-height:1.65}
 
@@ -52,12 +82,17 @@
   .fig .l{font-size:13.5px;color:var(--ink-3);line-height:1.45;display:block;margin-top:9px}
 
   /* ---------- le coup ---------- */
-  .coup{margin:38px 0 30px;padding:clamp(22px,3vw,34px);border-radius:18px;
-        background:color-mix(in srgb,var(--water) 8%,var(--paper-2))}
+  .coup{margin:44px 0 34px;padding:clamp(26px,3.6vw,44px);border-radius:22px;position:relative;
+        background:linear-gradient(152deg,
+          color-mix(in oklab,var(--water) 11%,var(--paper-2)),
+          color-mix(in oklab,var(--water) 4%,var(--paper-2)));
+        box-shadow:0 1px 0 color-mix(in oklab,var(--water) 18%,transparent) inset}
   .coup .date{font-size:13px;text-transform:uppercase;letter-spacing:.1em;
               color:var(--ink-3);font-weight:650;margin:0 0 10px}
-  .coup .gros{font-family:var(--serif);font-size:clamp(46px,9vw,86px);line-height:.98;
-              font-weight:600;letter-spacing:-.03em;color:var(--water);margin:0 0 14px}
+  .coup .gros{font-family:var(--serif);font-size:clamp(58px,13vw,132px);line-height:.9;
+              font-weight:600;letter-spacing:-.042em;margin:0 0 18px;
+              background:linear-gradient(168deg,var(--water-2),var(--water-deep));
+              -webkit-background-clip:text;background-clip:text;color:transparent}
   .coup .gros span{font-variant-numeric:tabular-nums}
   .coup .sous{font-size:clamp(16px,1.9vw,18.5px);color:var(--ink-2);max-width:60ch;
               margin:0 0 22px;line-height:1.55}
@@ -522,6 +557,9 @@ bHour.oninput=()=>{st.play=false; arreterTour(); bPlay.textContent="▶ Play";
 function dessineTanks(){
   const s=document.getElementById("tanks"); s.textContent="";
   const r=courant(), h=Math.min(23,Math.floor(st.t)), f=st.t-h;
+  // un degrade par cuve : la couleur depend du remplissage, donc il se
+  // redefinit a chaque image plutot que de vivre dans le gabarit
+  const defs=el("defs",{},s);
   const a=r.heures[h], b=r.heures[Math.min(23,h+1)];
   const W=300,Hh=250, n=S.zones.length, bw=76, gap=(W-n*bw)/(n+1);
 
@@ -530,28 +568,47 @@ function dessineTanks(){
     const lvl=a.remplissages[i]+(b.remplissages[i]-a.remplissages[i])*f;
     const wh=Math.max(2,bh*Math.min(1,Math.max(0,lvl)));
     const col=lvl<0.08?"var(--bad)":lvl<0.22?"var(--warn)":"var(--water)";
+    const bas=lvl<0.08?"var(--bad)":lvl<0.22?"var(--warn)":"var(--water-deep)";
+    const g=el("linearGradient",{id:"eau"+i,x1:0,y1:0,x2:0,y2:1},defs);
+    el("stop",{offset:"0%","stop-color":col,"stop-opacity":.42},g);
+    el("stop",{offset:"55%","stop-color":col,"stop-opacity":.30},g);
+    el("stop",{offset:"100%","stop-color":bas,"stop-opacity":.46},g);
 
-    el("rect",{x:x,y:top,width:bw,height:bh,rx:9,fill:"var(--paper)",
+    // la cuve : verre, puis eau avec sa profondeur, puis reflet
+    el("rect",{x:x,y:top,width:bw,height:bh,rx:10,fill:"var(--paper)",
       stroke:"var(--rule-2)","stroke-width":1.5},s);
-    // eau, avec une surface qui ondule
-    const yw=top+bh-wh, amp=1.8, ph=st.t*2.4+i;
+
+    const yw=top+bh-wh, amp=2.0, ph=st.t*2.4+i;
+    const creux=(k)=>yw+amp*Math.sin(k/11+ph)+amp*0.45*Math.sin(k/5.5-ph*1.7);
+    // le corps d'eau, degrade du clair en surface au sombre au fond
     let d="M"+x+" "+(top+bh);
-    d+="L"+x+" "+yw;
-    for(let k=0;k<=bw;k+=4) d+="L"+(x+k)+" "+(yw+amp*Math.sin(k/11+ph));
+    d+="L"+x+" "+creux(0).toFixed(1);
+    for(let k=0;k<=bw;k+=3) d+="L"+(x+k)+" "+creux(k).toFixed(1);
     d+="L"+(x+bw)+" "+(top+bh)+"Z";
-    el("path",{d:d,fill:col,"fill-opacity":.30},s);
-    el("path",{d:"M"+x+" "+yw+(()=>{let q="";for(let k=0;k<=bw;k+=4)
-      q+="L"+(x+k)+" "+(yw+amp*Math.sin(k/11+ph));return q;})(),
-      fill:"none",stroke:col,"stroke-width":2},s);
-    // bulles quand la pompe tourne
-    if(a.puissances[i]>0.08&&wh>18){
-      const nb=Math.min(5,Math.max(1,Math.round(a.puissances[i]*5)));
+    el("path",{d:d,fill:"url(#eau"+i+")"},s);
+    // le menisque : un trait clair juste sous la surface, comme sur du verre
+    let surf="M"+x+" "+creux(0).toFixed(1);
+    for(let k=0;k<=bw;k+=3) surf+="L"+(x+k)+" "+creux(k).toFixed(1);
+    el("path",{d:surf,fill:"none",stroke:col,"stroke-width":2.2,
+      "stroke-linecap":"round"},s);
+    el("path",{d:surf,fill:"none",stroke:"var(--paper)","stroke-width":1,
+      "stroke-opacity":.5,transform:"translate(0,2.4)"},s);
+
+    // bulles : elles montent et s'effacent en approchant de la surface
+    if(a.puissances[i]>0.08&&wh>20){
+      const nb=Math.min(6,Math.max(2,Math.round(a.puissances[i]*6)));
       for(let k=0;k<nb;k++){
-        const bx=x+10+((k*23+i*11)%(bw-20));
-        const by=top+bh-((st.t*26+k*31+i*17)%(wh-6))-4;
-        el("circle",{cx:bx,cy:by,r:1.9+((k+i)%2)*.9,fill:col,"fill-opacity":.42},s);
+        const bx=x+9+((k*23+i*11)%(bw-18));
+        const monte=(st.t*30+k*37+i*19)%(wh-8);
+        const by=top+bh-monte-4;
+        el("circle",{cx:bx,cy:by,r:1.6+((k+i)%3)*.7,fill:"var(--paper)",
+          "fill-opacity":.14+.30*(1-monte/(wh-8))},s);
       }
     }
+    // reflet vertical sur le verre, cote gauche
+    el("rect",{x:x+5,y:top+6,width:3,height:bh-12,rx:1.5,fill:"var(--paper)",
+      "fill-opacity":.55},s);
+
     // graduations
     [.25,.5,.75].forEach(g=>el("line",{x1:x+2,x2:x+bw-2,y1:top+bh-bh*g,y2:top+bh-bh*g,
       stroke:"var(--rule)","stroke-width":1},s));
