@@ -209,10 +209,20 @@ comparison and is given as one.
 all three beat the rulebook, by 54 % on average and 37-72 % depending on the
 seed. The rulebook's own constants were swept over a 6x5 grid - ours was
 under-tuned by 13 %, and the agent still beats **the best of the family by 62 %**.
-The hand-set constants were swept from 23 to 366 litres of diesel a day. Fifteen
+The hand-set constants were swept from 23 to 366 litres of diesel a day. Nineteen
 property tests run in one command with no dependencies. And a module exists whose
 only job is to attack our main claim: the agent gains 18 % of reward and 59 % of
 task performance, a ratio of 0.31 - a reward hacker scores the opposite.
+
+**We also broke our own weakest assumption.** The README calls demand elasticity
+the shakiest thing in the project, so one district was made to drink **30 % more
+than the forecast announced**, eleven hours a day, with nothing telling the agent
+- its input carries the shape of the usual profile, not the litres drawn. The
+agent still leads by **44 to 57 %** depending on the district. What the sweep
+found instead is that **the binding limit is hydraulic, not decisional**: past
++36 % the clinic district's pump cannot deliver, and no policy can serve it. That
+number is now published per district, because it tells a utility which pump to
+enlarge first.
 
 ---
 
