@@ -15,7 +15,8 @@ command in this repository - none of them is typed by hand.*
 | We did not compare against a weak opponent. The rulebook's two constants were swept over a 6x5 grid | the repo's rule was **under-tuned by 13 %**, and the agent still beats **the best of the family by 62 %** | `python -m wiiga.meilleure_regle` |
 | The reward is hand-written, so we looked for reward hacking rather than denying it | agent gains **18 % of reward and 59 % of task** - ratio **0.31**. A reward hacker scores the opposite | `python -m wiiga.detournement` |
 | The hand-set constants do not carry the conclusion | swept from 23 to 366 L of diesel/day: the agent wins across the plausible range | `python -m wiiga.sensibilite` |
-| The properties the argument rests on are tested | **15 checks, no dependencies, one command** | `python -m wiiga.tests` |
+| The properties the argument rests on are tested | **19 checks, no dependencies, one command** | `python -m wiiga.tests` |
+| The weakest declared assumption was broken on purpose | one district drinks **+30 % more than the forecast says**, unannounced: the agent still leads by **44 to 57 %**. The binding limit turns out to be the pump, not the agent | `python -m wiiga.choc` |
 | The day the README opens on is not a story, it is a command | the demo's day, the worst day of the year, and the five largest gaps - **96 % of the annual gain falls in the hot dry season** | `python -m wiiga.journee` |
 | Every measurement command loads the model the published figures were measured on | one constant, `MODELE_PUBLIE`, read by the four commands. It used to be two different models, and it is written down in *What did not work* | `wiiga/train.py` |
 
