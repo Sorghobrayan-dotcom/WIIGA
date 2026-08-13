@@ -26,6 +26,8 @@ sys.path.insert(0, str(RACINE))
 
 from wiiga.baselines import POLITIQUES  # noqa: E402
 from wiiga.calendrier import OUAGADOUGOU, journee  # noqa: E402
+from wiiga.choc import DEBUT, FIN, FACTEUR_COMPARAISON, ZONE_VEDETTE, choc  # noqa: E402
+from wiiga.demande import PROFILS  # noqa: E402
 from wiiga.env import WiigaEnv  # noqa: E402
 from wiiga.journee import GRAINE_CONSOLE, journee_type, rejouer  # noqa: E402
 from wiiga.tarifs import tarif_de  # noqa: E402
@@ -41,8 +43,8 @@ GRAINE = GRAINE_CONSOLE
 VILLES = ("Ouagadougou", "Chennai", "Nairobi", "Sydney", "Lima")
 
 
-def jouer(politique, climat, tarif, jour: int) -> dict:
-    env, info = rejouer(politique, climat, tarif, jour, GRAINE)
+def jouer(politique, climat, tarif, jour: int, crochet=None) -> dict:
+    env, info = rejouer(politique, climat, tarif, jour, GRAINE, apres_reset=crochet)
     capacites = [round(z.capacite, 1) for z in env.zones]
 
     # on ne garde que ce que la page dessine : un journal complet pèse trois fois
@@ -113,6 +115,17 @@ def construire() -> dict:
                     k: jouer(p, climat, tarif, j) for k, p in politiques.items()
                 },
             }
+            # Le choc n'est genere que pour la ville d'entrainement. Le proposer
+            # sur les cinq villes doublerait le poids de la page pour repeter la
+            # meme demonstration : ce qu'il montre - une demande reelle qui
+            # depasse la prevision, et une cuve qui descend plus vite que le plan
+            # - ne depend pas du climat.
+            if nom == "Ouagadougou":
+                jours[saison]["politiques_choc"] = {
+                    k: jouer(p, climat, tarif, j,
+                             choc(ZONE_VEDETTE, FACTEUR_COMPARAISON))
+                    for k, p in politiques.items()
+                }
 
         villes[nom] = {
             "latitude": round(climat.latitude, 2),
@@ -133,6 +146,14 @@ def construire() -> dict:
         "zones": [z.nom for z in env.zones],
         "habitants": [z.profil.habitants for z in env.zones],
         "graine": GRAINE,
+        # de quoi etiqueter le bouton sans reecrire les chiffres dans le gabarit
+        "choc": {
+            "zone": PROFILS[ZONE_VEDETTE].nom,
+            "indice_zone": ZONE_VEDETTE,
+            "facteur": FACTEUR_COMPARAISON,
+            "debut": DEBUT,
+            "fin": FIN,
+        },
     }
 
 
