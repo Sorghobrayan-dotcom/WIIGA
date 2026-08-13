@@ -48,6 +48,11 @@ def rassembler() -> dict:
         ("transfert", "transfert.json"),
         ("equivalence", "equivalence.json"),
         ("graines", "graines.json"),
+        # le haut de page annonçait une journée en chiffres écrits dans le
+        # gabarit : ils sont justes, mais ils étaient les seuls de la page à ne
+        # pas venir d'une mesure, juste au-dessus d'une phrase qui promet le
+        # contraire. La page les lit maintenant comme tout le reste.
+        ("journee", "journee.json"),
     ):
         chemin = RESULTATS / fichier
         if chemin.exists():

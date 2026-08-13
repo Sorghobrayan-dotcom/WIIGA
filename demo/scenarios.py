@@ -27,35 +27,23 @@ sys.path.insert(0, str(RACINE))
 from wiiga.baselines import POLITIQUES  # noqa: E402
 from wiiga.calendrier import OUAGADOUGOU, journee  # noqa: E402
 from wiiga.env import WiigaEnv  # noqa: E402
+from wiiga.journee import GRAINE_CONSOLE, journee_type, rejouer  # noqa: E402
 from wiiga.tarifs import tarif_de  # noqa: E402
 from wiiga.ville import CACHE, climat_de  # noqa: E402
 
-GRAINE = 24
+#: La graine, le choix de la journee et le rejeu vivent dans `wiiga.journee`, et
+#: la console les importe : le README cite des chiffres sur cette journee-la, et
+#: deux definitions du meme jour finiraient par en donner deux versions.
+GRAINE = GRAINE_CONSOLE
 
 #: Les villes de la console, dans l'ordre d'affichage. Ouagadougou d'abord :
 #: c'est la seule que l'agent ait vue à l'entraînement.
 VILLES = ("Ouagadougou", "Chennai", "Nairobi", "Sydney", "Lima")
 
 
-def journee_type(climat, saison: str) -> int | None:
-    """Le jour du milieu d'un régime, pour éviter les bords.
-
-    On prend la médiane des jours de cette saison plutôt que le premier venu :
-    un jour de transition raconterait mal le régime qu'il est censé illustrer.
-    """
-    jours = [j for j in range(365) if journee(j, climat).saison == saison]
-    return jours[len(jours) // 2] if jours else None
-
-
 def jouer(politique, climat, tarif, jour: int) -> dict:
-    env = WiigaEnv(seed=0, climat=climat, tarif=tarif)
-    env.jour_fixe = jour
-    obs, _ = env.reset(seed=GRAINE)
+    env, info = rejouer(politique, climat, tarif, jour, GRAINE)
     capacites = [round(z.capacite, 1) for z in env.zones]
-    fini = False
-    while not fini:
-        obs, _, arret, tronque, info = env.step(politique(obs, env))
-        fini = arret or tronque
 
     # on ne garde que ce que la page dessine : un journal complet pèse trois fois
     # plus lourd pour rien

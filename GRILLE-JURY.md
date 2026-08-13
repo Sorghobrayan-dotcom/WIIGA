@@ -16,6 +16,8 @@ command in this repository - none of them is typed by hand.*
 | The reward is hand-written, so we looked for reward hacking rather than denying it | agent gains **18 % of reward and 59 % of task** - ratio **0.31**. A reward hacker scores the opposite | `python -m wiiga.detournement` |
 | The hand-set constants do not carry the conclusion | swept from 23 to 366 L of diesel/day: the agent wins across the plausible range | `python -m wiiga.sensibilite` |
 | The properties the argument rests on are tested | **15 checks, no dependencies, one command** | `python -m wiiga.tests` |
+| The day the README opens on is not a story, it is a command | the demo's day, the worst day of the year, and the five largest gaps - **96 % of the annual gain falls in the hot dry season** | `python -m wiiga.journee` |
+| Every measurement command loads the model the published figures were measured on | one constant, `MODELE_PUBLIE`, read by the four commands. It used to be two different models, and it is written down in *What did not work* | `wiiga/train.py` |
 
 **The one sentence:** *every number in this submission was produced by a command
 you can run, against a baseline we deliberately made stronger, and we published
@@ -27,7 +29,7 @@ the measurement that tries to break our own claim.*
 
 | claim | number | check it in 60 seconds |
 |---|---|---|
-| The agent has an action that touches no pump: **it decides when to warn the city** to fill jerrycans before a cut | **0.70 warnings a day, right 96 % of the time**, trust climbing to its maximum | `README.md` -> *The action that touches no pump* |
+| The agent has an action that touches no pump: **it decides when to warn the city** to fill jerrycans before a cut | **0.70 warnings a day, right 96 % of the time**, trust climbing to its maximum | `README.md` -> *The agent can talk to the city* |
 | Warning is not a free button. Credibility is a **depletable resource**: +0.04 for a correct warning, -0.15 for a false one | that asymmetry alone fixes a break-even accuracy of **78.9 %**, which the agent must learn to stay above | `wiiga/alerte.py` |
 | The speech is not decoration | same weights, warning switched off: **45 % more dry hours, 8 % more expensive** | `README.md` -> ablation row |
 | **The agent learned when it is useless.** It can hand the station back to the operator, and pays 3.0 of reward to do it | at 3, 6 and 7 a.m. it hands back and lets the utility's fixed setting run; it takes control at 8 a.m. when the sun rises | the live demo, hour slider |
@@ -44,8 +46,8 @@ water. In Europe the action would be meaningless.
 | claim | number | check it in 60 seconds |
 |---|---|---|
 | Measured in people, not cubic metres | **148 455 person-days a year** kept above the WHO survival threshold of 20 L, versus the best rulebook | `README.md` -> *At a glance* |
-| Against what the utility runs today | **1 004 745 person-days a year**, for 22 000 people across three districts | same |
-| It is cleaner, and now that comparison is honest | **48 % less CO2** than current practice, **22 tonnes a year** | same |
+| Against what the utility runs today | **790 318 person-days a year**, for 22 000 people across three districts | same |
+| It is cleaner, and now that comparison is honest | **48 % less CO2** than current practice - **36 tonnes a year**, and 22 tonnes against the rulebook. Two comparisons, given separately | same |
 | It answers the question a utility director actually asks | the rulebook needs **1.22x the storage - 96 m3 of new tank on the 440 that exist** - to match the agent. That is concrete you do not pour | `python -m wiiga.equivalence` |
 | It is adoptable, not all-or-nothing | the agent can decline any hour and hand control back to the existing fixed setting | `wiiga/env.py`, *passer la main* |
 
@@ -72,7 +74,7 @@ climatology, not measurements taken in Ouagadougou.
 | claim | check it in 60 seconds |
 |---|---|
 | Every module opens by explaining **why it is shaped that way**, including the versions that were measured and thrown away | any file in `wiiga/` |
-| **Six mechanisms were built, measured, and abandoned** - and each is documented at the exact line where it failed | `README.md` -> *What did not work* |
+| **Seven mechanisms were built, measured, and abandoned** - and each is documented at the exact line where it failed | `README.md` -> *What did not work* |
 | No number is typed twice. Two scripts produce JSON; the README and the web page read them | `python -m wiiga.rapport` |
 | The domain of validity is declared, including where the agent **loses** | at 366 L of diesel a day the rulebook wins, and we say so in bold |
 
@@ -83,7 +85,7 @@ climatology, not measurements taken in Ouagadougou.
 | award | the number that qualifies us |
 |---|---|
 | **Best Use of Machine Learning** | real RL with 3 seeds, 4 ablations, a sensitivity sweep, a reward-hacking audit, and a baseline we tuned *against ourselves* |
-| **Sustainability AI** | solar first by construction; **22 tonnes of CO2 a year** avoided, 48 % less than current practice |
+| **Sustainability AI** | solar first by construction; **36 tonnes of CO2 a year** avoided, 48 % less than current practice |
 | **Most Scalable Solution** | any city on earth in ~2 seconds, no API key; the same weights replayed on 5 climates, **winning in 3 and losing in 2 - stated, not hidden** |
 | **Most Innovative Project** | an action that spends credibility instead of energy |
 | **Data-Driven Insights** | the year splits into three regimes that want opposite policies; the table shows where the rules give way |

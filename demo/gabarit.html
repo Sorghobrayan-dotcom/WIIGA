@@ -177,12 +177,12 @@ decides every hour - for every district - <b>which pump runs, at what power,
 filling which tank, on which source of energy</b>. Solar first, always.</p>
 
 <div class="coup">
-  <p class="date">25 February. 38.7 C. Hot dry season in Ouagadougou.</p>
+  <p class="date" id="coup-date">25 February. 38.7 C. Hot dry season in Ouagadougou.</p>
   <p class="gros"><span id="coup-n">10 566</span> people</p>
   <p class="sous">That is how many were left <b>below the WHO survival threshold of
-  20 litres</b> by the best hand-written rulebook, and were not, on the same day,
-  with the same outages, by this agent. <b>11 113 people against 546.</b> Half a
-  city, in a single day.</p>
+  20 litres</b> by the hand-written rulebook, and were not, on the same day,
+  with the same outages, by this agent. <b id="coup-detail">11 113 people against
+  546.</b> The worst day of the year, and half a city.</p>
   <button class="cta" id="cta" type="button">Show me how, in 20 seconds</button>
 </div>
 
@@ -437,9 +437,9 @@ const clr=(t,h)=>{while(t.firstChild&&(!h||t.children.length>h))t.removeChild(t.
 
 /* ================= headline ================= */
 const H=R.en_humain, vr=R.vs_regle_ecrite, vp=R.vs_pratique_actuelle;
-[["hi",n0(vr.heures_a_sec_pct)+"%","fewer dry hours than the best hand-written rulebook"],
+[["hi",n0(vr.heures_a_sec_pct)+"%","fewer dry hours than the hand-written rulebook"],
  ["hi",n0(H.personnes_jours_epargnees_par_an_vs_regle),"person-days a year kept above the WHO survival threshold"],
- ["",n0(H.kg_co2_evites_par_an_vs_regle/1000)+" t","CO2 not emitted per year"],
+ ["",n0(H.kg_co2_evites_par_an_vs_regle/1000)+" t","CO2 a year not emitted, against that same rulebook"],
  ["",n0(H.habitants_desservis),"people across three districts"]
 ].forEach(([c,n,l])=>{
   const d=document.createElement("div"); d.className="fig"+(c?" "+c:"");
@@ -447,6 +447,16 @@ const H=R.en_humain, vr=R.vs_regle_ecrite, vp=R.vs_pratique_actuelle;
   const b=document.createElement("span"); b.className="l"; b.textContent=l;
   d.append(a,b); document.getElementById("headline").appendChild(d);
 });
+/* la journee du haut de page, mesuree comme le reste : le pire ecart de
+   l'annee, tel que `python -m wiiga.journee` le classe */
+if(D.journee&&D.journee.cinq_plus_gros_ecarts&&D.journee.cinq_plus_gros_ecarts.length){
+  const J=D.journee.cinq_plus_gros_ecarts[0];
+  document.getElementById("coup-date").textContent=
+    J.date_en+". "+n1(J.temperature)+" C. Hot dry season in Ouagadougou.";
+  document.getElementById("coup-n").textContent=n0(J.personnes_epargnees);
+  document.getElementById("coup-detail").textContent=
+    n0(J.regle_personnes)+" people against "+n0(J.agent_personnes)+".";
+}
 document.getElementById("verdict").innerHTML=
  "Against what the utility runs today, the agent cuts dry hours by <b>"+n0(vp.heures_a_sec_pct)+
  "%</b>. The harder comparison is the rulebook that reads the same forecast - and it still wins by <b>"+
