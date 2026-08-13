@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-08-12T03:21:52+00:00",
+  "genere_le": "2026-08-13T04:26:44+00:00",
   "journees": 365,
   "seed": 1000,
   "modele": "agents/graine_0",
@@ -148,6 +148,7 @@
       "part_de_la_ville_touchee_regle": 0.023614519706201948,
       "fcfa_epargnes_par_an_vs_regle": 19276618.000000007,
       "kg_co2_evites_par_an_vs_regle": 22448.75401780964,
+      "kg_co2_evites_par_an_vs_pratique": 36329.42575117902,
       "litres_gasoil_evites_par_an_vs_regle": 8376.400752914042
     },
     "apprentissage_bat_la_regle": true,

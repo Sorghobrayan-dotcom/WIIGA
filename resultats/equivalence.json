@@ -1,7 +1,8 @@
 {
-  "genere_le": "2026-08-11T19:09:40+00:00",
+  "genere_le": "2026-08-13T05:18:17+00:00",
   "journees": 365,
   "seed": 1000,
+  "modele": "agents/graine_0",
   "agent_reseau_actuel": {
     "heures_a_sec_par_jour": 0.15616438356164383,
     "fcfa_par_jour": 268744.66575342463,

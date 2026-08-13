@@ -165,6 +165,14 @@ def humain(agent: dict, regle: dict, terrain: dict) -> dict:
             regle["kg_co2_par_jour"] - agent["kg_co2_par_jour"]
         )
         * 365.0,
+        # les deux références séparément, parce qu'un pourcentage pris sur l'une
+        # et un tonnage pris sur l'autre se lisent comme un seul chiffre et n'en
+        # sont pas un : « 48 % de CO2 en moins, 22 tonnes par an » mélangeait la
+        # comparaison à la pratique actuelle et celle à la règle écrite.
+        "kg_co2_evites_par_an_vs_pratique": (
+            terrain["kg_co2_par_jour"] - agent["kg_co2_par_jour"]
+        )
+        * 365.0,
         "litres_gasoil_evites_par_an_vs_regle": (
             regle["litres_gasoil_par_jour"] - agent["litres_gasoil_par_jour"]
         )
@@ -179,10 +187,12 @@ def ecart(agent: dict, reference: dict, cle: str) -> float:
 
 
 def main() -> None:
+    from .train import MODELE_PUBLIE
+
     p = argparse.ArgumentParser()
     p.add_argument("--journees", type=int, default=200)
     p.add_argument("--seed", type=int, default=1000)
-    p.add_argument("--modele", default="wiiga_agent")
+    p.add_argument("--modele", default=MODELE_PUBLIE)
     args = p.parse_args()
 
     from stable_baselines3 import PPO

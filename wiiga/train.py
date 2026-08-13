@@ -23,6 +23,20 @@ from .env import GAMMA, WiigaEnv
 
 MODELE = Path(__file__).parent.parent / "wiiga_agent"
 
+#: Le modèle que les chiffres publiés mesurent, et le seul.
+#:
+#: Il est nommé ici plutôt que dans chaque `argparse` parce que la version
+#: précédente laissait chaque module choisir : les JSON de `resultats/` étaient
+#: produits avec `agents/graine_0`, et la commande écrite dans le README chargeait
+#: `wiiga_agent`, un entraînement voisin mais différent - poids différents à la
+#: première décimale. Un juré qui lançait la commande documentée obtenait donc
+#: d'autres chiffres que le tableau qu'elle est censée reproduire.
+#:
+#: `graine_0` est la graine médiane des trois de `graines.json`, pas la meilleure.
+#: Un entraînement neuf écrit dans `MODELE` : pour le mesurer, il faut le demander
+#: explicitement avec `--modele wiiga_agent`.
+MODELE_PUBLIE = "agents/graine_0"
+
 
 #: Combien d'environnements tournent en parallèle.
 #:

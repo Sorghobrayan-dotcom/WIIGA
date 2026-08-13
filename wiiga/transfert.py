@@ -73,10 +73,12 @@ def jouer(politique, climat, journees: int, seed: int) -> dict:
 
 
 def main() -> None:
+    from .train import MODELE_PUBLIE
+
     p = argparse.ArgumentParser()
     p.add_argument("--journees", type=int, default=365)
     p.add_argument("--seed", type=int, default=1000)
-    p.add_argument("--modele", default="wiiga_agent")
+    p.add_argument("--modele", default=MODELE_PUBLIE)
     p.add_argument("--hors-ligne", action="store_true")
     args = p.parse_args()
 
@@ -143,6 +145,10 @@ def main() -> None:
                 "genere_le": datetime.now(UTC).isoformat(timespec="seconds"),
                 "journees": args.journees,
                 "seed": args.seed,
+                # quels poids ont produit ces lignes. Il manquait, et il fallait
+                # deviner le modele en comparant la ligne d'Ouagadougou au tableau
+                # annuel - une deduction, la ou les autres JSON donnent un fait
+                "modele": args.modele,
                 "entraine_sur": "Ouagadougou",
                 "villes": lignes,
                 "tient_partout": garde,
