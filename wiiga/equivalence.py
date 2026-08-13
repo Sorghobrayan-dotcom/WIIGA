@@ -104,10 +104,12 @@ def seuil_atteint(courbe: list[tuple[float, float]], cible: float) -> float | No
 
 
 def main() -> None:
+    from .train import MODELE_PUBLIE
+
     p = argparse.ArgumentParser()
     p.add_argument("--journees", type=int, default=365)
     p.add_argument("--seed", type=int, default=1000)
-    p.add_argument("--modele", default="wiiga_agent")
+    p.add_argument("--modele", default=MODELE_PUBLIE)
     args = p.parse_args()
 
     from stable_baselines3 import PPO
@@ -173,6 +175,9 @@ def main() -> None:
                 "genere_le": datetime.now(UTC).isoformat(timespec="seconds"),
                 "journees": args.journees,
                 "seed": args.seed,
+                # le modele qui sert de cible a tout le balayage : sans lui, la
+                # phrase « 96 m3 de beton » ne dit pas de quel agent elle parle
+                "modele": args.modele,
                 "agent_reseau_actuel": reference,
                 "capacite_actuelle_m3": capacite,
                 "carburant_actuel_kwh": CARBURANT_JOUR,

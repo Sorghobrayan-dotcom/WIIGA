@@ -163,9 +163,11 @@ def raconter(env: WiigaEnv, journal: list[dict]) -> None:
 if __name__ == "__main__":
     from stable_baselines3 import PPO
 
+    from .train import MODELE_PUBLIE
+
     p = argparse.ArgumentParser()
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--modele", default=str(Path(__file__).parent.parent / "wiiga_agent"))
+    p.add_argument("--modele", default=MODELE_PUBLIE)
     args = p.parse_args()
 
     agent = PPO.load(args.modele)
