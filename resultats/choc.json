@@ -1,0 +1,105 @@
+{
+  "genere_le": "2026-08-13T06:55:46+00:00",
+  "journees": 365,
+  "seed": 1000,
+  "modele": "agents/graine_0",
+  "zone_vedette": "mixte",
+  "fenetre_horaire": [
+    7,
+    18
+  ],
+  "facteur_comparaison": 1.3,
+  "plafonds_hydrauliques": {
+    "marché": 1.5435350514592068,
+    "résidentiel": 2.0909970165735436,
+    "mixte": 1.3636937068671386
+  },
+  "balayage": [
+    {
+      "agent_heures_a_sec": 0.15616438356164383,
+      "regle_heures_a_sec": 0.3315068493150685,
+      "agent_personnes": 112.7947489138154,
+      "regle_personnes": 519.5194335364429,
+      "ecart_pct": 52.892561983471076,
+      "agent_creux": 0.2604481286131861,
+      "regle_creux": 0.42912608373793376,
+      "facteur": 1.0
+    },
+    {
+      "agent_heures_a_sec": 0.1643835616438356,
+      "regle_heures_a_sec": 0.3315068493150685,
+      "agent_personnes": 114.6159781935467,
+      "regle_personnes": 524.4751742615308,
+      "ecart_pct": 50.41322314049588,
+      "agent_creux": 0.26017348692046294,
+      "regle_creux": 0.4095007387606236,
+      "facteur": 1.1
+    },
+    {
+      "agent_heures_a_sec": 0.16712328767123288,
+      "regle_heures_a_sec": 0.33424657534246577,
+      "agent_personnes": 117.20091109036221,
+      "regle_personnes": 529.1739538134013,
+      "ecart_pct": 50.0,
+      "agent_creux": 0.2597748700072497,
+      "regle_creux": 0.3874674937739442,
+      "facteur": 1.2
+    },
+    {
+      "agent_heures_a_sec": 0.1780821917808219,
+      "regle_heures_a_sec": 0.33972602739726027,
+      "agent_personnes": 122.83697744512217,
+      "regle_personnes": 533.8445339134312,
+      "ecart_pct": 47.58064516129033,
+      "agent_creux": 0.2568144010595093,
+      "regle_creux": 0.3633563449089982,
+      "facteur": 1.3
+    }
+  ],
+  "par_quartier": [
+    {
+      "agent_heures_a_sec": 0.1863013698630137,
+      "regle_heures_a_sec": 0.3315068493150685,
+      "agent_personnes": 157.27524620127068,
+      "regle_personnes": 528.5416519322158,
+      "ecart_pct": 43.80165289256198,
+      "agent_creux": 0.2363133247125439,
+      "regle_creux": 0.39704895567475706,
+      "zone": "marché",
+      "habitants": 6000,
+      "plafond_hydraulique": 1.5435350514592068
+    },
+    {
+      "agent_heures_a_sec": 0.1643835616438356,
+      "regle_heures_a_sec": 0.3863013698630137,
+      "agent_personnes": 125.84676615567032,
+      "regle_personnes": 639.6197709561233,
+      "ecart_pct": 57.446808510638306,
+      "agent_creux": 0.25604264963112366,
+      "regle_creux": 0.4149417760714496,
+      "zone": "résidentiel",
+      "habitants": 12000,
+      "plafond_hydraulique": 2.0909970165735436
+    },
+    {
+      "agent_heures_a_sec": 0.1780821917808219,
+      "regle_heures_a_sec": 0.33972602739726027,
+      "agent_personnes": 122.83697744512217,
+      "regle_personnes": 533.8445339134312,
+      "ecart_pct": 47.58064516129033,
+      "agent_creux": 0.2568144010595093,
+      "regle_creux": 0.3633563449089982,
+      "zone": "mixte",
+      "habitants": 4000,
+      "plafond_hydraulique": 1.3636937068671386
+    }
+  ],
+  "resume": {
+    "reference_identique_au_tableau_annuel": true,
+    "tient_jusqua": 1.3,
+    "cede_a": null,
+    "degradation_agent_au_pire": 0.021917808219178075,
+    "degradation_regle_au_pire": 0.008219178082191747,
+    "facteur_au_pire": 1.3
+  }
+}

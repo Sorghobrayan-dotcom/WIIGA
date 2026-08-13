@@ -44,7 +44,7 @@ CO2_PAR_LITRE = 2.68
 LITRES_SURVIE = 20.0
 
 
-def mesurer(politique, journees: int, seed: int) -> dict:
+def mesurer(politique, journees: int, seed: int, apres_reset=None) -> dict:
     """Une politique, `journees` journées, et tout ce qu'on sait en compter.
 
     L'environnement est **neuf pour chaque politique**, et ce n'est pas une
@@ -53,6 +53,14 @@ def mesurer(politique, journees: int, seed: int) -> dict:
     politique avec la réputation bâtie par la première. Elle verrait une ville
     déjà convaincue dans son observation, et la comparaison mentirait en sa
     faveur.
+
+    `apres_reset` reçoit l'environnement juste après `reset`, avant la première
+    décision. C'est le seul point d'entrée pour déformer une journée sans
+    réécrire cette boucle : `choc.py` s'en sert pour gonfler la demande d'un
+    quartier. Le crochet est ici plutôt que dupliqué là-bas parce que deux
+    boucles de mesure finiraient par diverger sur une convention - la graine par
+    journée, l'environnement neuf - et par produire deux tableaux qu'on ne
+    pourrait plus comparer.
     """
     env = WiigaEnv(seed=0)
     heures_sec, cout, manquants = 0, 0.0, 0.0
@@ -67,6 +75,12 @@ def mesurer(politique, journees: int, seed: int) -> dict:
         # trois régimes au lieu d'en tirer un au hasard
         env.jour_fixe = j % 365
         obs, _ = env.reset(seed=seed + j)
+        if apres_reset is not None:
+            # `obs` n'est volontairement pas recalculé : une déformation de la
+            # demande réelle ne se voit pas dans l'observation, qui ne porte que
+            # la forme normalisée du profil. C'est la propriété que `choc.py`
+            # mesure, et la recalculer ici la masquerait.
+            apres_reset(env)
         fini = False
         while not fini:
             obs, _, arret, tronque, info = env.step(politique(obs, env))
