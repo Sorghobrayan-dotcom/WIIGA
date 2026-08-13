@@ -1,0 +1,122 @@
+{
+  "genere_le": "2026-08-13T05:54:51+00:00",
+  "journees": 365,
+  "seed": 1000,
+  "modele": "agents/graine_0",
+  "journee_de_la_console": {
+    "jour": 88,
+    "date": "30/03",
+    "date_en": "30 March",
+    "saison": "sèche chaude",
+    "temperature": 39.8,
+    "graine": 24,
+    "agent": {
+      "litres_manquants": 0,
+      "personnes_sous_le_seuil": 0,
+      "heures_a_sec": 0
+    },
+    "regle_ecrite": {
+      "litres_manquants": 59309,
+      "personnes_sous_le_seuil": 2965,
+      "heures_a_sec": 3
+    },
+    "moments": {
+      "midi": {
+        "puissances": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "sources": [
+          "solaire",
+          "solaire",
+          "solaire"
+        ],
+        "cuve_la_plus_basse": 0.58
+      },
+      "soir": {
+        "puissances": [
+          0.0,
+          0.07,
+          0.0
+        ],
+        "sources": [
+          "solaire",
+          "diesel",
+          "solaire"
+        ],
+        "cuve_la_plus_basse": 0.57
+      },
+      "heures_ou_il_passe_la_main": [
+        3,
+        6,
+        7
+      ],
+      "reprend_la_main_a": 8,
+      "cuves_apres_la_premiere_main_passee": [
+        0.9,
+        0.95,
+        0.89
+      ]
+    }
+  },
+  "cinq_plus_gros_ecarts": [
+    {
+      "date": "25/02",
+      "date_en": "25 February",
+      "saison": "sèche chaude",
+      "temperature": 38.7,
+      "personnes_epargnees": 10566.391970565037,
+      "regle_personnes": 11112.815667451254,
+      "agent_personnes": 546.4236968862167
+    },
+    {
+      "date": "03/04",
+      "date_en": "3 April",
+      "saison": "sèche chaude",
+      "temperature": 39.8,
+      "personnes_epargnees": 8421.009081762148,
+      "regle_personnes": 8421.009081762148,
+      "agent_personnes": 0.0
+    },
+    {
+      "date": "04/03",
+      "date_en": "4 March",
+      "saison": "sèche chaude",
+      "temperature": 39.4,
+      "personnes_epargnees": 7820.008751036106,
+      "regle_personnes": 7877.657830559806,
+      "agent_personnes": 57.6490795236996
+    },
+    {
+      "date": "08/05",
+      "date_en": "8 May",
+      "saison": "sèche chaude",
+      "temperature": 37.8,
+      "personnes_epargnees": 7600.282114470746,
+      "regle_personnes": 7600.282114470746,
+      "agent_personnes": 0.0
+    },
+    {
+      "date": "03/03",
+      "date_en": "3 March",
+      "saison": "sèche chaude",
+      "temperature": 39.4,
+      "personnes_epargnees": 7094.244217825882,
+      "regle_personnes": 8108.473938162277,
+      "agent_personnes": 1014.2297203363953
+    }
+  ],
+  "part_de_l_ecart_par_saison": {
+    "sèche chaude": 96.15009675615383,
+    "sèche tempérée": 3.8499032438462075,
+    "pluies": 0.0
+  },
+  "temperatures_des_cinq": [
+    38.7,
+    39.8,
+    39.4,
+    37.8,
+    39.4
+  ]
+}
