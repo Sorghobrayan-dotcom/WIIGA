@@ -19,15 +19,19 @@ power available**
 **25 February. 38.7 C. Hot dry season, when Ouagadougou is thirstiest and the
 grid fails every evening.**
 
-That day, the best hand-written rulebook leaves 222 256 litres unserved -
+That day, the hand-written rulebook leaves 222 256 litres unserved -
 **11 113 people below the WHO survival threshold of 20 litres. Half the city.**
 
 The agent, same day, same outages, same sunshine, same demand: **546 people.**
 **A difference of 10 566 people, in one day.**
 
-The five days where that gap is largest are all in the hot dry season, between
-38 and 40 C. The agent's value does not spread evenly across the year - it
-concentrates exactly on the days the city can least afford.
+It is the single largest gap of 365 replayed days, and it is named as the
+extreme it is. What matters is where the extremes sit: the five largest are all
+in the hot dry season, between 37.8 and 39.8 C, and **96 % of everything the
+agent spares the city over a year falls in that one season.** Its value does not
+spread evenly across the calendar - it concentrates exactly on the days the city
+can least afford. `python -m wiiga.journee` prints that ranking, and the day the
+live demo opens on.
 
 ---
 
@@ -179,8 +183,8 @@ gradually rather than trusted all at once.
 **Through them: the 22 000 people** in the three modelled districts. The unit
 that matters is not cubic metres, it is **person-days above the WHO survival
 threshold of 20 litres**: WIIGA keeps **148 455 person-days a year** above it
-compared to the best hand-written rulebook, and **1 004 745** compared to what
-the utility runs today.
+compared to the hand-written rulebook, and **790 318** compared to what the
+utility runs today.
 
 **And whoever plans the network**, who can ask the twin how much storage is
 needed before anyone pours concrete.
@@ -189,16 +193,17 @@ needed before anyone pours concrete.
 
 ## Results
 
-| | agent | best rulebook | current practice |
+| | agent | hand-written rulebook | current practice |
 |---|---:|---:|---:|
 | dry hours / day | **0.16** | 0.33 | 2.48 |
-| people below WHO survival / day | **113** | 520 | 1 887 |
+| people below WHO survival / day | **113** | 520 | 2 278 |
 | kg CO2 / day | **107** | 168 | 206 |
 | cost / day (FCFA) | **268 745** | 321 557 | 961 761 |
 
-**53 % fewer dry hours than the best hand-written rulebook**, which reads the
-same outage forecast the agent does. **48 % less CO2 than current practice**,
-22 tonnes a year.
+**53 % fewer dry hours than the hand-written rulebook**, which reads the same
+outage forecast the agent does. **48 % less CO2 than current practice**, 36
+tonnes a year - and 22 tonnes against the rulebook, which is a different
+comparison and is given as one.
 
 **And it survives being attacked.** PPO is stochastic, so we trained three seeds:
 all three beat the rulebook, by 54 % on average and 37-72 % depending on the
@@ -213,7 +218,7 @@ task performance, a ratio of 0.31 - a reward hacker scores the opposite.
 
 ## What did not work
 
-Six mechanisms were built, measured, and thrown away. Each is documented in the
+Seven mechanisms were built, measured, and thrown away. Each is documented in the
 code at the exact line where it failed, because a project that reports only its
 successes is a project you cannot check.
 
@@ -244,6 +249,12 @@ successes is a project you cannot check.
   litres of diesel a day - a perfect carbon footprint achieved by serving nobody -
   and made the agent look ten times better than it is. Corrected, and the CO2
   comparison became worth making.
+- **The commands did not all load the same model.** The published JSON files were
+  produced with `agents/graine_0`; `resultats`, `transfert`, `equivalence` and
+  `demo` defaulted to `wiiga_agent`, a neighbouring training whose weights differ
+  in the first decimal. Running the documented command gave numbers close to the
+  published tables and not equal to them. One constant, `MODELE_PUBLIE`, now
+  answers that question in one place.
 
 ---
 

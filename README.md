@@ -11,8 +11,10 @@ which source of energy.** It reads the date, the hour, the temperature, the
 season and the district, and it prefers solar every time solar can do the job.
 Grid second. The diesel generator last, and only when there is nothing else.
 
-Three moments from one simulated day, and they are the whole project. Every
-figure here is what the live demo replays, hour by hour, in front of you.
+Three moments from one simulated day - **30 March, 39.8 C**, the median day of
+the hot dry season and the day the demo opens on. They are the whole project.
+Every figure below is what the live demo replays hour by hour in front of you,
+and `python -m wiiga.journee` prints the same four lines in your terminal.
 
 **1 p.m. - it fills the tanks on sunlight it does not pay for.** All three pumps
 at 100 %, all three on solar. Nobody in the city is thirsty at 1 p.m.; the agent
@@ -43,22 +45,34 @@ it works.
 
 ---
 
-## One day
+## The worst day of the year
 
-**25 February. 38.7 C. The hot dry season, when Ouagadougou is at its thirstiest
-and the grid fails every evening.**
+The demo opens on the median day of the hot dry season. This is the other end of
+that season - the single day, out of 365 replayed, where the agent brings the
+most.
 
-On that day, the best hand-written rulebook leaves 222 256 litres unserved -
+**25 February. 38.7 C. The grid fails every evening and the city is at its
+thirstiest.**
+
+On that day the hand-written rulebook leaves 222 256 litres unserved -
 **11 113 people below the WHO survival threshold of 20 litres. Half the city.**
 
 The agent, same day, same outages, same sunshine, same demand: **546 people.**
 
 **A difference of 10 566 people, in a single day.**
 
-That is not the average day. It is the worst one, and that is the point: the five
-days where the gap is largest are all in the hot dry season, between 38 and
-40 C. The agent's value does not spread evenly across the year - **it concentrates
-exactly on the days the city can least afford.**
+That is not the average day, and it is named as the extreme it is. The point is
+where the extremes sit: the five largest gaps of the year are all in the hot dry
+season, between 37.8 and 39.8 C, and **96 % of everything the agent spares the
+city over a year falls in that one season.** Its value does not spread evenly
+across the calendar - **it concentrates exactly on the days the city can least
+afford.**
+
+Both this day and the demo's are printed, with the ranking behind them, by:
+
+```bash
+python -m wiiga.journee
+```
 
 ---
 
@@ -89,13 +103,21 @@ barely moves anything: from 0.05 to 0.60, the rulebook lands between 0.71 and
 0.85 dry hours a day, and most of the grid is flat to the second decimal.
 
 That is not a badly chosen constant. It is a property of the information itself.
-Measured over 8 760 forecast hours, the risk of an outage in the next four hours
-has a median of **0.046** across the year and **0.58** in the hot dry season -
-the signal is bimodal. It sits near zero when nothing is coming and high when
-something is, and it almost never occupies the middle where a threshold would
-have anything to arbitrate. Moving the threshold from 0.15 to 0.60 changes how
-often the rule declares an emergency by four percentage points, because there is
-almost no probability mass in between.
+Measured over the same 8 760 forecast hours the rule was scored on, the risk of
+an outage in the next four hours has a median of **0.046** across the year and
+**0.585** in the hot dry season - the signal is bimodal. 59 % of hours sit below
+0.1 and 35 % sit above 0.6; **0.5 % of them fall between 0.2 and 0.5**, which is
+the only zone a threshold has anything to arbitrate. Moving the threshold from
+0.15 to 0.60 - a factor of four - changes how often the rule declares an
+emergency by **4.2 percentage points**, because there is almost nothing in
+between to reclassify.
+
+```bash
+python -m wiiga.prevision
+```
+
+That prints the medians, the two thresholds and the histogram the sentence above
+describes.
 
 A scalar threshold on a bimodal signal has exactly two states. The agent reads
 the same forecast as a vector, alongside tank levels, sunshine, the seasonal
@@ -170,12 +192,26 @@ pip install -r requirements.txt
 python -m wiiga.resultats --journees 365
 ```
 
-That reproduces every number in this file and writes
-`resultats/comparaison.json`. Training from scratch takes about fifteen minutes
-on a laptop CPU:
+That reproduces the tables in this file and writes
+`resultats/comparaison.json`. The day the demo opens on, the worst day of the
+year and the ranking behind them come from:
+
+```bash
+python -m wiiga.journee
+```
+
+Every measurement command loads `agents/graine_0`, the median of the three
+trainings in `graines.json` - that is the model every published figure is
+measured on, and it is the default so that the command above and the tables
+below cannot drift apart. Training from scratch takes about fifteen minutes on a
+laptop CPU and writes `wiiga_agent`, which you then have to ask for by name:
 
 ```bash
 python -m wiiga.train --pas 600000
+```
+
+```bash
+python -m wiiga.resultats --journees 365 --modele wiiga_agent
 ```
 
 Point the model at any city on earth - no API key, no account:
@@ -193,7 +229,7 @@ cached to `villes/` so the demo runs offline afterwards.
 
 <!-- chiffres:début -->
 
-*365 simulated days, one per day of the year, identical seeds for every policy. Measured on 2026-08-12, regenerated by `python -m wiiga.resultats --journees 365`.*
+*365 simulated days, one per day of the year, identical seeds for every policy. Measured on 2026-08-13, regenerated by `python -m wiiga.resultats --journees 365`.*
 
 ### What each policy costs the city
 
@@ -218,6 +254,27 @@ cached to `villes/` so the demo runs offline afterwards.
 The annual average hides the point: the hand-written rules give way in the
 hot dry season, which is exactly when the city is thirstiest.
 
+### One day, and where the value concentrates
+
+*The day the live demo opens on: 30/03, 39,8 C, the median day of the hot dry season - not the best one we found. Everything here is regenerated by `python -m wiiga.journee`.*
+
+- **the rulebook** leaves 59 309 litres unserved that day: **2 965 people** below the WHO survival threshold
+- **the agent**, same day, same outages, same sunshine: **0**
+- 1 p.m., pumps at 100 %, 100 %, 100 %, all three on solar; 7 p.m., 0 %, 7 %, 0 %, worst tank at 57 %
+- it hands the station back at 3 a.m., 6 a.m., 7 a.m. and takes control again at 8 a.m.
+
+The five days of the year where the agent brings the most, over 365 replayed days:
+
+| day | season | temperature | rulebook | agent | people spared |
+|---|---|---:|---:|---:|---:|
+| 25/02 | hot dry | 38,7 C | 11 113 | 546 | **10 566** |
+| 03/04 | hot dry | 39,8 C | 8 421 | 0 | **8 421** |
+| 04/03 | hot dry | 39,4 C | 7 878 | 58 | **7 820** |
+| 08/05 | hot dry | 37,8 C | 7 600 | 0 | **7 600** |
+| 03/03 | hot dry | 39,4 C | 8 108 | 1 014 | **7 094** |
+
+All five are in the hot dry season, and so is **96,2 %** of everything the agent spares the city over a year. The agent's value does not spread evenly across the calendar: it concentrates on the days the city can least afford.
+
 ### Speech: what the agent tells the city, and whether it is believed
 
 | operator | warnings / day | accuracy | trust at the end |
@@ -230,6 +287,8 @@ hot dry season, which is exactly when the city is thirstiest.
 - **against what the utility runs today**: 94 % fewer dry hours, 72 % cheaper to run, 48 % less CO2
 - **against the hand-written rulebook**: 53 % fewer dry hours, 16 % cheaper to run, 37 % less CO2
 - **against itself, with the warning switched off**: 31 % fewer dry hours, 8 % cheaper to run
+- **in people**, the unit that matters: **148 455 person-days a year** above the WHO survival threshold of 20 L against the rulebook, **790 318** against current practice, for 22 000 people across three districts
+- **in CO2**: **36,3 tonnes a year** against current practice, 22,4 against the rulebook - two different comparisons, said separately
 
 ### Does the result survive its own variance
 
@@ -246,7 +305,7 @@ All three seeds beat the hand-written rulebook, by **54 %** on average and betwe
 
 ### Was the rulebook given its best shot?
 
-*The fair objection to any "we beat the baseline" claim: you did not show a rule cannot do this, you showed that YOUR rule does not. So the rulebook's two hand-set constants were swept over a 5x5 grid, and the agent replayed against the best of the family.*
+*The fair objection to any "we beat the baseline" claim: you did not show a rule cannot do this, you showed that YOUR rule does not. So the rulebook's two hand-set constants were swept over a 6x5 grid, and the agent replayed against the best of the family.*
 
 | | dry hours / day |
 |---|---:|
@@ -317,6 +376,44 @@ with someone who runs one would replace this paragraph with a fact**, and that i
 the single most valuable thing that could happen to this project - more than any
 amount of extra compute, because it is the one thing a simulator cannot generate.
 
+## What did not work
+
+Seven mechanisms were built, measured, and thrown away. Each is documented in the
+code at the exact line where it failed, because a project that reports only its
+successes is a project you cannot check.
+
+- **Trust clamped at zero made lying free.** Once at the floor the subtraction was
+  clipped, so a false alarm cost nothing while household response was already
+  zero. The agent fell into that absorbing state and stayed, broadcasting seven
+  times a day at 57 % accuracy. Below zero there is not an absence of trust but
+  *active disbelief*.
+- **Letting the agent repeat itself produced two opposite degenerate optima.**
+  Same reward, two seeds: one never spoke at all, the other shouted seven times a
+  day and hit the distrust floor on day 14 *despite 87 % accuracy*. The fix is
+  what every real alerting system does - the broadcaster does not re-send while
+  the previous warning is still awaiting judgement.
+- **The textbook form of potential-based reward shaping charged rent.**
+  `gamma * Phi(s') - Phi(s)` costs `(1-gamma) * Phi` every step merely for
+  *holding* the potential: a day with no warning at all cost -10.6, and a trusted
+  utility paid twice what a discredited one paid. It rewarded destroying your own
+  reputation.
+- **Raising the discount factor to see reputation further ahead broke the
+  pumping.** At 0.995 all three seeds fell *below* the rulebook. The two
+  sub-problems do not share a natural horizon: pumping is intraday, the tanks
+  refill every morning.
+- **Ending the episode at midnight told the agent the future was worthless.**
+  Harmless while only tanks existed - they refill - but reputation crosses days.
+  Midnight is a measurement boundary, not the end of the world.
+- **Our own baseline was a straw man**, and the paragraph above is what replaced
+  it.
+- **Every measurement command used to default to a different model than the one
+  the published figures were measured on.** `resultats`, `transfert`,
+  `equivalence` and `demo` loaded `wiiga_agent`; the JSON files in `resultats/`
+  had been produced with `agents/graine_0`, a neighbouring training whose weights
+  differ in the first decimal. Anyone running the documented command got numbers
+  that were close to the tables and not equal to them. There is now one constant,
+  `MODELE_PUBLIE` in `train.py`, and the four commands read it.
+
 ## What this is not
 
 Stated plainly, because a result you have to defend later is worth less than a
@@ -357,6 +454,7 @@ limitation you declared yourself.
 | `wiiga/ville.py` | plug any city on earth in via Open-Meteo |
 | `wiiga/baselines.py` | what the agent has to beat, including a rule that reads the same forecast |
 | `wiiga/resultats.py` | the measurement harness - the only place numbers are produced |
+| `wiiga/journee.py` | the day the demo replays, the worst day of the year, and where in the calendar the value falls |
 | `wiiga/transfert.py` | the same weights, replayed on climates never seen in training |
 | `wiiga/rapport.py` | turns the JSON into the tables above, so no number is ever retyped |
 
