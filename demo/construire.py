@@ -48,6 +48,11 @@ def rassembler() -> dict:
         ("transfert", "transfert.json"),
         ("equivalence", "equivalence.json"),
         ("graines", "graines.json"),
+        # les balayages : ils etaient mesures et publies en tableaux, mais la
+        # page ne les chargeait pas. Ce sont eux qui permettent au visiteur de
+        # poser SA station plutot que de regarder la notre.
+        ("sensibilite", "sensibilite.json"),
+        ("choc", "choc.json"),
         # le haut de page annonçait une journée en chiffres écrits dans le
         # gabarit : ils sont justes, mais ils étaient les seuls de la page à ne
         # pas venir d'une mesure, juste au-dessus d'une phrase qui promet le

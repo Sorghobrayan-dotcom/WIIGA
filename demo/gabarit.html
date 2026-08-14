@@ -275,6 +275,36 @@ filling which tank, on which source of energy</b>. Solar first, always.</p>
   running in this tab, and saying otherwise would be a lie you could not check.</p>
 </section>
 
+<section id="votre-station">
+  <h2>Your station, not ours</h2>
+  <p>Everything above is one station with one set of constraints. Yours are
+  different, and the honest question is not "is this impressive" but <b>"would it
+  do anything for me"</b>. Three constraints were swept independently, so pick
+  the one that actually binds at your station and read the answer off a
+  measurement rather than off a promise.</p>
+
+  <div class="console">
+    <div class="bar">
+      <div class="grp" id="vs-axe"><span class="t">What binds you</span></div>
+      <div class="grp grow">
+        <span class="t" id="vs-nom">Value</span>
+        <input id="vs-curseur" type="range" min="0" max="4" step="1" value="2"
+               aria-label="Value of the constraint">
+        <span class="clock" id="vs-val">-</span>
+      </div>
+    </div>
+    <div class="readout" id="vs-sortie"></div>
+    <p class="recit" id="vs-verdict"></p>
+    <p class="quiet" id="vs-base"></p>
+  </div>
+
+  <p class="quiet">Each axis was swept on its own, holding everything else at the
+  values this repository publishes. <b>The combinations are not measured</b>, so
+  the tool answers one question at a time and says which campaign each answer
+  comes from. Turning three sliders at once and reading the corner would be
+  inventing a number, and this page does not do that.</p>
+</section>
+
 <section id="schema">
   <h2>How it is wired</h2>
   <p>That console had three pumps, three tanks, three districts and three sources
@@ -855,6 +885,74 @@ document.getElementById("cta").onclick=()=>{
   document.getElementById("console").scrollIntoView({block:"start",behavior:"instant"});
   setTimeout(()=>{ if(bTour.getAttribute("aria-pressed")!=="true") bTour.click(); }, 450);
 };
+
+/* ================= votre station ================= */
+// Trois balayages deja mesures, rendus tournables. La page ne calcule rien ici
+// non plus : chaque point du curseur est une campagne complete qui a tourne en
+// Python, et le nombre de journees de cette campagne est affiche avec elle -
+// sensibilite a tourne sur 120 journees, choc sur 365, et melanger les deux
+// sans le dire serait exactement le genre de chiffre que ce depot s'interdit.
+(function(){
+  const S1=D.sensibilite, S2=D.choc;
+  if(!S1&&!S2) return;
+  const KWH_PAR_LITRE=3.5;
+  const AXES=[];
+  if(S1&&S1.balayages&&S1.balayages.CARBURANT_JOUR)AXES.push({
+    cle:"gasoil", bouton:"diesel I can buy", nom:"Litres of diesel a day",
+    jours:S1.journees,
+    pts:S1.balayages.CARBURANT_JOUR.map(p=>({
+      etiquette:Math.round(p.valeur/KWH_PAR_LITRE)+" L/day",
+      defaut:p.retenue, a:p.agent_heures_a_sec, r:p.regle_heures_a_sec, e:p.ecart_pct}))});
+  if(S1&&S1.balayages&&S1.balayages.MARGE_POMPE)AXES.push({
+    cle:"pompe", bouton:"how oversized my pumps are", nom:"Pump flow, multiple of the peak hour",
+    jours:S1.journees,
+    pts:S1.balayages.MARGE_POMPE.map(p=>({
+      etiquette:p.valeur.toFixed(1)+"x peak", defaut:p.retenue,
+      a:p.agent_heures_a_sec, r:p.regle_heures_a_sec, e:p.ecart_pct}))});
+  if(S2&&S2.balayage)AXES.push({
+    cle:"choc", bouton:"demand I cannot forecast", nom:"Unannounced surge on one district",
+    jours:S2.journees,
+    pts:S2.balayage.map(p=>({
+      etiquette:p.facteur<=1?"as forecast":"+"+Math.round((p.facteur-1)*100)+"%",
+      defaut:p.facteur<=1, a:p.agent_heures_a_sec, r:p.regle_heures_a_sec, e:p.ecart_pct}))});
+  if(!AXES.length) return;
+
+  let axe=AXES[0], i=Math.max(0,axe.pts.findIndex(p=>p.defaut));
+  const gAxe=document.getElementById("vs-axe"), cur=document.getElementById("vs-curseur"),
+        lVal=document.getElementById("vs-val"), lNom=document.getElementById("vs-nom"),
+        out=document.getElementById("vs-sortie"), verdict=document.getElementById("vs-verdict"),
+        base=document.getElementById("vs-base");
+
+  function bindAxes(){
+    clr(gAxe,1);
+    AXES.forEach(x=>gAxe.appendChild(pill(x.bouton,x===axe,()=>{
+      axe=x; i=Math.max(0,x.pts.findIndex(p=>p.defaut)); bindAxes(); rendre();})));
+  }
+  function rendre(){
+    cur.max=axe.pts.length-1; cur.value=i;
+    const p=axe.pts[i];
+    lNom.textContent=axe.nom; lVal.textContent=p.etiquette;
+    const gain=p.r>0?(p.r-p.a)/p.r*100:0;
+    out.innerHTML=
+      '<div class="ro"><div class="k">with the rulebook</div><div class="v">'+n2(p.r)+'</div></div>'+
+      '<div class="ro"><div class="k">with WIIGA</div><div class="v'+(gain>0?' good':' bad')+'">'+n2(p.a)+'</div></div>'+
+      '<div class="ro"><div class="k">what it buys you</div><div class="v'+(gain>0?' good':' bad')+'">'+
+        (gain>0?"-"+Math.round(gain)+"%":"nothing")+'</div></div>';
+    verdict.innerHTML = gain<=0
+      ? "<b>At this setting you do not need WIIGA.</b> A twenty line rulebook serves "+
+        "your station as well or better, and you should keep the twenty lines. "+
+        "The agent earns its place where the constraint bites, not everywhere."
+      : gain<25
+      ? "<b>The gap is narrowing.</b> The agent still helps, but a rulebook is not far "+
+        "behind at this setting - worth knowing before anyone installs anything."
+      : "<b>This is where the agent earns its place.</b> Same tanks, same pumps, same "+
+        "grid: "+Math.round(gain)+" % fewer dry hours a day than the best rulebook we could tune.";
+    base.textContent="Dry hours per district-hour, summed over three districts, measured on "+
+      axe.jours+" replayed days with identical seeds for both policies.";
+  }
+  cur.oninput=()=>{i=+cur.value;rendre();};
+  bindAxes(); rendre();
+})();
 
 /* ================= tables ================= */
 const order=[FIELD,CHEAP,RULE,AGENT,MUTE].filter(k=>M[k]);
