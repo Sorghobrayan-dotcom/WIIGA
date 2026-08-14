@@ -148,6 +148,16 @@
   .keys i{width:11px;height:11px;border-radius:2px;display:inline-block;margin-right:7px}
 
   svg{display:block;width:100%;height:auto;overflow:visible}
+  /* Le schema est le seul dessin de la page dont le texte soit ecrit a une
+     taille fixe : a 375 px de large il se rend a 0,37, et ses libelles de
+     10,5 px tombent a 3,9 px reels - illisibles. Mesure faite, pas supposee.
+     Il defile donc au lieu de retrecir, exactement comme les tableaux larges
+     le font deja ailleurs sur cette page. */
+  @media(max-width:900px){
+    #schema figure{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    #schema svg{min-width:880px}
+    #schema figcaption{position:sticky;left:0}
+  }
   figure{margin:26px 0}
   figcaption{font-size:15px;color:var(--ink-3);margin-top:14px;max-width:62ch;
            line-height:1.6}
