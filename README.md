@@ -449,6 +449,50 @@ The agent beats the rulebook in **3 of 5** of these cities, with nothing retrain
 
 ---
 
+## How many people live under this constraint
+
+Everything above is one simulated station. The next question is whether that
+station is a curiosity or a category, and that one is answerable from published
+work rather than from our own simulator.
+
+**About a billion people receive water from intermittent piped networks** - pipes
+that carry water for fewer than 24 hours a day, drained and depressurised in
+between. Two sources we opened and read state it independently: [Analytical
+scaling relations to evaluate leakage and intrusion in intermittent water supply
+systems](https://pmc.ncbi.nlm.nih.gov/articles/PMC5959068/) puts it at nearly one
+billion and credits Bivins et al., 2017, and the International Water
+Association's [Intermittent Water Supply: need for action, but what
+action?](https://www.iwa-network.org/learn/intermittent-water-supply-need-for-action-but-what-action/)
+puts it at over a billion. That is the population living under the constraint
+this project is about - not water scarcity in general, but water that arrives on
+a schedule somebody has to decide.
+
+Against that, what we measured on the one station we model: **148 455 person-days
+a year** above the WHO survival threshold compared to the hand-written rulebook,
+for 22 000 people. Per resident, **6.75 days a year** that would have been spent
+below 20 litres and were not.
+
+**And this is where we stop.** Multiplying 6.75 days by a billion people would
+produce a headline number, and it would be dishonest - for three reasons this
+repository has already measured and published:
+
+- the advantage depends on the fuel budget, and **disappears at 366 litres a
+  day**, where the generator covers the city anyway;
+- it depends on the storage ratio: the rulebook catches the agent at **1.22x**
+  the tanks that already exist;
+- and replayed on five climates the same weights **win in three and lose in
+  two**, with the gap tracking how hard the city is.
+
+The unit that survives all three is the one an operator actually buys: **a
+station of roughly 22 000 people, on a grid that fails several hours a day, with
+about a third of a day of storage and a generator covering something like a
+seventh of its pumping energy.** For that unit, the numbers above are what we
+measured. How many such stations sit inside that billion is a question a laptop
+cannot answer, and we would rather leave it open than fill it with a
+multiplication.
+
+---
+
 ## About the baseline we compare against
 
 `exploitant` is meant to be what a utility actually runs: full power at night,
