@@ -66,6 +66,12 @@ def mesurer(politique, journees: int, seed: int, apres_reset=None) -> dict:
     heures_sec, cout, manquants = 0, 0.0, 0.0
     creux, fins, solaire, carburant = [], [], [], 0.0
     jours_sec = 0
+    # Le detail par quartier. `heures_a_sec` somme les trois zones : c'est la
+    # bonne grandeur pour comparer deux politiques, et c'est la mauvaise pour
+    # ecrire « le quartier le plus mal servi reste a sec X heures ». Les deux ont
+    # coexiste dans le texte publie, la somme portant le nom du maximum. Elles
+    # sont mesurees separement ici pour qu'on ne puisse plus les confondre.
+    par_zone: dict[str, int] = {}
     par_saison: dict[str, list] = {}
     alertes = justes = 0
     confiances = []
@@ -87,6 +93,8 @@ def mesurer(politique, journees: int, seed: int, apres_reset=None) -> dict:
             fini = arret or tronque
 
         heures_sec += info["heures_a_sec"]
+        for z in env.zones:
+            par_zone[z.profil.nom] = par_zone.get(z.profil.nom, 0) + z.heures_a_sec
         jours_sec += 1 if info["heures_a_sec"] > 0 else 0
         cout += info["cout_total"]
         manquants += info["litres_manquants"]
@@ -105,7 +113,16 @@ def mesurer(politique, journees: int, seed: int, apres_reset=None) -> dict:
 
     return {
         # service
+        #: **La somme des trois quartiers**, pas le pire d'entre eux. Un quartier
+        #: a sec une heure et un autre a sec la meme heure comptent deux. C'est ce
+        #: qu'il faut pour comparer deux politiques sur toute la ville ; ce n'est
+        #: pas ce qu'il faut pour decrire ce que subit un habitant.
         "heures_a_sec_par_jour": heures_sec / journees,
+        #: Le detail, et le maximum. La recompense optimise le quartier le plus
+        #: mal servi : sans cette ligne, la revendication centrale du projet
+        #: n'avait aucune mesure derriere elle.
+        "heures_a_sec_par_zone": {n: v / journees for n, v in par_zone.items()},
+        "heures_a_sec_pire_zone": (max(par_zone.values()) / journees) if par_zone else 0.0,
         "jours_avec_coupure_sur_200": int(jours_sec * 200 / journees),
         "litres_manquants_par_jour": manquants / journees,
         # ce que ça représente en humain : combien de personnes auraient pu

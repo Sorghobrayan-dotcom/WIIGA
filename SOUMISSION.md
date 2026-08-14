@@ -44,9 +44,10 @@ is load-shed about eight hours a day, and hardest in the evening** - exactly whe
 a residential district wants water.
 
 The utility runs a fixed setting written years ago: full power at night, idle by
-day. In our simulation it leaves the worst-served district **without water 2.48
-hours a day**, burns 77 litres of diesel doing it, and is the most expensive
-policy we measured. Three costs, all paid by the same people:
+day. In our simulation it leaves its **worst-served district without water 1.29
+hours a day** - 2.48 district-hours a day once the three are added up - burns 77
+litres of diesel doing it, and is the most expensive policy we measured. Three
+costs, all paid by the same people:
 
 - **Districts run dry**, and averages hide it - a policy that keeps two districts
   full and drains a third looks excellent on a dashboard.

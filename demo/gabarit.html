@@ -826,13 +826,20 @@ document.getElementById("cta").onclick=()=>{
 
 /* ================= tables ================= */
 const order=[FIELD,CHEAP,RULE,AGENT,MUTE].filter(k=>M[k]);
+// « dry hours » est une somme sur les trois quartiers : deux quartiers a sec la
+// meme heure comptent deux. La colonne le dit maintenant, et la colonne voisine
+// donne le pire quartier seul - la grandeur que la recompense optimise vraiment.
 let hb="<caption>Every policy sees the same 365 days and the same random seeds. "+
   "The third row is the real bar: a hand-written rulebook that reads the "+
-  "<i>same outage forecast</i> the agent does.</caption><thead><tr><th>operator</th>"+
-  "<th>dry hours / day</th><th>people below WHO survival / day</th><th>kWh / day</th>"+
+  "<i>same outage forecast</i> the agent does. <b>District-hours</b> are summed "+
+  "over the three districts; the next column is the worst district on its own."+
+  "</caption><thead><tr><th>operator</th>"+
+  "<th>district-hours dry / day</th><th>worst district</th>"+
+  "<th>people below WHO survival / day</th><th>kWh / day</th>"+
   "<th>kg CO2 / day</th><th>tank low point</th></tr></thead><tbody>";
 order.forEach(k=>{const m=M[k];
   hb+="<tr"+(k===AGENT?' class="us"':"")+"><td>"+NAME[k]+"</td><td>"+n2(m.heures_a_sec_par_jour)+
+  "</td><td>"+(m.heures_a_sec_pire_zone!=null?n2(m.heures_a_sec_pire_zone):"-")+
   "</td><td>"+n0(m.personnes_privees_equivalent_par_jour)+"</td><td>"+
   n0(m.litres_gasoil_par_jour*3.5)+"</td><td>"+n1(m.kg_co2_par_jour)+"</td><td>"+
   n2(m.creux_moyen)+"</td></tr>";});
