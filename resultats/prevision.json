@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-08-13T05:19:47+00:00",
+  "genere_le": "2026-08-14T08:35:05+00:00",
   "journees": 365,
   "seed": 1000,
   "heures_mesurees": 8760,
@@ -9,6 +9,15 @@
     "pluies": 0.009260938502848148,
     "sèche chaude": 0.5848555564880371,
     "sèche tempérée": 0.05791890248656273
+  },
+  "delestage_heures_par_jour": {
+    "annuel": 4.69041095890411,
+    "par_saison": {
+      "pluies": 1.6982758620689655,
+      "sèche chaude": 8.56,
+      "sèche tempérée": 4.422818791946309
+    },
+    "pire_journee": 21
   },
   "zone_grise": {
     "bas": 0.2,

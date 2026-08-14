@@ -11,6 +11,27 @@ which source of energy.** It reads the date, the hour, the temperature, the
 season and the district, and it prefers solar every time solar can do the job.
 Grid second. The diesel generator last, and only when there is nothing else.
 
+## The whole thing in one minute
+
+**Live demo:** <https://sorghobrayan-dotcom.github.io/WIIGA/> - one static file, no
+server, no network request. Drag the hour to 1 p.m., then to 7 p.m., and the
+argument is made in two moves.
+
+| | |
+|---|---|
+| **The problem** | Ouagadougou's grid was out **14 hours a day** in April 2024, hardest in the evening - exactly when a residential district wants water. |
+| **What it does** | A PPO agent operates three pumps, three tanks and three energy sources, hour by hour, and can also warn the city or hand the hour back to the operator. |
+| **What is new** | The reward reads the **worst-served district**, not the average. And one action spends **credibility** instead of energy. |
+| **What it buys** | **67 % fewer dry hours** on the worst district than the best hand-written rulebook, **48 % less CO2** than current practice, **148 455 person-days a year** above the WHO survival threshold. |
+| **Where it fails** | Above 366 L of diesel a day. On the market district. And a CVaR variant we built collapsed outright. All three are published below. |
+
+**And the object is not really water.** It is *operating an essential service on
+infrastructure that cannot be relied on* - the same problem as a vaccine cold
+chain, a rural health battery, or a motorbike charging network in the same city.
+Water is where we could measure it.
+
+![How WIIGA is wired](demo/schema.svg)
+
 Three moments from one simulated day - **30 March, 39.8 C**, the median day of
 the hot dry season and the day the demo opens on. They are the whole project.
 Every figure below is what the live demo replays hour by hour in front of you,
@@ -240,6 +261,21 @@ cached to `villes/` so the demo runs offline afterwards.
 | hand-written rulebook | 0,33 | 26 | 321 557 | 62,8 | 168,3 | 0,43 |
 | **WIIGA agent** | 0,16 | 15 | 268 745 | 39,9 | 106,8 | 0,26 |
 | WIIGA, not allowed to speak | 0,23 | 20 | 290 705 | 47,4 | 127,1 | 0,25 |
+
+### Does this simulator look like the city it claims to model
+
+*A digital twin invites exactly one objection: your city does not exist. It does not. But the load-shedding regime we gave it and the scale we chose for it can both be held against published figures, so here they are. The model's own numbers come from `python -m wiiga.prevision`.*
+
+| | measured in Ouagadougou | in this simulator |
+|---|---|---|
+| outage hours per day | **14 h/day on average**, across the capital and every inland city, from 26 March 2024 ([Faso7, 28/04/2024](https://faso7.com/2024/04/28/coupures-delectricite-au-burkina-faso-des-organisations-de-defense-des-droits-de-lhomme-appellent-a-retablir-la-situation-a-la-normale/)) | 4,7 h/day over the year, **8,6 h/day in the hot dry season**, worst day 21 h |
+| drinking-water shortfall | **57 000 m3/day**, stated by the Minister of State for Water, Commander Ismael Sombie ([Burkina24, 01/05/2026](https://burkina24.com/2026/05/01/ouagadougou-vaste-operation-de-curage-des-barrages-pour-renforcer-lapprovisionnement-en-eau/)) | a station serving 22 000 people, 1 100 m3/day of reference demand |
+
+**Two things follow, and the second one is not flattering.**
+
+The load-shedding model is **milder than the reality it is calibrated against**: 8,6 hours a day in the season that decides everything, against 14 measured in April 2024. The constant that carries the whole problem was set conservatively, not generously, and the agent's advantage is therefore measured under a grid that fails *less* often than Ouagadougou's did that year.
+
+And the scale is honest about what it is: **this is one station, not the city.** Ouagadougou's daily shortfall alone is about 52 times the entire daily demand of the three districts modelled here. WIIGA is not a plan for supplying Ouagadougou. It is a dispatch policy for a station of that kind, which is the unit an operator actually controls - and the unit that can be adopted one hour at a time.
 
 ### The same hours, district by district
 
