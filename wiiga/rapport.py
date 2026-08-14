@@ -470,8 +470,6 @@ def construire() -> str:
     if CHOC.exists():
         bloc += tableau_choc(json.loads(CHOC.read_text(encoding="utf-8")))
 
-    if RISQUE.exists():
-        bloc += tableau_risque(json.loads(RISQUE.read_text(encoding="utf-8")))
 
     ecarts = [
         ("what the utility runs today", r["vs_pratique_actuelle"]),
@@ -588,6 +586,11 @@ def construire() -> str:
         perdues = [x for x in carb if not x["agent_gagne"]]
         gagnees = [x for x in carb if x["agent_gagne"]]
         if carb:
+            # La CVaR echouee vit ici, dans le groupe des mesures qui attaquent
+            # nos propres resultats, et non juste avant « At a glance » : un
+            # lecteur y croisait 48,2 heures a sec une ligne avant le resume.
+            if RISQUE.exists():
+                bloc += tableau_risque(json.loads(RISQUE.read_text(encoding="utf-8")))
             bloc += [
                 "",
                 "### Where this stops being true",
