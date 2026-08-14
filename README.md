@@ -445,6 +445,30 @@ successes is a project you cannot check.
   that were close to the tables and not equal to them. There is now one constant,
   `MODELE_PUBLIE` in `train.py`, and the four commands read it.
 
+## What we found by reading our own model
+
+- **During Ramadan the agent flies on a forecast of the wrong shape, and we only
+  found it by reading the code.** `_observation` feeds the policy the *reference*
+  demand curve, while the water actually served follows `zone.horaire` - which
+  carries the Ramadan deformation that moves consumption from daytime to after
+  sunset. Measured across the year, the gap between the shape forecast and the
+  shape served is **0.000 on 336 days and 0.155 in total variation on the 29 days
+  of Ramadan**, with no "ramadan" flag anywhere in the observation.
+  And the detail that matters: **25 February - the day this submission leads
+  with, the 10 566 people - is inside Ramadan 2026.** The agent produced that
+  result while being told the wrong hourly shape. That is a defect, and it is
+  also a robustness result, and it reads better said than hidden.
+- **The agent cannot see that its own voice is already committed.** The
+  broadcaster refuses to re-send while a warning awaits judgement, but
+  `credit.en_attente` is not in the observation. Over 365 days the policy asks to
+  speak **703 times and only 256 go out - 64 % are suppressed**. It costs nothing,
+  but it changes the reading of the headline: **the 0.70 warnings a day is in
+  large part imposed by the lock, not chosen by the agent.** One bit of
+  observation would fix it. It needs a retraining, so it is named here rather
+  than quietly fixed.
+
+---
+
 ## What this is not
 
 Stated plainly, because a result you have to defend later is worth less than a

@@ -1,0 +1,59 @@
+{
+  "genere_le": "2026-08-14T04:46:28+00:00",
+  "journees": 200,
+  "seed_evaluation": 1000,
+  "graine_entrainement": 0,
+  "bruit_inter_graines": 0.06,
+  "regle_ecrite": 0.58,
+  "variantes": {
+    "reference": {
+      "heures_a_sec_par_jour": 0.29,
+      "vs_regle_pct": 50.0,
+      "alertes_par_jour": 0.735,
+      "justesse_alertes": 0.9387755102040817,
+      "gain_sur_reference": 0.0
+    },
+    "trois fois plus long": {
+      "heures_a_sec_par_jour": 0.36,
+      "vs_regle_pct": 37.93103448275862,
+      "alertes_par_jour": 1.055,
+      "justesse_alertes": 0.7109004739336493,
+      "gain_sur_reference": -0.07
+    },
+    "reseau 256x256": {
+      "heures_a_sec_par_jour": 0.43,
+      "vs_regle_pct": 25.86206896551724,
+      "alertes_par_jour": 1.55,
+      "justesse_alertes": 0.6741935483870968,
+      "gain_sur_reference": -0.14
+    },
+    "entropie 0.01": {
+      "heures_a_sec_par_jour": 0.405,
+      "vs_regle_pct": 30.172413793103438,
+      "alertes_par_jour": 0.0,
+      "justesse_alertes": 0.0,
+      "gain_sur_reference": -0.11500000000000005
+    },
+    "recompense normalisee": {
+      "heures_a_sec_par_jour": 0.35,
+      "vs_regle_pct": 39.6551724137931,
+      "alertes_par_jour": 1.02,
+      "justesse_alertes": 0.553921568627451,
+      "gain_sur_reference": -0.06
+    },
+    "pas d'apprentissage decroissant": {
+      "heures_a_sec_par_jour": 0.39,
+      "vs_regle_pct": 32.75862068965517,
+      "alertes_par_jour": 0.04,
+      "justesse_alertes": 1.0,
+      "gain_sur_reference": -0.10000000000000003
+    },
+    "lot plus grand": {
+      "heures_a_sec_par_jour": 1.69,
+      "vs_regle_pct": -191.3793103448276,
+      "alertes_par_jour": 0.0,
+      "justesse_alertes": 0.0,
+      "gain_sur_reference": -1.4
+    }
+  }
+}
