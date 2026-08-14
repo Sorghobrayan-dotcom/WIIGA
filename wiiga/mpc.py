@@ -76,6 +76,25 @@ HORIZON = 6
 #: cher que n'importe quelle facon de le pomper.
 PRIX_DU_MANQUE = 10_000.0
 
+#: Le remplissage exige au bout de l'horizon, et c'est l'ingredient sans lequel
+#: une commande predictive n'est pas serieuse.
+#:
+#: Un horizon fini rend myope : le controleur ne voit rien apres la sixieme
+#: heure, donc il vide ses cuves jusqu'au juste necessaire et se fait prendre par
+#: la premiere coupure qui depasse son horizon. Mesure, sans ce terme : 2,50
+#: heures a sec par jour contre 0,00 pour une regle de vingt lignes, en ne
+#: brulant que 1,6 litre de gasoil - le portrait exact d'un controleur qui
+#: sous-pompe. La contrainte terminale est la facon standard de recoller le futur
+#: qu'on ne modelise pas, et elle est posee au meme niveau que la reserve que
+#: `env.py` demande a l'agent.
+RESERVE_FINALE = 0.35
+
+#: Ce que coute le non-respect de cette reserve. La contrainte est **souple** :
+#: une contrainte dure rendrait le programme infaisable les jours ou la reserve
+#: est hors d'atteinte, et un solveur qui echoue une journee sur dix ne se
+#: compare a rien.
+PRIX_RESERVE = 2_000.0
+
 
 def _plan(env: WiigaEnv, heure: int) -> np.ndarray | None:
     """Resoudre l'horizon et rendre l'action de la premiere heure.
@@ -89,13 +108,20 @@ def _plan(env: WiigaEnv, heure: int) -> np.ndarray | None:
     Rend `None` si le solveur echoue, auquel cas l'appelant retombe sur une
     action nulle plutot que sur une action inventee.
     """
-    from scipy.optimize import linprog
+    try:
+        from scipy.optimize import linprog
+    except ImportError as e:  # pragma: no cover - depend de l'installation
+        raise SystemExit(
+            "scipy est absent, et il n'est requis que par ce module. "
+            "`pip install scipy`, ou sautez cette comparaison : tout le reste "
+            "du depot tourne sans lui."
+        ) from e
 
     nz, H = env.n_zones, HORIZON
     ns = len(SOURCES)
     n_e = nz * H * ns
     n_m = nz * H
-    n_tot = n_e + n_m + 1
+    n_tot = n_e + n_m + 1 + nz
 
     def ie(z, t, s):
         return (z * H + t) * ns + s
@@ -104,6 +130,10 @@ def _plan(env: WiigaEnv, heure: int) -> np.ndarray | None:
         return n_e + z * H + t
 
     iu = n_e + n_m
+
+    def ir(z):
+        """Le manque de reserve terminale de la zone z, en m3."""
+        return iu + 1 + z
 
     # --- ce que le controleur croit de l'avenir ------------------------------
     # la prevision de coupure ne porte que quatre heures : au-dela on prolonge
@@ -144,6 +174,8 @@ def _plan(env: WiigaEnv, heure: int) -> np.ndarray | None:
             for s in range(ns):
                 c[ie(z, t, s)] = prix[t, s]
     c[iu] = PRIX_DU_MANQUE
+    for z in range(nz):
+        c[ir(z)] = PRIX_RESERVE
 
     A_ub, b_ub = [], []
 
@@ -196,6 +228,21 @@ def _plan(env: WiigaEnv, heure: int) -> np.ndarray | None:
             # V >= 0
             A_ub.append(bas)
             b_ub.append(zone.volume - besoins)
+
+    # --- la reserve au bout de l'horizon -------------------------------------
+    # V[z, H] + r[z] >= RESERVE_FINALE * capacite, soit, en gardant la meme forme
+    # que la contrainte « V >= 0 » ci-dessus, avec le manque de reserve en plus.
+    for z, zone in enumerate(env.zones):
+        ligne = np.zeros(n_tot)
+        for k in range(H):
+            for s in range(ns):
+                ligne[ie(z, k, s)] = -rendement[k, s] * RENDEMENT_POMPE
+            ligne[im(z, k)] = -1.0
+        ligne[ir(z)] = -1.0
+        A_ub.append(ligne)
+        b_ub.append(
+            zone.volume - float(besoin[z].sum()) - RESERVE_FINALE * zone.capacite
+        )
 
     # le manque ne peut pas depasser le besoin de l'heure
     bornes = [(0.0, None)] * n_tot

@@ -1,95 +1,98 @@
 {
-  "genere_le": "2026-08-14T09:08:55+00:00",
-  "journees": 120,
+  "genere_le": "2026-08-14T13:05:38+00:00",
+  "journees": 365,
   "seed": 1000,
   "modele": "agents/graine_0",
   "horizon_heures": 6,
   "mesures": {
     "commande predictive (MPC)": {
-      "heures_a_sec_par_jour": 4.483333333333333,
+      "heures_a_sec_par_jour": 0.8712328767123287,
       "heures_a_sec_par_zone": {
-        "marché": 1.5833333333333333,
-        "résidentiel": 1.5416666666666667,
-        "mixte": 1.3583333333333334
+        "marché": 0.2219178082191781,
+        "résidentiel": 0.3972602739726027,
+        "mixte": 0.25205479452054796
       },
-      "heures_a_sec_pire_zone": 1.5833333333333333,
-      "jours_avec_coupure_sur_200": 188,
-      "litres_manquants_par_jour": 47295.17472330444,
-      "personnes_privees_equivalent_par_jour": 2364.7587361652218,
-      "fcfa_par_jour": 151683.85,
-      "litres_gasoil_par_jour": 26.031915707951907,
-      "kg_co2_par_jour": 69.76553409731112,
-      "part_solaire_bue": 0.5233671117614213,
-      "creux_moyen": 0.0,
+      "heures_a_sec_pire_zone": 0.3972602739726027,
+      "jours_avec_coupure_sur_200": 49,
+      "litres_manquants_par_jour": 9908.996331685481,
+      "personnes_privees_equivalent_par_jour": 495.44981658427406,
+      "fcfa_par_jour": 140371.87671232875,
+      "litres_gasoil_par_jour": 11.70633475630521,
+      "kg_co2_par_jour": 31.372977146897966,
+      "part_solaire_bue": 0.49144675877392324,
+      "creux_moyen": 2.002975437674135e-05,
       "creux_pire_jour": 0.0,
       "jours_creux_sous_10pct": 200,
       "jours_creux_sous_5pct": 200,
-      "remplissage_fin_de_jour": 0.007879627817637569,
+      "remplissage_fin_de_jour": 0.021739336328395358,
       "heures_a_sec_par_saison": {
-        "sèche chaude": 5.890243902439025,
-        "sèche tempérée": 1.4473684210526316
+        "pluies": 0.017241379310344827,
+        "sèche chaude": 2.98,
+        "sèche tempérée": 0.12080536912751678
       },
       "alertes_par_jour": 0.0,
       "justesse_alertes": 0.0,
       "confiance_finale": 0.55
     },
     "prevoyant (regle ecrite)": {
-      "heures_a_sec_par_jour": 0.8166666666666667,
+      "heures_a_sec_par_jour": 0.3315068493150685,
       "heures_a_sec_par_zone": {
-        "marché": 0.008333333333333333,
-        "résidentiel": 0.7583333333333333,
-        "mixte": 0.05
+        "marché": 0.005479452054794521,
+        "résidentiel": 0.3095890410958904,
+        "mixte": 0.01643835616438356
       },
-      "heures_a_sec_pire_zone": 0.7583333333333333,
-      "jours_avec_coupure_sur_200": 65,
-      "litres_manquants_par_jour": 26050.28808827507,
-      "personnes_privees_equivalent_par_jour": 1302.5144044137535,
-      "fcfa_par_jour": 338974.35,
-      "litres_gasoil_par_jour": 81.10540188774553,
-      "kg_co2_par_jour": 217.36247705915804,
-      "part_solaire_bue": 0.3238250914674642,
-      "creux_moyen": 0.27529601767671763,
+      "heures_a_sec_pire_zone": 0.3095890410958904,
+      "jours_avec_coupure_sur_200": 26,
+      "litres_manquants_par_jour": 10390.388670728857,
+      "personnes_privees_equivalent_par_jour": 519.5194335364429,
+      "fcfa_par_jour": 321557.3178082192,
+      "litres_gasoil_par_jour": 62.80832124975015,
+      "kg_co2_par_jour": 168.32630094933043,
+      "part_solaire_bue": 0.3242371010661444,
+      "creux_moyen": 0.42912608373793376,
       "creux_pire_jour": 0.0,
-      "jours_creux_sous_10pct": 75,
-      "jours_creux_sous_5pct": 70,
-      "remplissage_fin_de_jour": 0.6141393838811601,
+      "jours_creux_sous_10pct": 34,
+      "jours_creux_sous_5pct": 30,
+      "remplissage_fin_de_jour": 0.7500741830638916,
       "heures_a_sec_par_saison": {
-        "sèche chaude": 1.170731707317073,
-        "sèche tempérée": 0.05263157894736842
+        "pluies": 0.008620689655172414,
+        "sèche chaude": 1.11,
+        "sèche tempérée": 0.06040268456375839
       },
       "alertes_par_jour": 0.0,
       "justesse_alertes": 0.0,
       "confiance_finale": 0.55
     },
     "agent WIIGA (PPO)": {
-      "heures_a_sec_par_jour": 0.26666666666666666,
+      "heures_a_sec_par_jour": 0.15616438356164383,
       "heures_a_sec_par_zone": {
-        "marché": 0.16666666666666666,
-        "résidentiel": 0.05,
-        "mixte": 0.05
+        "marché": 0.10136986301369863,
+        "résidentiel": 0.03561643835616438,
+        "mixte": 0.019178082191780823
       },
-      "heures_a_sec_pire_zone": 0.16666666666666666,
-      "jours_avec_coupure_sur_200": 26,
-      "litres_manquants_par_jour": 3682.0637781471914,
-      "personnes_privees_equivalent_par_jour": 184.10318890735957,
-      "fcfa_par_jour": 283115.30833333335,
-      "litres_gasoil_par_jour": 60.872596347399536,
-      "kg_co2_par_jour": 163.13855821103076,
-      "part_solaire_bue": 0.38802548089712435,
-      "creux_moyen": 0.2075114885143478,
+      "heures_a_sec_pire_zone": 0.10136986301369863,
+      "jours_avec_coupure_sur_200": 15,
+      "litres_manquants_par_jour": 2255.894978276308,
+      "personnes_privees_equivalent_par_jour": 112.7947489138154,
+      "fcfa_par_jour": 268744.66575342463,
+      "litres_gasoil_par_jour": 39.85927809108154,
+      "kg_co2_par_jour": 106.82286528409854,
+      "part_solaire_bue": 0.3664305195281872,
+      "creux_moyen": 0.2604481286131861,
       "creux_pire_jour": 0.0,
-      "jours_creux_sous_10pct": 43,
-      "jours_creux_sous_5pct": 36,
-      "remplissage_fin_de_jour": 0.39232732864247916,
+      "jours_creux_sous_10pct": 23,
+      "jours_creux_sous_5pct": 20,
+      "remplissage_fin_de_jour": 0.3739286130527123,
       "heures_a_sec_par_saison": {
-        "sèche chaude": 0.3902439024390244,
-        "sèche tempérée": 0.0
+        "pluies": 0.017241379310344827,
+        "sèche chaude": 0.4,
+        "sèche tempérée": 0.10067114093959731
       },
-      "alertes_par_jour": 1.0583333333333333,
-      "justesse_alertes": 0.937007874015748,
+      "alertes_par_jour": 0.7013698630136986,
+      "justesse_alertes": 0.96484375,
       "confiance_finale": 1.0
     }
   },
   "agent_bat_le_mpc": true,
-  "ecart_pct": 94.05204460966543
+  "ecart_pct": 82.0754716981132
 }
