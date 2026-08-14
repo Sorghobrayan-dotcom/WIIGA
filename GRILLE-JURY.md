@@ -47,6 +47,7 @@ water. In Europe the action would be meaningless.
 
 | claim | number | check it in 60 seconds |
 |---|---|---|
+| The category is sized from published work, and we refuse to multiply | **about a billion people** on intermittent piped networks, from two sources we opened and read. The measured gain is **6.75 person-days a year per resident** on one station, and we state why extrapolating it would be dishonest | `README.md` -> *How many people live under this constraint* |
 | Measured in people, not cubic metres | **148 455 person-days a year** kept above the WHO survival threshold of 20 L, versus the best rulebook | `README.md` -> *At a glance* |
 | Against what the utility runs today | **790 318 person-days a year**, for 22 000 people across three districts | same |
 | It is cleaner, and now that comparison is honest | **48 % less CO2** than current practice - **36 tonnes a year**, and 22 tonnes against the rulebook. Two comparisons, given separately | same |

@@ -180,16 +180,33 @@ runs offline. **A utility in Ouagadougou can run this on the hardware it has.**
 ## Target Users
 
 **Directly: the operators of a small urban water utility** in a city with an
-unreliable grid - Ouagadougou, Bobo-Dioulasso, and the several hundred cities
-across the Sahel and South Asia under the same constraint. The agent produces an
-hourly schedule, and because it can hand any hour back, it can be adopted
-gradually rather than trusted all at once.
+unreliable grid. The agent produces an hourly schedule, and because it can hand
+any hour back, it can be adopted gradually rather than trusted all at once.
 
 **Through them: the 22 000 people** in the three modelled districts. The unit
 that matters is not cubic metres, it is **person-days above the WHO survival
 threshold of 20 litres**: WIIGA keeps **148 455 person-days a year** above it
 compared to the hand-written rulebook, and **790 318** compared to what the
-utility runs today.
+utility runs today. Per resident, that is **6.75 days a year** not spent below
+20 litres.
+
+**How large is the category.** About **a billion people** are served by
+intermittent piped networks - water for fewer than 24 hours a day, pipes drained
+and depressurised in between. Two sources we opened and read say so: [a 2018
+study of leakage and intrusion in such
+networks](https://pmc.ncbi.nlm.nih.gov/articles/PMC5959068/), at nearly one
+billion, and the [International Water
+Association](https://www.iwa-network.org/learn/intermittent-water-supply-need-for-action-but-what-action/),
+at over a billion.
+
+**We are not multiplying those two numbers, and the reason is measured.** The
+agent's advantage disappears at 366 litres of diesel a day, it is worth 1.22x
+the storage that already exists, and replayed on five climates it wins in three
+and loses in two. The unit that survives all three bounds is a station of
+roughly 22 000 people on a grid that fails several hours a day, with about a
+third of a day of storage. How many such stations sit inside that billion is a
+question we cannot answer from a laptop, and we would rather leave it open than
+fill it with a multiplication.
 
 **And whoever plans the network**, who can ask the twin how much storage is
 needed before anyone pours concrete.
