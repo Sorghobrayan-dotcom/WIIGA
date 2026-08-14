@@ -1,5 +1,15 @@
 """L'environnement WIIGA : la cuve comme batterie.
 
+**In English, because this is the file a reader opens first.** One step is one
+hour. For each of the three district pumps the agent sets a power and an energy
+source - solar, grid, generator - and it has two actions that touch no pump at
+all: hand the hour back to the utility's fixed setting, and warn the city to
+fill its jerrycans before a cut. The reward reads the **worst-served district,
+not the average**. The grid fails on its own schedule, the agent sees a forecast
+rather than the truth, and the generator has a daily budget it cannot exceed.
+Midnight is `truncated`, not `terminated`, because credibility crosses days.
+Everything below is in French, at length, for the utility that would maintain it.
+
 L'idée qui tient tout le reste. Le solaire est gratuit à 13 h et absent à 19 h,
 et c'est à 19 h que le quartier résidentiel a soif. Stocker cette énergie
 demanderait des batteries au lithium - chères, polluantes, à remplacer dans huit

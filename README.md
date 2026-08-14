@@ -647,3 +647,9 @@ limitation you declared yourself.
 is built for a francophone utility in Burkina Faso, and the person who would
 maintain it reads French. Every module opens with an explanation of *why* it is
 shaped the way it is, including the versions that were measured and thrown away.
+
+**The three files a reader opens first now open in English.** `env.py`,
+`alerte.py` and `resultats.py` carry a short English summary at the top of their
+docstring - the environment, the warning channel and the measurement harness -
+with the French explanation underneath. Choosing French was a decision about who
+maintains this; it should not be a toll on who reads it.

@@ -1,5 +1,14 @@
 """Prévenir les gens, et payer en crédibilité.
 
+**In English, because this is the part with no equivalent we could find.** The
+agent can broadcast one warning: *fill your jerrycans, the water is about to
+stop*. It moves demand forward in time, it never removes it, and total volume is
+conserved exactly. The action costs no fuel and no money - it costs **being
+believed**. A correct warning buys +0.04 of the city's trust, a false one costs
+-0.15, and that asymmetry alone fixes a break-even accuracy of **78.9 %** that
+nobody wrote into the reward. Trust is a state variable the agent observes and
+spends. Everything below is in French, for the utility that would maintain it.
+
 L'agent dispose d'une action qui ne touche aucune pompe : **dire à la ville de
 remplir ses bidons avant la coupure**. Par SMS, par radio de quartier, par le
 crieur du marché - le canal importe peu, le mécanisme est le même.
