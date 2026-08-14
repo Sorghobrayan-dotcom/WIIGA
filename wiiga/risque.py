@@ -180,12 +180,19 @@ def main() -> None:
         c = DOSSIER / f"graine_{g}.zip"
         if c.exists():
             candidats[f"PPO moyenne, graine {g}"] = politique_agent(PPO.load(c))
-    for g in range(args.graines):
-        c = DOSSIER / f"cvar_{g}.zip"
-        if c.exists():
-            candidats[f"PPO CVaR {int(ALPHA*100)} %, graine {g}"] = politique_agent(
-                PPO.load(c)
-            )
+    # Cherche par motif plutot que par index. La version precedente n'ouvrait que
+    # `cvar_0.zip` et `cvar_1.zip` ; l'agent entraine sur le disque s'appelait
+    # `cvar_essai.zip`, donc la commande tournait, ne trouvait rien, et imprimait
+    # un tableau sans aucune ligne CVaR - sans le dire. Le module entier est
+    # ainsi reste absent de la soumission pendant qu'il avait l'air de marcher.
+    cvars = sorted(DOSSIER.glob("cvar*.zip"))
+    for c in cvars:
+        candidats[f"PPO CVaR {int(ALPHA * 100)} %, {c.stem}"] = politique_agent(
+            PPO.load(c)
+        )
+    if not cvars:
+        print(f"\n(aucun agent cvar*.zip dans {DOSSIER} : le tableau ci-dessous "
+              f"n'aura aucune ligne CVaR, et c'est dit plutot que subi)")
 
     print(f"\n{args.journees} journees, memes graines pour tout le monde\n")
     print(f"{'politique':<30}{'moyenne':>10}{'CVaR 20 %':>12}{'pire jour':>11}"

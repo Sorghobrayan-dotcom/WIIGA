@@ -77,7 +77,8 @@ climatology, not measurements taken in Ouagadougou.
 |---|---|
 | Every module opens by explaining **why it is shaped that way**, including the versions that were measured and thrown away | any file in `wiiga/` |
 | **Seven mechanisms were built, measured, and abandoned** - and each is documented at the exact line where it failed | `README.md` -> *What did not work* |
-| No number is typed twice. Two scripts produce JSON; the README and the web page read them | `python -m wiiga.rapport` |
+| **Every table** in the README and on the web page is rewritten in place from a JSON file that a command produced - no table is maintained by hand | `python -m wiiga.rapport` |
+| Where the narrative repeats a figure from those tables, it is a copy, and we name it as one rather than claiming the whole document regenerates | every JSON in `resultats/` carries the command, the model and the date that produced it | `resultats/` |
 | The domain of validity is declared, including where the agent **loses** | at 366 L of diesel a day the rulebook wins, and we say so in bold |
 
 ---

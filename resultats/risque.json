@@ -1,0 +1,36 @@
+{
+  "genere_le": "2026-08-14T07:57:23+00:00",
+  "alpha": 0.2,
+  "journees": 365,
+  "seed": 1000,
+  "politiques": {
+    "regle ecrite": {
+      "moyenne": 0.3315068493150685,
+      "cvar_20": 1.6575342465753424,
+      "cvar_5": 3.6315789473684212,
+      "pire_jour": 6.0,
+      "jours_au_dessus_de_2h": 23
+    },
+    "PPO moyenne, graine 0": {
+      "moyenne": 0.15616438356164383,
+      "cvar_20": 0.7808219178082192,
+      "cvar_5": 2.526315789473684,
+      "pire_jour": 5.0,
+      "jours_au_dessus_de_2h": 8
+    },
+    "PPO moyenne, graine 1": {
+      "moyenne": 0.09315068493150686,
+      "cvar_20": 0.4657534246575342,
+      "cvar_5": 1.6842105263157894,
+      "pire_jour": 3.0,
+      "jours_au_dessus_de_2h": 3
+    },
+    "PPO CVaR 20 %, cvar_essai": {
+      "moyenne": 48.2,
+      "cvar_20": 50.863013698630134,
+      "cvar_5": 52.05263157894737,
+      "pire_jour": 56.0,
+      "jours_au_dessus_de_2h": 365
+    }
+  }
+}
