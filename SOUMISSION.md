@@ -329,4 +329,6 @@ successes is a project you cannot check.
   the one place that proves it
 
 The code is documented in French, at length. WIIGA is built for a francophone
-utility in Burkina Faso, and the person who would maintain it reads French.
+utility in Burkina Faso, and the person who would maintain it reads French. The
+three files a reader opens first - `env.py`, `alerte.py`, `resultats.py` - carry
+an English summary at the top, with the French underneath.

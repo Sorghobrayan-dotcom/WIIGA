@@ -1,5 +1,15 @@
 """Produire les chiffres de la soumission, et les écrire pour qu'on les relise.
 
+**In English, because this is where every published number comes from.** This
+module is the only place figures are produced. It replays each policy over the
+same days with the same seeds, writes `resultats/comparaison.json`, and
+`rapport.py` turns that file into the tables in the README - so no number in the
+submission is ever typed by hand. Three families are measured, because one alone
+always lies by omission: **service** (dry hours), **cost** (local currency,
+diesel, CO2) and **risk** (how close the tanks came to empty). Run it with
+`python -m wiiga.resultats --journees 365`. Everything below is in French, for
+the utility that would maintain it.
+
 Un tableau imprimé dans un terminal disparaît. Ce fichier écrit un JSON que le
 README, la page de démo et la vidéo lisent tous les trois : il ne peut donc pas
 y avoir trois versions du même chiffre.
