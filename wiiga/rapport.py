@@ -29,6 +29,7 @@ MEILLEURE = RACINE / "resultats" / "meilleure_regle.json"
 JOURNEE = RACINE / "resultats" / "journee.json"
 CHOC = RACINE / "resultats" / "choc.json"
 RISQUE = RACINE / "resultats" / "risque.json"
+PREVISION = RACINE / "resultats" / "prevision.json"
 README = RACINE / "README.md"
 
 DEBUT = "<!-- chiffres:début -->"
@@ -84,6 +85,76 @@ def tableau_principal(d: dict) -> list[str]:
             f"| {_fr(v['litres_gasoil_par_jour'], 1)} "
             f"| {_fr(v['kg_co2_par_jour'], 1)} | {_fr(v['creux_moyen'], 2)} |"
         )
+    return lignes
+
+
+def tableau_ancrage(p: dict, d: dict) -> list[str]:
+    """Confronter le simulateur a ce qui est publie sur la vraie ville.
+
+    C'est la reponse a la seule objection qui vaille contre un jumeau numerique :
+    *votre ville n'existe pas.* Elle n'existe pas, en effet. Mais le regime de
+    delestage qu'on lui a donne et l'echelle qu'on lui a choisie se comparent a
+    des chiffres publies, et cette comparaison se fait ici plutot que dans la
+    tete du lecteur. Les deux references sont externes et datees ; les chiffres
+    du modele sortent de `python -m wiiga.prevision`.
+    """
+    dele = p.get("delestage_heures_par_jour")
+    if not dele:
+        return []
+    saisons_en = {"sèche chaude": "hot dry", "pluies": "rainy",
+                  "sèche tempérée": "mild dry"}
+    habitants = d["resume"]["en_humain"]["habitants_desservis"]
+    chaude = dele["par_saison"].get("sèche chaude")
+    # la demande de reference vient des profils eux-memes plutot que d'etre
+    # recopiee : c'est une definition du modele, elle doit bouger avec lui
+    from .demande import PROFILS
+
+    demande_ville = sum(
+        p.habitants * p.litres_par_habitant / 1000.0 for p in PROFILS
+    )
+    deficit_reel = 57_000.0
+
+    lignes = [
+        "",
+        "### Does this simulator look like the city it claims to model",
+        "",
+        "*A digital twin invites exactly one objection: your city does not exist. "
+        "It does not. But the load-shedding regime we gave it and the scale we "
+        "chose for it can both be held against published figures, so here they "
+        "are. The model's own numbers come from `python -m wiiga.prevision`.*",
+        "",
+        "| | measured in Ouagadougou | in this simulator |",
+        "|---|---|---|",
+        f"| outage hours per day | **14 h/day on average**, across the capital and "
+        "every inland city, from 26 March 2024 "
+        "([Faso7, 28/04/2024](https://faso7.com/2024/04/28/coupures-delectricite-au-burkina-faso-des-organisations-de-defense-des-droits-de-lhomme-appellent-a-retablir-la-situation-a-la-normale/)) "
+        f"| {_fr(dele['annuel'], 1)} h/day over the year, "
+        f"**{_fr(chaude, 1)} h/day in the hot dry season**, worst day "
+        f"{dele['pire_journee']} h |",
+        "| drinking-water shortfall | **57 000 m3/day**, stated by the Minister of "
+        "State for Water, Commander Ismael Sombie "
+        "([Burkina24, 01/05/2026](https://burkina24.com/2026/05/01/ouagadougou-vaste-operation-de-curage-des-barrages-pour-renforcer-lapprovisionnement-en-eau/)) "
+        f"| a station serving {_fr(habitants)} people, "
+        f"{_fr(demande_ville)} m3/day of reference demand |",
+        "",
+        "**Two things follow, and the second one is not flattering.**",
+        "",
+        f"The load-shedding model is **milder than the reality it is calibrated "
+        f"against**: {_fr(chaude, 1)} hours a day in the season that decides "
+        "everything, against 14 measured in April 2024. The constant that carries "
+        "the whole problem was set conservatively, not generously, and the "
+        "agent's advantage is therefore measured under a grid that fails *less* "
+        "often than Ouagadougou's did that year.",
+        "",
+        f"And the scale is honest about what it is: **this is one station, not "
+        f"the city.** Ouagadougou's daily shortfall alone is about "
+        f"{deficit_reel / demande_ville:.0f} times the entire daily demand of the three "
+        f"districts "
+        "modelled here. WIIGA is not a plan for supplying Ouagadougou. It is a "
+        "dispatch policy for a station of that kind, which is the unit an "
+        "operator actually controls - and the unit that can be adopted one hour "
+        "at a time.",
+    ]
     return lignes
 
 
@@ -450,6 +521,9 @@ def construire() -> str:
     )
     bloc += ["", "### What each policy costs the city", ""]
     bloc += tableau_principal(d)
+
+    if PREVISION.exists():
+        bloc += tableau_ancrage(json.loads(PREVISION.read_text(encoding="utf-8")), d)
 
     bloc += tableau_quartiers(d)
 

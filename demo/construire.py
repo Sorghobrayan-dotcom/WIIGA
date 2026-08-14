@@ -71,6 +71,19 @@ def main() -> None:
     if marque not in gabarit:
         raise SystemExit(f"marque {marque} absente de gabarit.html")
 
+    # Le schema vit dans son propre fichier et il est **inline** ici : le README
+    # le montre comme image sur GitHub, la page l'incorpore au moment de la
+    # construction. Une seule source, et toujours zero requete reseau - un
+    # <img src="schema.svg"> aurait ete la premiere requete de la page.
+    marque_schema = "<!--SCHEMA-->"
+    schema = ICI / "schema.svg"
+    if marque_schema in gabarit:
+        if not schema.exists():
+            raise SystemExit(f"{schema.name} absent : la page attend le schema")
+        gabarit = gabarit.replace(
+            marque_schema, schema.read_text(encoding="utf-8").strip()
+        )
+
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     SORTIE.write_text(gabarit.replace(marque, f"const DONNEES={charge};"), encoding="utf-8")
     poids = SORTIE.stat().st_size / 1024

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img"
+     aria-label="How WIIGA is wired: once an hour the agent reads three tank levels, the demand six hours ahead, the outage risk four hours ahead, the diesel left and the city's trust. It then sets a power level and an energy source for each of three pumps that fill three district tanks. Two further actions touch no pump: warning the city to fill jerrycans, and handing the hour back to the operator.">
+  <style>
+    .b{fill:#f6f2ea;stroke:#d3c9b8;stroke-width:1}
+    .t{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;fill:#231c15}
+    .k{font-size:10.5px;letter-spacing:.09em;fill:#8b8377;font-weight:650}
+    .n{font-size:13px;font-weight:620}
+    .s{font-size:11.5px;fill:#5b5147}
+    .q{font-size:11.5px;fill:#8b8377}
+    .w{stroke:#0f6d8e;stroke-width:1.6;fill:none;marker-end:url(#a)}
+    .r{stroke:#8b8377;stroke-width:1.2;fill:none;stroke-dasharray:4 3;marker-end:url(#g)}
+    .p{stroke:#c8801e;stroke-width:1.6;fill:none;marker-end:url(#o)}
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f6d8e"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8b8377"/></marker>
+    <marker id="o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c8801e"/></marker>
+  </defs>
+
+  <!-- ============ what the agent reads ============ -->
+  <rect class="b" x="30" y="24" width="840" height="72" rx="12"/>
+  <text class="t k" x="46" y="46">ONCE AN HOUR, THE AGENT READS</text>
+  <g class="t s">
+    <text x="46" y="70">3 tank levels</text>
+    <text x="168" y="70">demand, 6 h ahead</text>
+    <text x="330" y="70">outage risk, 4 h ahead</text>
+    <text x="512" y="70">diesel left today</text>
+    <text x="648" y="70">what the city still believes</text>
+  </g>
+  <text class="t q" x="46" y="85">all five are forecasts or states, never the truth of what is about to happen</text>
+
+  <!-- ============ and decides ============ -->
+  <text class="t k" x="30" y="120">AND DECIDES</text>
+  <path class="w" d="M250 100 L250 142"/>
+  <path class="w" d="M430 100 L430 142"/>
+  <text class="t q" x="258" y="118">a power level</text>
+  <text class="t q" x="438" y="118">and a source, per pump</text>
+
+  <!-- ============ energy sources ============ -->
+  <text class="t k" x="30" y="164">ENERGY</text>
+  <rect class="b" x="30" y="172" width="136" height="34" rx="8" fill="#fdf6e6" stroke="#c99521"/>
+  <text class="t n" x="44" y="193" fill="#c99521">solar</text>
+  <text class="t s" x="92" y="193">free, 7 h to 17 h</text>
+
+  <rect class="b" x="30" y="214" width="136" height="34" rx="8" stroke="#5f7f90"/>
+  <text class="t n" x="44" y="235" fill="#5f7f90">grid</text>
+  <text class="t s" x="82" y="235">out 8.6 h/day</text>
+
+  <rect class="b" x="30" y="256" width="136" height="34" rx="8" stroke="#9c5230"/>
+  <text class="t n" x="44" y="277" fill="#9c5230">diesel</text>
+  <text class="t s" x="90" y="277">320 kWh, then none</text>
+
+  <path class="w" d="M166 231 L206 231"/>
+  <path class="w" d="M186 189 L186 225 L206 225"/>
+  <path class="w" d="M186 273 L186 237 L206 237"/>
+
+  <!-- ============ pumps ============ -->
+  <text class="t k" x="212" y="164">PUMPS</text>
+  <rect class="b" x="212" y="172" width="104" height="118" rx="10"/>
+  <text class="t s" x="226" y="196">pump 1</text>
+  <text class="t q" x="226" y="210">0 to 100 %</text>
+  <text class="t s" x="226" y="234">pump 2</text>
+  <text class="t q" x="226" y="248">0 to 100 %</text>
+  <text class="t s" x="226" y="272">pump 3</text>
+  <text class="t q" x="226" y="286">0 to 100 %</text>
+
+  <path class="w" d="M316 190 L362 190"/>
+  <path class="w" d="M316 228 L362 228"/>
+  <path class="w" d="M316 266 L362 266"/>
+
+  <!-- ============ tanks ============ -->
+  <text class="t k" x="368" y="164">TANKS, THE BATTERY</text>
+  <rect class="b" x="368" y="172" width="90" height="34" rx="6"/>
+  <rect x="369" y="189" width="88" height="16" fill="#a9d6e6"/>
+  <text class="t s" x="380" y="194">120 m3</text>
+
+  <rect class="b" x="368" y="214" width="90" height="34" rx="6"/>
+  <rect x="369" y="231" width="88" height="16" fill="#a9d6e6"/>
+  <text class="t s" x="380" y="236">240 m3</text>
+
+  <rect class="b" x="368" y="256" width="90" height="34" rx="6"/>
+  <rect x="369" y="273" width="88" height="16" fill="#a9d6e6"/>
+  <text class="t s" x="380" y="278">80 m3</text>
+
+  <path class="w" d="M458 190 L512 190"/>
+  <path class="w" d="M458 228 L512 228"/>
+  <path class="w" d="M458 266 L512 266"/>
+
+  <!-- ============ districts ============ -->
+  <text class="t k" x="518" y="164">DISTRICTS THAT DRINK</text>
+  <rect class="b" x="518" y="172" width="192" height="34" rx="8"/>
+  <text class="t n" x="532" y="193">market</text>
+  <text class="t q" x="600" y="193">6 000 . peak 6 a.m.</text>
+
+  <rect class="b" x="518" y="214" width="192" height="34" rx="8"/>
+  <text class="t n" x="532" y="235">residential</text>
+  <text class="t q" x="612" y="235">12 000 . peak 7 p.m.</text>
+
+  <rect class="b" x="518" y="256" width="192" height="34" rx="8"/>
+  <text class="t n" x="532" y="277">school + clinic</text>
+  <text class="t q" x="632" y="277">4 000 . peak 1 p.m.</text>
+
+  <!-- the reward looks back at the worst of the three -->
+  <path class="r" d="M710 228 L738 228 L738 100"/>
+  <text class="t q" x="746" y="176">the reward reads</text>
+  <text class="t q" x="746" y="190">the WORST served</text>
+  <text class="t q" x="746" y="204">district, never</text>
+  <text class="t q" x="746" y="218">the average</text>
+
+  <text class="t q" x="368" y="312">filled at midday on sunlight nobody pays for,</text>
+  <text class="t q" x="368" y="326">drunk at 7 p.m. when the grid is down</text>
+
+  <!-- ============ the two actions that touch no pump ============ -->
+  <rect class="b" x="30" y="358" width="404" height="122" rx="12" fill="#fdf6e6" stroke="#c8801e"/>
+  <text class="t k" x="46" y="382" fill="#c8801e">AN ACTION THAT TOUCHES NO PUMP</text>
+  <text class="t n" x="46" y="406">"fill your jerrycans, the power is about to go"</text>
+  <text class="t s" x="46" y="428">Demand moves forward. The day's volume is unchanged.</text>
+  <text class="t s" x="46" y="446">45 % of households respond when trust is full. A false</text>
+  <text class="t s" x="46" y="464">alarm costs no fuel: it costs being listened to, and the</text>
+  <text class="t s" x="46" y="482">break-even accuracy that follows is 78.9 %.</text>
+
+  <path class="p" d="M232 358 L232 340 L604 340 L604 296"/>
+
+  <rect class="b" x="466" y="358" width="404" height="122" rx="12"/>
+  <text class="t k" x="482" y="382">AND THE OTHER ONE</text>
+  <text class="t n" x="482" y="406">"not this hour, you take it"</text>
+  <text class="t s" x="482" y="428">The agent hands the station back to the operator's own</text>
+  <text class="t s" x="482" y="446">fixed setting, and pays 3.0 of reward every time it does.</text>
+  <text class="t s" x="482" y="464">At 3, 6 and 7 a.m. it decides it has nothing to add, and</text>
+  <text class="t s" x="482" y="482">takes the station back at 8 a.m. when the sun comes up.</text>
+</svg>
