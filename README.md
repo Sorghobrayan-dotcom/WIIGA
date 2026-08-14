@@ -452,8 +452,14 @@ successes is a project you cannot check.
   demand curve, while the water actually served follows `zone.horaire` - which
   carries the Ramadan deformation that moves consumption from daytime to after
   sunset. Measured across the year, the gap between the shape forecast and the
-  shape served is **0.000 on 336 days and 0.155 in total variation on the 29 days
-  of Ramadan**, with no "ramadan" flag anywhere in the observation.
+  shape served is **0.000 on 336 days**, and on the 29 days of Ramadan it is
+  **0.155 in total variation for the residential district, 0.232 for the market,
+  and 0.281 for the school and clinic** - with no "ramadan" flag anywhere in the
+  observation. The first version of this paragraph quoted only the 0.155, the
+  best of the three. In a project whose signature is `min` and not `mean`, citing
+  the least-affected district was the one line in this repository that did not
+  apply its own rule. **The worst-served district decides everywhere else here.
+  It decides here too: 0.281.**
   And the detail that matters: **25 February - the day this submission leads
   with, the 10 566 people - is inside Ramadan 2026.** The agent produced that
   result while being told the wrong hourly shape. That is a defect, and it is
