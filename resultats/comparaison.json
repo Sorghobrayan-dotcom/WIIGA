@@ -1,11 +1,17 @@
 {
-  "genere_le": "2026-08-13T04:26:44+00:00",
+  "genere_le": "2026-08-14T07:41:19+00:00",
   "journees": 365,
   "seed": 1000,
   "modele": "agents/graine_0",
   "mesures": {
     "exploitant (consigne fixe)": {
       "heures_a_sec_par_jour": 2.4767123287671233,
+      "heures_a_sec_par_zone": {
+        "marché": 0.3150684931506849,
+        "résidentiel": 0.8712328767123287,
+        "mixte": 1.2904109589041095
+      },
+      "heures_a_sec_pire_zone": 1.2904109589041095,
       "jours_avec_coupure_sur_200": 77,
       "litres_manquants_par_jour": 45560.976039384135,
       "personnes_privees_equivalent_par_jour": 2278.0488019692066,
@@ -29,6 +35,12 @@
     },
     "moins cher (sans prévision)": {
       "heures_a_sec_par_jour": 0.4,
+      "heures_a_sec_par_zone": {
+        "marché": 0.010958904109589041,
+        "résidentiel": 0.3589041095890411,
+        "mixte": 0.030136986301369864
+      },
+      "heures_a_sec_pire_zone": 0.3589041095890411,
       "jours_avec_coupure_sur_200": 30,
       "litres_manquants_par_jour": 11026.467078271577,
       "personnes_privees_equivalent_par_jour": 551.3233539135788,
@@ -52,6 +64,12 @@
     },
     "prévoyant (règle écrite)": {
       "heures_a_sec_par_jour": 0.3315068493150685,
+      "heures_a_sec_par_zone": {
+        "marché": 0.005479452054794521,
+        "résidentiel": 0.3095890410958904,
+        "mixte": 0.01643835616438356
+      },
+      "heures_a_sec_pire_zone": 0.3095890410958904,
       "jours_avec_coupure_sur_200": 26,
       "litres_manquants_par_jour": 10390.388670728857,
       "personnes_privees_equivalent_par_jour": 519.5194335364429,
@@ -75,6 +93,12 @@
     },
     "agent WIIGA (PPO)": {
       "heures_a_sec_par_jour": 0.15616438356164383,
+      "heures_a_sec_par_zone": {
+        "marché": 0.10136986301369863,
+        "résidentiel": 0.03561643835616438,
+        "mixte": 0.019178082191780823
+      },
+      "heures_a_sec_pire_zone": 0.10136986301369863,
       "jours_avec_coupure_sur_200": 15,
       "litres_manquants_par_jour": 2255.894978276308,
       "personnes_privees_equivalent_par_jour": 112.7947489138154,
@@ -98,6 +122,12 @@
     },
     "agent WIIGA, sans la parole": {
       "heures_a_sec_par_jour": 0.2273972602739726,
+      "heures_a_sec_par_zone": {
+        "marché": 0.10136986301369863,
+        "résidentiel": 0.07397260273972603,
+        "mixte": 0.052054794520547946
+      },
+      "heures_a_sec_pire_zone": 0.10136986301369863,
       "jours_avec_coupure_sur_200": 20,
       "litres_manquants_par_jour": 3243.022899196273,
       "personnes_privees_equivalent_par_jour": 162.15114495981365,

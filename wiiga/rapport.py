@@ -86,6 +86,85 @@ def tableau_principal(d: dict) -> list[str]:
     return lignes
 
 
+def tableau_quartiers(d: dict) -> list[str]:
+    """Les heures a sec quartier par quartier, et le pire d'entre eux.
+
+    La colonne « dry hours / day » du tableau principal est une **somme** sur les
+    trois quartiers. C'est la bonne grandeur pour comparer deux politiques, et le
+    texte l'a longtemps appelee « le quartier le plus mal servi », ce qu'elle
+    n'est pas : pour la consigne fixe, la somme vaut 2,48 et le pire quartier
+    1,29. Les deux sont publiees ici plutot que corrigees en silence, d'autant
+    que l'agent est **meilleur** sur celle qui manquait.
+    """
+    m = d["mesures"]
+    zones = list(next(iter(m.values())).get("heures_a_sec_par_zone", {}))
+    if not zones:
+        return []
+    lignes = [
+        "",
+        "### The same hours, district by district",
+        "",
+        "*The column above is a **sum over the three districts**: two districts "
+        "dry in the same hour count twice. It is the right quantity for ranking "
+        "policies and the wrong one for describing what a household lives "
+        "through, so here is the breakdown, and the worst district on its own - "
+        "the quantity the reward actually optimises.*",
+        "",
+        "| operator | " + " | ".join(_zone(z) for z in zones)
+        + " | worst district | sum |",
+        "|---" + "|---:" * (len(zones) + 2) + "|",
+    ]
+    for nom, v in m.items():
+        gras = "**" if nom.startswith("agent WIIGA (") else ""
+        cases = " | ".join(_fr(v["heures_a_sec_par_zone"][z], 2) for z in zones)
+        lignes.append(
+            f"| {gras}{_nom(nom)}{gras} | {cases} | "
+            f"**{_fr(v['heures_a_sec_pire_zone'], 2)}** | "
+            f"{_fr(v['heures_a_sec_par_jour'], 2)} |"
+        )
+
+    a, r = m["agent WIIGA (PPO)"], m["prévoyant (règle écrite)"]
+    t = m["exploitant (consigne fixe)"]
+    agent, regle = a["heures_a_sec_pire_zone"], r["heures_a_sec_pire_zone"]
+    terrain = t["heures_a_sec_pire_zone"]
+    # le quartier ou l'agent est le plus en retard sur la regle. Il en existe un,
+    # et une phrase qui ne parlerait que du maximum le laisserait sous le tapis
+    pire_pour_nous = max(
+        zones, key=lambda z: a["heures_a_sec_par_zone"][z] - r["heures_a_sec_par_zone"][z]
+    )
+    recule = (
+        a["heures_a_sec_par_zone"][pire_pour_nous]
+        - r["heures_a_sec_par_zone"][pire_pour_nous]
+    )
+    lignes += [
+        "",
+        f"On the worst-served district - the quantity the reward optimises - the "
+        f"agent leaves it dry **{_fr((regle - agent) / regle * 100 if regle else 0)} % "
+        f"less** than the rulebook and "
+        f"**{_fr((terrain - agent) / terrain * 100 if terrain else 0)} % less** than "
+        "current practice. Both gaps are wider than the ones on the sum, which is "
+        "what a max-min objective is supposed to produce.",
+    ]
+    if recule > 0:
+        lignes += [
+            "",
+            f"**And it is not free.** The agent is *worse* than the rulebook on the "
+            f"{_zone(pire_pour_nous)} district - "
+            f"{_fr(a['heures_a_sec_par_zone'][pire_pour_nous], 2)} against "
+            f"{_fr(r['heures_a_sec_par_zone'][pire_pour_nous], 2)} - and better on "
+            "the residential one by an order of magnitude. That is the trade a "
+            "max-min objective makes: it does not improve every district, it "
+            "**flattens the spread**. The rulebook's districts run from "
+            f"{_fr(min(r['heures_a_sec_par_zone'].values()), 2)} to "
+            f"{_fr(max(r['heures_a_sec_par_zone'].values()), 2)}; the agent's from "
+            f"{_fr(min(a['heures_a_sec_par_zone'].values()), 2)} to "
+            f"{_fr(max(a['heures_a_sec_par_zone'].values()), 2)}. If you would "
+            "rather have one district suffer a lot and two suffer none, this is "
+            "the wrong objective, and that choice is stated rather than hidden.",
+        ]
+    return lignes
+
+
 def tableau_saisons(d: dict) -> list[str]:
     m = d["mesures"]
     presentes = [s for s in SAISONS if s in next(iter(m.values()))["heures_a_sec_par_saison"]]
@@ -297,6 +376,8 @@ def construire() -> str:
     )
     bloc += ["", "### What each policy costs the city", ""]
     bloc += tableau_principal(d)
+
+    bloc += tableau_quartiers(d)
 
     bloc += ["", "### The same table, season by season - dry hours per day", ""]
     bloc += tableau_saisons(d)
