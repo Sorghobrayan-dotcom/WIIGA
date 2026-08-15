@@ -620,6 +620,16 @@ successes is a project you cannot check.
 Stated plainly, because a result you have to defend later is worth less than a
 limitation you declared yourself.
 
+- **The agent sometimes commands a source that delivers nothing.** From 8 p.m.
+  it points the clinic pump at *solar*, at 23 to 48 % of power, with the sun
+  down. In the environment that yields zero: no water rises, nothing is billed,
+  and the energy lands in the wasted-power counter, which costs it a little
+  reward. For the agent, picking solar at night **is** switching the pump off -
+  power and source are separate components of the action, so the power value has
+  no consequence once the source yields nothing. It is a small amount of reward
+  left on the table and a real artifact of the action space, so the console
+  labels those hours *solar, no sun* rather than drawing panels that produce at
+  midnight.
 - **PPO for pump scheduling is established work.** So is solar-diesel hybrid
   dispatch. What is new here is the *objective* (worst-served district) and the
   *communication action*, not the algorithm.

@@ -634,6 +634,21 @@ NAME[MUTE]="WIIGA agent, not allowed to speak";
 const SEASON={"pluies":"rainy","sèche chaude":"hot dry","sèche tempérée":"mild dry"};
 const ZONE={"marché":"market","résidentiel":"residential","mixte":"school + clinic"};
 const SRC={"solaire":"var(--sun)","reseau":"var(--grid)","diesel":"var(--diesel)"};
+
+// Une pompe commandee n'est pas une pompe qui monte de l'eau. Choisir le solaire
+// a 23 h ou le reseau pendant une coupure donne un rendement nul dans l'
+// environnement : rien n'arrive dans la cuve, rien n'est facture, et l'energie
+// part au compteur du gaspillage. L'agent le fait la nuit sur le dispensaire -
+// c'est pour lui l'equivalent d'eteindre - et l'afficher comme du solaire
+// laissait croire a des panneaux qui produisent a minuit.
+function livre(e,i){
+  if(e.puissances[i]<=0.08) return false;
+  const s=e.sources[i];
+  if(s==="solaire") return e.soleil>0;
+  if(s==="reseau") return !!e.reseau;
+  return true;
+}
+const SANS_EFFET={"solaire":"solar, no sun","reseau":"grid, cut off","diesel":"diesel"};
 // une couleur par quartier. Trois lignes bleues qui ne different que par
 // l'opacite, personne ne sait laquelle est laquelle - et c'est justement le
 // quartier le plus mal servi qu'il faut pouvoir suivre des yeux.
@@ -865,13 +880,13 @@ function dessineTanks(){
     // la puissance, pas seulement la source : ce que l'agent décide vraiment
     // est un réglage continu par pompe, et le cacher revenait à montrer la
     // moitié de la décision
-    const p=a.puissances[i], tourne=p>0.08;
+    const p=a.puissances[i], tourne=livre(a,i), commande=p>0.08;
     const t3=el("text",{x:x+bw/2,y:top+bh+37,"text-anchor":"middle","font-size":10.5,
       fill:tourne?SRC[a.sources[i]]:"var(--ink-3)"},s);
     t3.textContent=tourne
       ? ({"solaire":"solar","reseau":"grid","diesel":"diesel"})[a.sources[i]]
         +" · "+Math.round(p*100)+"%"
-      : "pump off";
+      : commande ? SANS_EFFET[a.sources[i]] : "pump off";
     // une jauge de puissance sous le nom, pour lire le réglage d'un coup d'œil
     el("rect",{x:x+8,y:top+bh+44,width:bw-16,height:3,rx:1.5,
       fill:"var(--rule-2)","fill-opacity":.5},s);
@@ -939,7 +954,7 @@ function dessineStrip(){
   const r=courant(), W=700,mL=40,mR=12, bw=(W-mL-mR)/24;
   r.heures.forEach((x,i)=>{
     S.zones.forEach((z,k)=>{
-      const on=x.puissances[k]>0.08, drawn=i<=st.t;
+      const on=livre(x,k), drawn=i<=st.t;
       el("rect",{x:mL+i*bw+1,y:4+k*22,width:bw-2,height:18,rx:3,
         fill:on?SRC[x.sources[k]]:"var(--paper-3)",
         "fill-opacity":drawn?(on?Math.max(.38,x.puissances[k]):.85):.1},s);
@@ -1072,9 +1087,10 @@ document.getElementById("cta").onclick=()=>{
       '<div class="ro"><div class="k">what it buys you</div><div class="v'+(gain>0?' good':' bad')+'">'+
         (gain>0?"-"+Math.round(gain)+"%":"nothing")+'</div></div>';
     verdict.innerHTML = gain<=0
-      ? "<b>At this setting you do not need WIIGA.</b> A twenty line rulebook serves "+
-        "your station as well or better, and you should keep the twenty lines. "+
-        "The agent earns its place where the constraint bites, not everywhere."
+      ? "<b>The constraint has gone.</b> At this budget the generator covers more "+
+        "than half the pumping energy, so there is nothing left to arbitrate and a "+
+        "hand-written rule matches the agent. The value of learning here tracks how "+
+        "tight the station is."
       : gain<25
       ? "<b>The gap is narrowing.</b> The agent still helps, but a rulebook is not far "+
         "behind at this setting - worth knowing before anyone installs anything."
