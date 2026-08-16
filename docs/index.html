@@ -180,6 +180,25 @@
       font-family:var(--mono);font-size:13.5px;line-height:1.75;margin:0 0 16px}
   .note{border-left:3px solid var(--rule-2);padding-left:20px;color:var(--ink-2);
        font-size:17px;max-width:58ch;line-height:1.65}
+
+  /* ---------- en mots simples ----------
+     Un jure qui ne comprend pas le projet ne peut pas noter son impact. Ce bloc
+     est le premier de la page, il ne contient aucun terme technique et aucun
+     chiffre : les chiffres arrivent juste apres, et ils veulent dire quelque
+     chose une fois qu'on a compris de quoi on parle. */
+  .simple{margin:36px 0 44px;padding:clamp(24px,3.2vw,38px);border-radius:18px;
+          background:var(--paper-2);border:1px solid var(--rule)}
+  .simple h2{font-size:clamp(19px,2.2vw,23px);margin:0 0 .9em;font-family:var(--sans);
+             font-weight:650;letter-spacing:0}
+  .simple ol{margin:0;padding-left:0;list-style:none;counter-reset:s;max-width:62ch}
+  .simple li{counter-increment:s;position:relative;padding-left:44px;
+             margin-bottom:1.05em;font-size:clamp(17px,1.9vw,19px);line-height:1.6}
+  .simple li:last-child{margin-bottom:0}
+  .simple li::before{content:counter(s);position:absolute;left:0;top:1px;
+        width:28px;height:28px;border-radius:50%;background:var(--water);color:#fff;
+        font-size:14px;font-weight:650;display:grid;place-items:center;
+        font-family:var(--sans)}
+  .simple li b{color:var(--water-deep)}
   ul{max-width:58ch;padding-left:1.25em} li{margin-bottom:.85em}
   footer{margin-top:96px;padding-top:28px;border-top:1px solid var(--rule);
          font-size:14px;color:var(--ink-3)}
@@ -191,9 +210,27 @@
 <h1>Most cities just leave the pumps running.<br>What if the water went where it is
 needed, when it is needed?</h1>
 
-<p class="lede">WIIGA builds a digital twin of a city's water network, then
-decides every hour - for every district - <b>which pump runs, at what power,
-filling which tank, on which source of energy</b>. Solar first, always.</p>
+<div class="simple">
+  <h2>The whole thing, in plain words</h2>
+  <ol>
+    <li>In this city, the electricity goes off for hours every day. It goes off
+    most often <b>in the evening</b>.</li>
+    <li>No electricity means the pumps stop. When the pumps stop, the water tanks
+    empty and <b>the taps run dry</b> - in the evening, exactly when everyone
+    comes home and wants water.</li>
+    <li>WIIGA decides, every hour, <b>which pump runs and on what power</b>, using
+    sunshine, city electricity, or a diesel generator. Sunshine is free. The
+    generator is expensive and dirty, and there is only a little of it.</li>
+    <li>Its main trick: it <b>fills the tanks at midday, on free sunshine</b>,
+    when nobody is thirsty yet. A full tank at midday is a battery for the
+    evening - and it costs nothing, because the tank is already there.</li>
+    <li>Its second trick: it can <b>warn people</b> to fill their jerrycans before
+    the power goes. But if it warns and nothing happens, people stop believing
+    it. So it has to learn to speak only when it is sure.</li>
+    <li>And when it has nothing useful to add - at three in the morning, say - it
+    <b>hands the station back</b> to the operator and says so.</li>
+  </ol>
+</div>
 
 <div class="coup">
   <p class="date" id="coup-date">25 February. 38.7 C. Hot dry season in Ouagadougou.</p>
@@ -451,6 +488,10 @@ filling which tank, on which source of energy</b>. Solar first, always.</p>
     than the litres actually drawn. The two boxes at the bottom are the actions
     that touch no pump, and they are the part with no equivalent we could find.</figcaption>
   </figure>
+  <p class="note"><b>In the language of the field:</b> a reinforcement-learning
+  agent schedules three district pumps against a failing grid, on a simulator
+  calibrated on three years of measured daily records. Solar first, always.</p>
+
   <p class="note"><b>And the object is not really water.</b> It is operating an
   essential service on infrastructure that cannot be relied on. Swap the tank for
   a vaccine fridge, a rural health battery or a motorbike charging point, and the
