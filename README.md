@@ -5,11 +5,31 @@ water is always there. WIIGA asks a different question: what if we brought the
 water where it is needed, when it is needed, on the cleanest power available at
 that moment?**
 
-WIIGA builds a digital twin of a city's water network, then decides - every hour,
-for every district - **which pump runs, at what power, filling which tank, on
-which source of energy.** It reads the date, the hour, the temperature, the
-season and the district, and it prefers solar every time solar can do the job.
-Grid second. The diesel generator last, and only when there is nothing else.
+## The whole thing, in plain words
+
+1. In this city, the electricity goes off for hours every day. It goes off most
+   often **in the evening**.
+2. No electricity means the pumps stop. When the pumps stop, the water tanks
+   empty and **the taps run dry** - in the evening, exactly when everyone comes
+   home and wants water.
+3. WIIGA decides, every hour, **which pump runs and on what power**, using
+   sunshine, city electricity, or a diesel generator. Sunshine is free. The
+   generator is expensive and dirty, and there is only a little of it.
+4. Its main trick: it **fills the tanks at midday, on free sunshine**, when
+   nobody is thirsty yet. A full tank at midday is a battery for the evening -
+   and it costs nothing, because the tank is already there.
+5. Its second trick: it can **warn people** to fill their jerrycans before the
+   power goes. But if it warns and nothing happens, people stop believing it. So
+   it has to learn to speak only when it is sure.
+6. And when it has nothing useful to add - at three in the morning, say - it
+   **hands the station back** to the operator and says so.
+
+*In the language of the field:* WIIGA builds a digital twin of a city's water
+network, then decides - every hour, for every district - **which pump runs, at
+what power, filling which tank, on which source of energy.** It reads the date,
+the hour, the temperature, the season and the district, and it prefers solar
+every time solar can do the job. Grid second. The diesel generator last, and only
+when there is nothing else.
 
 ## The whole thing in one minute
 
